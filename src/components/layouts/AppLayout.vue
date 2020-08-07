@@ -3,13 +3,33 @@
     <v-navigation-drawer
       elevation="0"
       app
+      dark
       color="secondary"
       v-model="drawer"
       width="200"
       class="text-center"
       style="border:none"
     >
-      <img src="../../assets/logo.png" class="mt-5" width="40" />
+      <div>
+        <img src="../../assets/logo.png" class="mt-5" width="40" />
+      </div>
+      <div class="main-nav">
+        <v-btn icon large>
+          <v-icon color="primary">mdi-home</v-icon>
+        </v-btn>
+        <v-btn icon large>
+          <v-icon color="text_default">mdi-apps</v-icon>
+        </v-btn>
+        <v-btn icon large>
+          <v-icon color="text_default">mdi-clipboard-text-multiple</v-icon>
+        </v-btn>
+        <v-btn icon large>
+          <v-icon color="text_default">mdi-account-multiple</v-icon>
+        </v-btn>
+        <v-btn icon large>
+          <v-icon color="text_default">mdi-cog</v-icon>
+        </v-btn>
+      </div>
     </v-navigation-drawer>
 
     <v-app-bar app color="secondary" dark height="100" elevation="0">
@@ -65,6 +85,8 @@ export default {
   },
   data: () => ({
     drawer: null,
+    length: 3,
+    window: 0,
   }),
   mounted() {
     this.removeElementInDom();
@@ -73,10 +95,11 @@ export default {
     removeElementInDom() {
       document
         .querySelectorAll(".v-navigation-drawer__border")
-        .forEach(function (a) {
+        .forEach(function(a) {
           a.remove();
         });
     },
   },
 };
 </script>
+<style lang="scss" scoped></style>
