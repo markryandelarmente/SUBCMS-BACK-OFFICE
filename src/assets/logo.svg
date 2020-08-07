@@ -1,1 +1,22 @@
-<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 87.5 100"><defs><style>.cls-1{fill:#1697f6;}.cls-2{fill:#7bc6ff;}.cls-3{fill:#1867c0;}.cls-4{fill:#aeddff;}</style></defs><title>Artboard 46</title><polyline class="cls-1" points="43.75 0 23.31 0 43.75 48.32"/><polygon class="cls-2" points="43.75 62.5 43.75 100 0 14.58 22.92 14.58 43.75 62.5"/><polyline class="cls-3" points="43.75 0 64.19 0 43.75 48.32"/><polygon class="cls-4" points="64.58 14.58 87.5 14.58 43.75 100 43.75 62.5 64.58 14.58"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="91" height="128.5" viewBox="0 0 91 128.5">
+  <defs>
+    <filter id="Path_835" x="12.5" y="0" width="64.43" height="82.853" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="1.5" result="blur"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="logo_g" data-name="logo g" transform="translate(20884 7881.5)">
+    <g id="Group_637" data-name="Group 637" transform="translate(-6 -13)">
+      <path id="Path_895" data-name="Path 895" d="M-889.5,121.153a20.875,20.875,0,0,1-5.031,13.629c-.279.325-.567.642-.868.95l-.355.358-13.037,13.121a10.533,10.533,0,0,1-7.5,3.127,10.537,10.537,0,0,1-7.5-3.127,10.727,10.727,0,0,1-1.308-13.5,10.61,10.61,0,0,1,1.308-1.6l27.875-28.057a20.236,20.236,0,0,1,1.391,1.474A20.873,20.873,0,0,1-889.5,121.153Z" transform="translate(-19934.107 -7929.339)" fill="#00bbaf"/>
+      <g id="Group_636" data-name="Group 636" transform="translate(-20861 -7867)">
+        <g transform="matrix(1, 0, 0, 1, -17, -1.5)" filter="url(#Path_835)">
+          <path id="Path_835-2" data-name="Path 835" d="M-871.463-254.352a10.312,10.312,0,0,1-2.512,6.76l-1.082,1.081L-896.068-225.5c.294-.3.576-.607.849-.923a20.217,20.217,0,0,0,4.924-13.252,20.219,20.219,0,0,0-4.914-13.242c-.43-.5-.884-.979-1.362-1.433h0l-27.283-27.283a10.38,10.38,0,0,1,0-14.678,10.379,10.379,0,0,1,14.678,0l34.113,34.113,1.093,1.093A10.315,10.315,0,0,1-871.463-254.352Z" transform="translate(943.89 300.85)" fill="#0affef"/>
+        </g>
+      </g>
+    </g>
+    <text id="SUBCMS" transform="translate(-20884 -7759)" fill="#0affef" font-size="22" font-family="GoogleSans-Medium, Google Sans" font-weight="500"><tspan x="0" y="0">SUBCMS</tspan></text>
+  </g>
+</svg>
