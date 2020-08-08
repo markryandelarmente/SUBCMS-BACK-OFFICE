@@ -1,6 +1,6 @@
 <template>
   <v-app class="app">
-    <AuthLayout v-if="!authenticated" />
+    <AuthLayout v-if="authenticated" />
     <AppLayout v-else />
   </v-app>
 </template>
