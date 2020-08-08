@@ -1,6 +1,6 @@
 <template>
   <v-app class="app">
-    <AuthLayout v-if="authenticated" />
+    <AuthLayout v-if="!authenticated" />
     <AppLayout v-else />
   </v-app>
 </template>
@@ -18,8 +18,18 @@ export default {
   },
 
   data: () => ({
-    authenticated: true,
+    authenticated: false,
   }),
+  created() {
+    this.checkIfAuthicated();
+  },
+  methods: {
+    checkIfAuthicated() {
+      if (!this.$route.name == "login" && !this.authenticated) {
+        this.$router.replace("/login");
+      }
+    },
+  },
 };
 </script>
 <style>
