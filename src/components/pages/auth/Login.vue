@@ -2,7 +2,13 @@
   <v-app>
     <v-dialog v-model="dialog" persistent max-width="600px" min-width="360px">
       <div>
-        <v-tabs show-arrows background-color="secondary" icons-and-text dark grow>
+        <v-tabs
+          show-arrows
+          background-color="secondary"
+          icons-and-text
+          dark
+          grow
+        >
           <v-tabs-slider color="purple darken-4"></v-tabs-slider>
           <v-tab>
             <v-icon large>mdi-account</v-icon>
@@ -11,10 +17,14 @@
           <v-tab-item>
             <v-card class="px-4">
               <v-card-text>
-                <v-form ref="loginForm" v-model="valid">
+                <v-form ref="loginForm">
                   <v-row>
                     <v-col cols="12">
-                      <v-text-field v-model="user.email" label="Email" required></v-text-field>
+                      <v-text-field
+                        v-model="user.email"
+                        label="Email"
+                        required
+                      ></v-text-field>
                     </v-col>
                     <v-col cols="12">
                       <v-text-field
@@ -55,5 +65,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>
