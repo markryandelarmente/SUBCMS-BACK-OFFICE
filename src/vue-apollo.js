@@ -4,6 +4,8 @@ import {
   createApolloClient,
   restartWebsockets,
 } from "vue-cli-plugin-apollo/graphql-client";
+import { setContext } from "apollo-link-context";
+import * as cookie from "@/plugins/cookie.js";
 
 // Install the vue plugin
 Vue.use(VueApollo);
@@ -14,6 +16,19 @@ const AUTH_TOKEN = "apollo-token";
 // Http endpoint
 const httpEndpoint =
   process.env.VUE_APP_GRAPHQL_HTTP || "http://localhost:8080/graphql";
+
+const authLink = setContext(async (_, { headers }) => {
+  // get the authentication token from local storage if it exists
+  const token = cookie.getCookie("token");
+  // Return the headers to the context so httpLink can read them
+  return {
+    headers: {
+      ...headers,
+      authorization: `Bearer ${token}` || "",
+    },
+  };
+});
+
 // Files URL root
 export const filesRoot =
   process.env.VUE_APP_FILES_ROOT ||
@@ -41,7 +56,7 @@ const defaultOptions = {
   // Override default apollo link
   // note: don't override httpLink here, specify httpLink options in the
   // httpLinkOptions property of defaultOptions.
-  // link: myLink
+  link: authLink,
 
   // Override default cache
   // cache: myCache
