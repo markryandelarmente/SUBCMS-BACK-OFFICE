@@ -2,7 +2,13 @@
   <v-app>
     <v-dialog v-model="dialog" persistent max-width="600px" min-width="360px">
       <div>
-        <v-tabs show-arrows background-color="secondary" icons-and-text dark grow>
+        <v-tabs
+          show-arrows
+          background-color="secondary"
+          icons-and-text
+          dark
+          grow
+        >
           <v-tabs-slider color="purple darken-4"></v-tabs-slider>
           <v-tab>
             <v-icon large>mdi-account</v-icon>
@@ -11,10 +17,14 @@
           <v-tab-item>
             <v-card class="px-4">
               <v-card-text>
-                <v-form ref="loginForm" v-model="valid">
+                <v-form ref="loginForm">
                   <v-row>
                     <v-col cols="12">
-                      <v-text-field v-model="user.email" label="Email" required></v-text-field>
+                      <v-text-field
+                        v-model="user.email"
+                        label="Email"
+                        required
+                      ></v-text-field>
                     </v-col>
                     <v-col cols="12">
                       <v-text-field
@@ -29,7 +39,9 @@
                     <v-col class="d-flex" cols="12" sm="6" xsm="12"></v-col>
                     <v-spacer></v-spacer>
                     <v-col class="d-flex" cols="12" sm="3" xsm="12" align-end>
-                      <v-btn x-large block color="primary">Login</v-btn>
+                      <v-btn @click="login" x-large block color="primary"
+                        >Login</v-btn
+                      >
                     </v-col>
                   </v-row>
                 </v-form>
@@ -43,6 +55,9 @@
 </template>
 
 <script>
+import { LOGIN_MUTATION } from "@/graphql/auth.js";
+import * as cookie from "@/plugins/cookie.js";
+
 export default {
   name: "Login",
   data: () => ({
@@ -52,8 +67,35 @@ export default {
       password: "",
     },
   }),
+  methods: {
+    login() {
+      this.$apollo
+        .mutate({
+          mutation: LOGIN_MUTATION,
+          variables: {
+            input: {
+              email: this.user.email,
+              password: this.user.password,
+            },
+          },
+        })
+        .then(({ data }) => {
+          let {
+            admin_login: { token, user },
+          } = data;
+
+          this.$store.commit("authenticated/SET_TOKEN", token);
+          this.$store.commit("authenticated/SET_USER", user);
+
+          cookie.setCookie("token", token, 7);
+          if (!this.$route.name == "dashboard") {
+            this.$router.replace("/home");
+          }
+        });
+    },
+  },
+  computed: {},
 };
 </script>
 
-<style>
-</style>
+<style></style>
