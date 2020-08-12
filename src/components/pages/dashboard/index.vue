@@ -1,28 +1,26 @@
 <template>
-  <v-main>
-    <v-row justify="center">
-      <v-col sm="11" md="11" lg="10">
-        <v-tabs>
-          <v-tab>USERS</v-tab>
-        </v-tabs>
-      </v-col>
-      <v-col sm="12" md="11" lg="10">
-        <v-container class="fill-height" fluid>
-          <v-row align="center" justify="center">
-            <v-col class="text-center">
-              <v-data-table
-                light
-                :headers="headers"
-                :items="desserts"
-                :items-per-page="15"
-                class="elevation-1"
-              ></v-data-table>
-            </v-col>
-          </v-row>
-        </v-container>
-      </v-col>
-    </v-row>
-  </v-main>
+  <v-row justify="center">
+    <v-col sm="11" md="11" lg="10">
+      <v-tabs>
+        <v-tab>USERS</v-tab>
+      </v-tabs>
+    </v-col>
+    <v-col sm="12" md="11" lg="10">
+      <v-container class="fill-height" fluid>
+        <v-row align="center" justify="center">
+          <v-col class="text-center">
+            <v-data-table
+              light
+              :headers="headers"
+              :items="desserts"
+              :items-per-page="15"
+              class="elevation-1"
+            ></v-data-table>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
@@ -320,5 +318,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>
