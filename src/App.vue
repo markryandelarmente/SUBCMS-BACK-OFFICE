@@ -32,7 +32,7 @@ export default {
               this.$store.commit("authenticated/SET_TOKEN", this.token);
               this.$store.commit("authenticated/SET_USER", user);
 
-              this.$router.push({ name: "dashboard" });
+              // this.$router.push({ name: "dashboard" });
             }
           });
       } else {

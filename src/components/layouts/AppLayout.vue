@@ -13,6 +13,7 @@
       </div>
       <div class="main-nav">
         <v-btn
+          :to="{ name: 'dashboard' }"
           :color="active_route == 'dashboard' ? 'text_dark' : ''"
           icon
           large
@@ -20,6 +21,7 @@
           <v-icon>mdi-home</v-icon>
         </v-btn>
         <v-btn
+          :to="{ name: 'resources' }"
           :color="active_route == 'resources' ? 'text_dark' : ''"
           icon
           medium
@@ -27,16 +29,23 @@
           <v-icon>mdi-apps</v-icon>
         </v-btn>
         <v-btn
+          :to="{ name: 'subscriptions' }"
           :color="active_route == 'subscriptions' ? 'text_dark' : ''"
           icon
           medium
         >
           <v-icon>mdi-clipboard-text-multiple</v-icon>
         </v-btn>
-        <v-btn :color="active_route == 'users' ? 'text_dark' : ''" icon medium>
+        <v-btn
+          :to="{ name: 'users' }"
+          :color="active_route == 'users' ? 'text_dark' : ''"
+          icon
+          medium
+        >
           <v-icon>mdi-account-multiple</v-icon>
         </v-btn>
         <v-btn
+          :to="{ name: 'settings' }"
           :color="active_route == 'settings' ? 'text_dark' : ''"
           icon
           medium
@@ -81,17 +90,16 @@
         </v-col>
       </v-row>
     </v-app-bar>
-    <Dashboard />
+    <v-main>
+      <router-view></router-view>
+    </v-main>
   </div>
 </template>
 
 <script>
-import Dashboard from "../pages/dashboard/index";
 export default {
   name: "HomeLayout",
-  components: {
-    Dashboard,
-  },
+
   props: {
     source: String,
   },
@@ -107,9 +115,14 @@ export default {
     removeElementInDom() {
       document
         .querySelectorAll(".v-navigation-drawer__border")
-        .forEach(function(a) {
+        .forEach(function (a) {
           a.remove();
         });
+    },
+  },
+  watch: {
+    $route(to) {
+      this.active_route = to.name;
     },
   },
 };
