@@ -38,6 +38,9 @@ export default {
           .then(({ data }) => {
             let { self: user } = data;
             if (user) {
+              this.$store.commit("authenticated/SET_TOKEN", token);
+              this.$store.commit("authenticated/SET_USER", user);
+
               if (!this.$route.name == "dashboard") {
                 this.$router.replace("/home");
               }
@@ -58,7 +61,7 @@ export default {
     }),
   },
   watch: {
-    TOKEN: function(val) {
+    TOKEN: function (val) {
       this.token = val;
     },
   },
