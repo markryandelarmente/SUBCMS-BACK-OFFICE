@@ -1,23 +1,22 @@
 <template>
   <v-app class="app">
-    <AuthLayout v-if="!token" />
-    <AppLayout v-else />
+    <router-view></router-view>
   </v-app>
 </template>
 
 <script>
-import AuthLayout from "./components/layouts/AuthLayout";
-import AppLayout from "./components/layouts/AppLayout";
+// import AuthLayout from "./components/layouts/AuthLayout";
+// import AppLayout from "./components/layouts/AppLayout";
 import { mapGetters } from "vuex";
 import * as cookie from "@/plugins/cookie.js";
 import { SELF_QUERY } from "@/graphql/auth.js";
 export default {
   name: "App",
 
-  components: {
-    AuthLayout,
-    AppLayout,
-  },
+  // components: {
+  //   AuthLayout,
+  //   AppLayout,
+  // },
 
   data: () => ({
     token: null,
@@ -27,10 +26,9 @@ export default {
   },
   methods: {
     checkIfAuthenticated() {
-      let token = cookie.getCookie("token");
-      this.token = token;
+      this.token = cookie.getCookie("token");
 
-      if (token) {
+      if (this.token) {
         this.$apollo
           .query({
             query: SELF_QUERY,
@@ -38,19 +36,14 @@ export default {
           .then(({ data }) => {
             let { self: user } = data;
             if (user) {
-              this.$store.commit("authenticated/SET_TOKEN", token);
+              this.$store.commit("authenticated/SET_TOKEN", this.token);
               this.$store.commit("authenticated/SET_USER", user);
 
-              if (!this.$route.name == "dashboard") {
-                this.$router.replace("/home");
-              }
-            } else {
-              cookie.eraseCookie("token");
-              if (!this.$route.name == "login") {
-                this.$router.replace("/login");
-              }
+              this.$router.push({ name: "dashboard" });
             }
           });
+      } else {
+        this.$router.push({ name: "login" });
       }
     },
   },
@@ -61,7 +54,7 @@ export default {
     }),
   },
   watch: {
-    TOKEN: function (val) {
+    TOKEN: function(val) {
       this.token = val;
     },
   },

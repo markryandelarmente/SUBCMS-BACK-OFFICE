@@ -88,9 +88,7 @@ export default {
           this.$store.commit("authenticated/SET_USER", user);
 
           cookie.setCookie("token", token, 7);
-          if (!this.$route.name == "dashboard") {
-            this.$router.replace("/home");
-          }
+          this.$router.push({ name: "dashboard" });
         });
     },
   },
