@@ -14,7 +14,7 @@
       <div class="main-nav">
         <v-btn
           :to="{ name: 'dashboard' }"
-          :color="active_route == 'dashboard' ? 'text_dark' : ''"
+          :color="active_route == 'dashboard' ? 'primary' : ''"
           icon
           large
         >
@@ -22,7 +22,7 @@
         </v-btn>
         <v-btn
           :to="{ name: 'resources' }"
-          :color="active_route == 'resources' ? 'text_dark' : ''"
+          :color="active_route == 'resources' ? 'primary' : ''"
           icon
           medium
         >
@@ -30,7 +30,7 @@
         </v-btn>
         <v-btn
           :to="{ name: 'subscriptions' }"
-          :color="active_route == 'subscriptions' ? 'text_dark' : ''"
+          :color="active_route == 'subscriptions' ? 'primary' : ''"
           icon
           medium
         >
@@ -38,7 +38,7 @@
         </v-btn>
         <v-btn
           :to="{ name: 'users' }"
-          :color="active_route == 'users' ? 'text_dark' : ''"
+          :color="active_route == 'users' ? 'primary' : ''"
           icon
           medium
         >
@@ -46,7 +46,7 @@
         </v-btn>
         <v-btn
           :to="{ name: 'settings' }"
-          :color="active_route == 'settings' ? 'text_dark' : ''"
+          :color="active_route == 'settings' ? 'primary' : ''"
           icon
           medium
         >
