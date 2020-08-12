@@ -5,18 +5,11 @@
 </template>
 
 <script>
-// import AuthLayout from "./components/layouts/AuthLayout";
-// import AppLayout from "./components/layouts/AppLayout";
 import { mapGetters } from "vuex";
 import * as cookie from "@/plugins/cookie.js";
 import { SELF_QUERY } from "@/graphql/auth.js";
 export default {
   name: "App",
-
-  // components: {
-  //   AuthLayout,
-  //   AppLayout,
-  // },
 
   data: () => ({
     token: null,

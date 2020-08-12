@@ -12,19 +12,35 @@
         <img src="../../assets/logo.png" class="mt-3" width="40" />
       </div>
       <div class="main-nav">
-        <v-btn icon large>
+        <v-btn
+          :color="active_route == 'dashboard' ? 'text_dark' : ''"
+          icon
+          large
+        >
           <v-icon>mdi-home</v-icon>
         </v-btn>
-        <v-btn icon medium>
+        <v-btn
+          :color="active_route == 'resources' ? 'text_dark' : ''"
+          icon
+          medium
+        >
           <v-icon>mdi-apps</v-icon>
         </v-btn>
-        <v-btn icon medium>
+        <v-btn
+          :color="active_route == 'subscriptions' ? 'text_dark' : ''"
+          icon
+          medium
+        >
           <v-icon>mdi-clipboard-text-multiple</v-icon>
         </v-btn>
-        <v-btn color="secondary" icon medium>
+        <v-btn :color="active_route == 'users' ? 'text_dark' : ''" icon medium>
           <v-icon>mdi-account-multiple</v-icon>
         </v-btn>
-        <v-btn icon medium>
+        <v-btn
+          :color="active_route == 'settings' ? 'text_dark' : ''"
+          icon
+          medium
+        >
           <v-icon>mdi-cog</v-icon>
         </v-btn>
       </div>
@@ -81,15 +97,17 @@ export default {
   },
   data: () => ({
     drawer: null,
+    active_route: "",
   }),
   mounted() {
+    this.active_route = this.$route.name;
     this.removeElementInDom();
   },
   methods: {
     removeElementInDom() {
       document
         .querySelectorAll(".v-navigation-drawer__border")
-        .forEach(function (a) {
+        .forEach(function(a) {
           a.remove();
         });
     },
