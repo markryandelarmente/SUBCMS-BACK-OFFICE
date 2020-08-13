@@ -80,12 +80,18 @@ export function createProvider(options = {}) {
   });
   apolloClient.wsClient = wsClient;
 
+  apolloClient.defaultOptions = {
+    query: { fetchPolicy: "network-only" },
+    mutate: { fetchPolicy: "network-only" },
+    watchQuery: { fetchPolicy: "network-only" },
+  };
+
   // Create vue apollo provider
   const apolloProvider = new VueApollo({
     defaultClient: apolloClient,
     defaultOptions: {
       $query: {
-        // fetchPolicy: 'cache-and-network',
+        // fetchPolicy: "network-only",
       },
     },
     errorHandler(error) {
