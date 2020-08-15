@@ -19,41 +19,60 @@
       </v-col>
 
       <v-col md="9" class="text-center mt-5">
+        <Table :table="table" />
         <v-card outlined>
-          <v-card-title>
-            <v-icon class="mr-3">mdi-format-list-bulleted</v-icon>Users
+          <v-toolbar elevation="0" class="mt-3">
+            <v-app-bar-nav-icon></v-app-bar-nav-icon>
+
+            <v-toolbar-title>{{ table.tool_bar.title }}</v-toolbar-title>
+
             <v-spacer></v-spacer>
-            <v-spacer></v-spacer>
-            <v-spacer></v-spacer>
-            <v-text-field
-              v-model="filter.keyword"
-              append-icon="mdi-magnify"
-              label="Search"
-              single-line
-              hide-details
-            ></v-text-field>
-          </v-card-title>
+            <v-btn icon @click="table.tool_bar.search_expanded = true">
+              <v-icon>mdi-magnify</v-icon>
+            </v-btn>
+            <v-expand-x-transition>
+              <div v-show="table.tool_bar.search_expanded" style="width:400px">
+                <v-text-field
+                  light
+                  v-model="table.filter.keyword"
+                  label="Search"
+                  single-line
+                  hide-details
+                ></v-text-field>
+              </div>
+            </v-expand-x-transition>
+            <v-btn icon>
+              <v-icon>mdi-plus</v-icon>
+            </v-btn>
+            <v-btn icon :disabled="!table.total">
+              <v-icon>mdi-trash-can-outline</v-icon>
+            </v-btn>
+          </v-toolbar>
+          <v-card-title></v-card-title>
           <v-data-table
-            v-model="selected"
-            :loading="loading"
+            v-model="table.selected"
+            :loading="table.loading"
             loading-text="Loading. . .Please wait"
             light
-            :search="filter.keyword"
-            :headers="users.headers"
-            :items="users.data"
-            :server-items-length="total"
-            :items-per-page="filter.count"
-            @page-count="pageCount = $event"
+            :search="table.filter.keyword"
+            :headers="table.headers"
+            :items="table.data"
+            :server-items-length="table.total"
+            :items-per-page="table.filter.count"
+            @page-count="table.pageCount = $event"
+            @update:options="sortData"
             show-select
             hide-default-footer
-            :height="600"
+            :height="table.height"
           >
-            <template v-slot:header.profile_image="{ header }">{{ header.text.toUpperCase() }}</template>
-            <template v-slot:header.email="{ header }">{{ header.text.toUpperCase() }}</template>
-            <template v-slot:header.firstname="{ header }">{{ header.text.toUpperCase() }}</template>
-            <template v-slot:header.lastname="{ header }">{{ header.text.toUpperCase() }}</template>
-            <template v-slot:header.created_at="{ header }">{{ header.text.toUpperCase() }}</template>
-            <template v-slot:header.action="{ header }">{{ header.text.toUpperCase() }}</template>
+            <template v-slot:item.action="{}">
+              <v-btn icon color="success">
+                <v-icon small>mdi-pencil-outline</v-icon>
+              </v-btn>
+              <v-btn icon color="error">
+                <v-icon small>mdi-trash-can-outline</v-icon>
+              </v-btn>
+            </template>
             <template v-slot:item.profile_image="{ item }">
               <v-avatar size="30" class="mx-auto">
                 <img
@@ -63,8 +82,8 @@
               </v-avatar>
             </template>
           </v-data-table>
-          <div class="text-center">
-            <v-pagination v-model="filter.page" :length="pageCount" :total-visible="10"></v-pagination>
+          <div class="text-center mt-5 mb-5">
+            <v-pagination v-model="table.filter.page" :length="table.pageCount" :total-visible="10"></v-pagination>
           </div>
         </v-card>
       </v-col>
@@ -81,33 +100,36 @@ export default {
     Stat,
   },
   data: () => ({
-    time: 0,
-    loading: true,
-    total: 0,
-    pageCount: 0,
-    selected: [],
-    filter: {
-      role: "user",
-      count: 20,
-      page: 1,
-      order: "asc",
-      column: "created_at",
-      keyword: "",
-    },
-    search: "",
-    users: {
+    table: {
+      tool_bar: {
+        search_expanded: false,
+        title: "Users",
+      },
+      height: 600,
+      time: 0,
+      loading: true,
+      total: 0,
+      pageCount: 0,
+      filter: {
+        role: "user",
+        count: 20,
+        page: 1,
+        order: "asc",
+        column: "created_at",
+        keyword: "",
+      },
+      selected: [],
       headers: [
         {
-          text: "Profile",
+          text: "PROFILE",
           align: "start",
           sortable: false,
           value: "profile_image",
         },
-        { text: "Email", value: "email" },
-        { text: "Firstname", value: "firstname" },
-        { text: "Lastname", value: "lastname" },
-        { text: "Registed at", value: "created_at" },
-        { text: "Action", value: "action" },
+        { text: "NAME", value: "name" },
+        { text: "EMAIL", value: "email" },
+        { text: "REGISTERD AT", value: "created_at" },
+        { text: "ACTION", value: "action" },
       ],
       data: [],
     },
@@ -143,46 +165,58 @@ export default {
     ],
   }),
   created() {
-    this.getUsers();
+    this.fetchData();
   },
   methods: {
-    getUsers() {
+    fetchData() {
       this.$apollo
         .query({
           query: USERS_QUERY,
-          variables: { query: { ...this.filter } },
+          variables: { query: { ...this.computedFilter } },
         })
         .then(({ data }) => {
-          this.filter.page = data.users.current_page;
-          this.total = data.users.total;
-          this.loading = false;
-          this.users.data = data.users.data.map((user) => {
+          this.table.filter.page = data.users.current_page;
+          this.table.total = data.users.total;
+          this.table.loading = false;
+          this.table.data = data.users.data.map((user) => {
             return {
               ...user,
+              name: `${user.firstname} ${user.lastname}`,
               action: "action",
             };
           });
         });
     },
+    sortData(val) {
+      let column = val.sortBy[0];
+      let order = val.sortDesc[0] == true ? "desc" : "asc";
+      if (column && order) {
+        this.table.filter.column = column;
+        this.table.filter.order = order;
+      }
+    },
+  },
+  computed: {
+    computedFilter: function () {
+      return Object.assign({}, this.table.filter);
+    },
   },
   watch: {
-    "filter.page": function (val) {
-      val;
-      clearTimeout(this.time);
-      this.time = setTimeout(() => {
-        this.getUsers();
-      }, 1000);
-    },
-    "filter.keyword": function (val) {
-      val;
-      clearTimeout(this.time);
-      this.time = setTimeout(() => {
-        this.filter.page = 1;
-        this.getUsers();
-      }, 1000);
+    computedFilter: {
+      handler: function (newVal, oldVal) {
+        clearTimeout(this.table.time);
+        this.table.time = setTimeout(() => {
+          if (newVal.keyword != oldVal.keyword) {
+            newVal.page = 1;
+          }
+          this.fetchData();
+        }, 800);
+      },
+      deep: true,
     },
   },
 };
 </script>
 
 <style></style>
+ 
