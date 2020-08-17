@@ -32,6 +32,7 @@
       :loading="table.loading"
       loading-text="Loading. . .Please wait"
       light
+      fixed-header
       :search="table.filter.keyword"
       :headers="table.headers"
       :items="table.data"

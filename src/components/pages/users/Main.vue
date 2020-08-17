@@ -7,10 +7,10 @@
             <strong>USERS</strong>
           </v-tab>
           <v-tab>
-            <strong>ROLES</strong>
+            <strong>TICKETS</strong>
           </v-tab>
           <v-tab>
-            <strong>TICKETS</strong>
+            <strong>ROLES & PERMISSIONS</strong>
           </v-tab>
         </v-tabs>
       </v-col>
