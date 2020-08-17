@@ -19,7 +19,6 @@
       </v-col>
 
       <v-col md="9" class="text-center mt-5">
-        <Table :table="table" />
         <v-card outlined>
           <v-toolbar elevation="0" class="mt-3">
             <v-app-bar-nav-icon></v-app-bar-nav-icon>
@@ -48,7 +47,6 @@
               <v-icon>mdi-trash-can-outline</v-icon>
             </v-btn>
           </v-toolbar>
-          <v-card-title></v-card-title>
           <v-data-table
             v-model="table.selected"
             :loading="table.loading"
@@ -65,8 +63,8 @@
             hide-default-footer
             :height="table.height"
           >
-            <template v-slot:item.action="{}">
-              <v-btn icon color="success">
+            <template v-slot:item.action="{item}">
+              <v-btn icon color="success" @click="edit(item.action.value)">
                 <v-icon small>mdi-pencil-outline</v-icon>
               </v-btn>
               <v-btn icon color="error">
@@ -100,6 +98,10 @@ export default {
     Stat,
   },
   data: () => ({
+    tool_bar_data: {
+      title: "Users",
+      search_expanded: false,
+    },
     table: {
       tool_bar: {
         search_expanded: false,
@@ -126,48 +128,23 @@ export default {
           sortable: false,
           value: "profile_image",
         },
-        { text: "NAME", value: "name" },
+        { text: "FIRST NAME", value: "firstname" },
+        { text: "LAST NAME", value: "lastname" },
         { text: "EMAIL", value: "email" },
         { text: "REGISTERD AT", value: "created_at" },
         { text: "ACTION", value: "action" },
       ],
       data: [],
     },
-    stats: [
-      {
-        icon: "mdi-account-arrow-right-outline",
-        text: "Total",
-        value: "10000",
-        description:
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui, cumque?",
-      },
-      {
-        icon: "mdi-account-check-outline",
-        text: "Active now",
-        value: "102",
-        description:
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui, cumque?",
-      },
-      {
-        icon: "mdi-clipboard-alert-outline",
-        text: "Pending Tickets",
-        value: "23",
-        description:
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui, cumque?",
-      },
-      {
-        icon: "mdi-clipboard-check-outline",
-        text: "Solved Tickets",
-        value: "78",
-        description:
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui, cumque?",
-      },
-    ],
   }),
   created() {
     this.fetchData();
   },
   methods: {
+    edit(id) {
+      id;
+      // push here to edit page
+    },
     fetchData() {
       this.$apollo
         .query({
@@ -178,13 +155,17 @@ export default {
           this.table.filter.page = data.users.current_page;
           this.table.total = data.users.total;
           this.table.loading = false;
-          this.table.data = data.users.data.map((user) => {
+          let users = data.users.data.map((user) => {
             return {
               ...user,
-              name: `${user.firstname} ${user.lastname}`,
-              action: "action",
+              action: {
+                text: "ACTION",
+                value: user.id,
+              },
             };
           });
+          this.table.data = users;
+          this.$store.commit("user/SET_USERS", data.users);
         });
     },
     sortData(val) {
@@ -199,6 +180,38 @@ export default {
   computed: {
     computedFilter: function () {
       return Object.assign({}, this.table.filter);
+    },
+    stats: function () {
+      return [
+        {
+          icon: "mdi-account-arrow-right-outline",
+          text: "Total",
+          value: `${this.table.total}`,
+          description:
+            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui, cumque?",
+        },
+        {
+          icon: "mdi-account-check-outline",
+          text: "Active now",
+          value: "102",
+          description:
+            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui, cumque?",
+        },
+        {
+          icon: "mdi-clipboard-alert-outline",
+          text: "Pending Tickets",
+          value: "23",
+          description:
+            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui, cumque?",
+        },
+        {
+          icon: "mdi-clipboard-check-outline",
+          text: "Solved Tickets",
+          value: "78",
+          description:
+            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui, cumque?",
+        },
+      ];
     },
   },
   watch: {
@@ -219,4 +232,3 @@ export default {
 </script>
 
 <style></style>
- 
