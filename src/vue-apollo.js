@@ -82,7 +82,6 @@ export function createProvider(options = {}) {
 
   apolloClient.defaultOptions = {
     query: { fetchPolicy: "network-only" },
-    mutate: { fetchPolicy: "network-only" },
     watchQuery: { fetchPolicy: "network-only" },
   };
 
