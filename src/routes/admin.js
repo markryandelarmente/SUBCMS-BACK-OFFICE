@@ -7,6 +7,7 @@ import SubscriptionIndex from "../components/pages/subscription/index";
 import UsersMain from "../components/pages/users/Main";
 import UserIndex from "../components/pages/users/user/index";
 import user_index from "../components/pages/users/user/child/_index";
+import user_create from "../components/pages/users/user/child/_form";
 
 import SettingIndex from "../components/pages/setting/index";
 
@@ -42,7 +43,10 @@ export default [
             name: "users",
             component: UserIndex,
             redirect: { name: "user_index" },
-            children: [{ path: "", name: "user_index", component: user_index }],
+            children: [
+              { path: "", name: "user_index", component: user_index },
+              { path: "create", name: "user_create", component: user_create },
+            ],
           },
         ],
       },

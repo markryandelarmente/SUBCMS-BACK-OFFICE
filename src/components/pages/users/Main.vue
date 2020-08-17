@@ -3,10 +3,10 @@
     <v-row align="start">
       <v-col md="12" sm="12">
         <v-tabs>
-          <v-tab>
+          <v-tab :to="{name: 'user_index'}">
             <strong>USERS</strong>
           </v-tab>
-          <v-tab>
+          <v-tab :to="{name: 'dashboard'}">
             <strong>TICKETS</strong>
           </v-tab>
           <v-tab>

@@ -20,7 +20,7 @@
           ></v-text-field>
         </div>
       </v-expand-x-transition>
-      <v-btn icon>
+      <v-btn icon @click="$router.push({name: 'user_create'})">
         <v-icon>mdi-plus</v-icon>
       </v-btn>
       <v-btn icon :disabled="!table.total">
