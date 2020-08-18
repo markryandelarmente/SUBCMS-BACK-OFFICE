@@ -1,0 +1,18 @@
+{
+  "user_group": {
+    "main": {
+      "users": "Users",
+      "tickets": "Tickets",
+      "roles_permissions": "Roles & Permissions"
+    },
+    "user": {
+      "stat": {
+        "total": "Total",
+        "active_now": "Active now",
+        "pending_tickets": "Pending Tickets",
+        "solved_tickets": "Solved Tickets"
+      },
+      "_index": {}
+    }
+  }
+}

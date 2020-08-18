@@ -1,0 +1,12 @@
+{
+  "user_group": {
+    "main": {
+      "users": "Utilisateurs",
+      "tickets": "Des billets",
+      "roles_permissions": "Rôles et autorisations"
+    },
+    "user": {
+      "index": {}
+    }
+  }
+}

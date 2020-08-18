@@ -3,14 +3,14 @@
     <v-row align="start">
       <v-col md="12" sm="12">
         <v-tabs>
-          <v-tab :to="{name: 'users'}">
-            <strong>USERS</strong>
+          <v-tab :to="{ name: 'users' }">
+            <strong>{{ $t("user_group.main.users") }}</strong>
           </v-tab>
-          <v-tab :to="{name: 'tickets'}">
-            <strong>TICKETS</strong>
+          <v-tab :to="{ name: 'tickets' }">
+            <strong>{{ $t("user_group.main.tickets") }}</strong>
           </v-tab>
           <v-tab>
-            <strong>ROLES & PERMISSIONS</strong>
+            <strong>{{ $t("user_group.main.roles_permissions") }}</strong>
           </v-tab>
         </v-tabs>
       </v-col>
@@ -25,5 +25,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>
