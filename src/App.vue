@@ -35,6 +35,10 @@ export default {
                 this.$router.push({ name: "dashboard" });
               }
             }
+          })
+          .catch((err) => {
+            err;
+            this.$router.push({ name: "login" });
           });
       } else {
         this.$router.push({ name: "login" });
