@@ -3,7 +3,7 @@
     <v-toolbar elevation="0" class="mt-3">
       <v-app-bar-nav-icon></v-app-bar-nav-icon>
 
-      <v-toolbar-title>{{ table.tool_bar.title }}</v-toolbar-title>
+      <v-toolbar-title>{{ computedTable.tool_bar.title }}</v-toolbar-title>
 
       <v-spacer></v-spacer>
       <v-btn icon @click="table.tool_bar.search_expanded = true">
@@ -14,13 +14,13 @@
           <v-text-field
             light
             v-model="table.filter.keyword"
-            label="Search"
+            :label="computedTable.search.label"
             single-line
             hide-details
           ></v-text-field>
         </div>
       </v-expand-x-transition>
-      <v-btn icon @click="$router.push({name: 'user_create'})">
+      <v-btn icon @click="$router.push({ name: 'user_create' })">
         <v-icon>mdi-plus</v-icon>
       </v-btn>
       <v-btn icon :disabled="!table.total">
@@ -30,11 +30,11 @@
     <v-data-table
       v-model="table.selected"
       :loading="table.loading"
-      loading-text="Loading. . .Please wait"
+      :loading-text="computedTable.loading.label"
       light
       fixed-header
       :search="table.filter.keyword"
-      :headers="table.headers"
+      :headers="computedTable.headers"
       :items="table.data"
       :server-items-length="table.total"
       :items-per-page="table.filter.count"
@@ -44,7 +44,7 @@
       hide-default-footer
       :height="table.height"
     >
-      <template v-slot:item.action="{item}">
+      <template v-slot:item.action="{ item }">
         <v-btn icon color="success" @click="edit(item.action.value)">
           <v-icon small>mdi-pencil-outline</v-icon>
         </v-btn>
@@ -62,7 +62,11 @@
       </template>
     </v-data-table>
     <div class="text-center mt-5 mb-5">
-      <v-pagination v-model="table.filter.page" :length="table.pageCount" :total-visible="10"></v-pagination>
+      <v-pagination
+        v-model="table.filter.page"
+        :length="table.pageCount"
+        :total-visible="10"
+      ></v-pagination>
     </div>
   </v-card>
 </template>
@@ -71,10 +75,6 @@
 import { USERS_QUERY } from "@/graphql/user.js";
 export default {
   data: () => ({
-    tool_bar_data: {
-      title: "Users",
-      search_expanded: false,
-    },
     table: {
       tool_bar: {
         search_expanded: false,
@@ -94,19 +94,6 @@ export default {
         keyword: "",
       },
       selected: [],
-      headers: [
-        {
-          text: "PROFILE",
-          align: "start",
-          sortable: false,
-          value: "profile_image",
-        },
-        { text: "FIRST NAME", value: "firstname" },
-        { text: "LAST NAME", value: "lastname" },
-        { text: "EMAIL", value: "email" },
-        { text: "REGISTERD AT", value: "created_at" },
-        { text: "ACTION", value: "action" },
-      ],
       data: [],
     },
   }),
@@ -151,13 +138,60 @@ export default {
     },
   },
   computed: {
-    computedFilter: function () {
+    computedFilter: function() {
       return Object.assign({}, this.table.filter);
+    },
+    computedTable: function() {
+      return {
+        ...this.table,
+        tool_bar: {
+          ...this.table.tool_bar,
+          title: `${this.$t("user_group.user._index.table.title")}`,
+        },
+        headers: [
+          {
+            text: `${this.$t("user_group.user._index.table.headers.profile")}`,
+            align: "start",
+            sortable: false,
+            value: "profile_image",
+          },
+          {
+            text: `${this.$t(
+              "user_group.user._index.table.headers.firstname"
+            )}`,
+            value: "firstname",
+          },
+          {
+            text: `${this.$t("user_group.user._index.table.headers.lastname")}`,
+            value: "lastname",
+          },
+          {
+            text: `${this.$t("user_group.user._index.table.headers.email")}`,
+            value: "email",
+          },
+          {
+            text: `${this.$t(
+              "user_group.user._index.table.headers.registered_at"
+            )}`,
+            value: "created_at",
+          },
+          {
+            text: `${this.$t("user_group.user._index.table.headers.action")}`,
+            value: "action",
+          },
+        ],
+        search: {
+          label: `${this.$t("user_group.user._index.table.search")}`,
+        },
+        loading: {
+          label: `${this.$t("user_group.user._index.table.loading")}`,
+        },
+      };
     },
   },
   watch: {
     computedFilter: {
-      handler: function (newVal, oldVal) {
+      handler: function(newVal, oldVal) {
         clearTimeout(this.table.time);
         this.table.time = setTimeout(() => {
           if (newVal.keyword != oldVal.keyword) {
@@ -172,5 +206,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

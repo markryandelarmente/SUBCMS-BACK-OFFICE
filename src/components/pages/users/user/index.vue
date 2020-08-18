@@ -20,32 +20,32 @@ export default {
   created() {},
   methods: {},
   computed: {
-    stats: function () {
+    stats: function() {
       return [
         {
           icon: "mdi-account-arrow-right-outline",
-          text: "Total",
+          text: `${this.$t("user_group.user._index.stat.total")}`,
           value: `1000`,
           description:
             "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui, cumque?",
         },
         {
           icon: "mdi-account-check-outline",
-          text: "Active now",
+          text: `${this.$t("user_group.user._index.stat.active_now")}`,
           value: "102",
           description:
             "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui, cumque?",
         },
         {
           icon: "mdi-clipboard-alert-outline",
-          text: "Pending Tickets",
+          text: `${this.$t("user_group.user._index.stat.pending_tickets")}`,
           value: "23",
           description:
             "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui, cumque?",
         },
         {
           icon: "mdi-clipboard-check-outline",
-          text: "Solved Tickets",
+          text: `${this.$t("user_group.user._index.stat.solved_tickets")}`,
           value: "78",
           description:
             "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui, cumque?",

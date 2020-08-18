@@ -6,13 +6,27 @@
       "roles_permissions": "Roles & Permissions"
     },
     "user": {
-      "stat": {
-        "total": "Total",
-        "active_now": "Active now",
-        "pending_tickets": "Pending Tickets",
-        "solved_tickets": "Solved Tickets"
-      },
-      "_index": {}
+      "_index": {
+        "stat": {
+          "total": "Total",
+          "active_now": "Active now",
+          "pending_tickets": "Pending Tickets",
+          "solved_tickets": "Solved Tickets"
+        },
+        "table": {
+          "title": "Users",
+          "search": "Search",
+          "loading": "Loading . . . Please wait",
+          "headers": {
+            "profile": "PROFILE",
+            "firstname": "FIRSTNAME",
+            "lastname": "LASTNAME",
+            "email": "EMAIL",
+            "registered_at": "REGISTERED AT",
+            "action": "ACTION"
+          }
+        }
+      }
     }
   }
 }
