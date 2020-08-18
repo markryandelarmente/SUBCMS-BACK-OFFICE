@@ -54,19 +54,12 @@
       </template>
       <template v-slot:item.profile_image="{ item }">
         <v-avatar size="30" class="mx-auto">
-          <img
-            src="https://jgi.doe.gov/wp-content/uploads/2014/04/Steven_Hallam-slide.jpg"
-            :alt="item.firstname"
-          />
+          <img :src="item.profile_image" :alt="item.firstname" />
         </v-avatar>
       </template>
     </v-data-table>
     <div class="text-center mt-5 mb-5">
-      <v-pagination
-        v-model="table.filter.page"
-        :length="table.pageCount"
-        :total-visible="10"
-      ></v-pagination>
+      <v-pagination v-model="table.filter.page" :length="table.pageCount" :total-visible="10"></v-pagination>
     </div>
   </v-card>
 </template>
@@ -138,10 +131,10 @@ export default {
     },
   },
   computed: {
-    computedFilter: function() {
+    computedFilter: function () {
       return Object.assign({}, this.table.filter);
     },
-    computedTable: function() {
+    computedTable: function () {
       return {
         ...this.table,
         tool_bar: {
@@ -191,7 +184,7 @@ export default {
   },
   watch: {
     computedFilter: {
-      handler: function(newVal, oldVal) {
+      handler: function (newVal, oldVal) {
         clearTimeout(this.table.time);
         this.table.time = setTimeout(() => {
           if (newVal.keyword != oldVal.keyword) {
