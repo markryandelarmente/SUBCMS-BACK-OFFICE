@@ -9,7 +9,7 @@
       "_index": {
         "stat": {
           "total": "Total",
-          "active_now": "Active now",
+          "active_now": "New Users",
           "pending_tickets": "Pending Tickets",
           "solved_tickets": "Solved Tickets"
         },
