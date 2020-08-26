@@ -82,7 +82,7 @@ export default {
         role: "user",
         count: 20,
         page: 1,
-        order: "asc",
+        order: "desc",
         column: "created_at",
         keyword: "",
       },
