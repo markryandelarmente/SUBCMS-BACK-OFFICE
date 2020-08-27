@@ -95,8 +95,7 @@ export default {
   },
   methods: {
     edit(id) {
-      console.log(id);
-      // push here to edit page
+      this.$router.push({ name: "user_edit", params: { id: id } });
     },
     fetchData() {
       this.$apollo
