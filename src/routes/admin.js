@@ -11,7 +11,7 @@ import UsersMain from "../components/pages/users/Main";
 // USERS
 import UserIndex from "../components/pages/users/user/index";
 import user_index from "../components/pages/users/user/child/_index";
-import user_create from "../components/pages/users/user/child/_form";
+import user_form from "../components/pages/users/user/child/_form";
 // TICKETS
 import TicketIndex from "../components/pages/users/ticket/index";
 import ticket_index from "../components/pages/users/ticket/child/_index";
@@ -52,7 +52,8 @@ export default [
             redirect: { name: "user_index" },
             children: [
               { path: "", name: "user_index", component: user_index },
-              { path: "create", name: "user_create", component: user_create },
+              { path: "create", name: "user_create", component: user_form },
+              { path: "edit/:id", name: "user_edit", component: user_form },
             ],
           },
           {
