@@ -147,10 +147,11 @@
 </template>
 
 <script>
-import { USER_STORE } from "@/graphql/user.js";
+import { USER_STORE_MUTATION, USER_QUERY } from "@/graphql/user.js";
 
 export default {
   data: () => ({
+    is_edit: false,
     loading: false,
     user: {
       firstname: "",
@@ -173,12 +174,27 @@ export default {
       modal: false,
     },
   }),
+  created() {
+    this.$route.params.id
+      ? ((this.is_edit = true), this.fetchUser(this.$route.params.id))
+      : false;
+  },
   methods: {
+    fetchUser(id) {
+      this.$apollo
+        .query({
+          query: USER_QUERY,
+          variables: { id: id },
+        })
+        .then(({ data }) => {
+          this.user = data.user;
+        });
+    },
     submit() {
       this.loading = true;
       this.$apollo
         .mutate({
-          mutation: USER_STORE,
+          mutation: USER_STORE_MUTATION,
           variables: {
             input: {
               ...this.user,
@@ -209,7 +225,7 @@ export default {
   },
   watch: {
     "user.birthdate": function (val) {
-      this.user.age = this._calculateAge(val);
+      val ? (this.user.age = this._calculateAge(val)) : "";
     },
   },
 };
