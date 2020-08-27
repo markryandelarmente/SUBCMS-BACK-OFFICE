@@ -2,7 +2,7 @@
   <v-form>
     <v-container>
       <v-toolbar-title class="text-left">
-        ACCOUNT DETAILS
+        {{ $t('user_group.user._form.account_details') }}
         <v-btn class="float-right" color="gray" @click="cancel" icon>
           <v-icon>mdi-arrow-left</v-icon>
         </v-btn>
@@ -18,17 +18,26 @@
         <v-col cols="8" md="8">
           <v-row>
             <v-col cols="12" md="6">
-              <v-text-field v-model="user.email" label="Email *" hint="example@gmail.com" required></v-text-field>
+              <v-text-field
+                v-model="user.email"
+                :label="$t('user_group.user._form.email')"
+                hint="example@gmail.com"
+                required
+              ></v-text-field>
             </v-col>
             <v-col cols="12" md="6">
-              <v-text-field v-model="user.username" label="Username *" required></v-text-field>
+              <v-text-field
+                v-model="user.username"
+                :label="$t('user_group.user._form.username')"
+                required
+              ></v-text-field>
             </v-col>
             <v-col cols="12" md="6">
               <v-text-field
                 v-model="user.password"
                 type="password"
                 :counter="10"
-                label="Password *"
+                :label="$t('user_group.user._form.password')"
                 required
               ></v-text-field>
             </v-col>
@@ -37,23 +46,27 @@
                 v-model="user.confirm_password"
                 type="password"
                 :counter="10"
-                label="Confirm Password *"
+                :label="$t('user_group.user._form.confirm_password')"
                 required
               ></v-text-field>
             </v-col>
           </v-row>
         </v-col>
       </v-row>
-      <v-toolbar-title class="text-left mt-5">PERSONAL DETAILS</v-toolbar-title>
+      <v-toolbar-title class="text-left mt-5">{{ $t('user_group.user._form.personal_details') }}</v-toolbar-title>
       <v-row>
         <v-col cols="12" md="4">
-          <v-text-field v-model="user.firstname" label="First Name"></v-text-field>
+          <v-text-field v-model="user.firstname" :label="$t('user_group.user._form.first_name')"></v-text-field>
         </v-col>
         <v-col cols="12" md="4">
-          <v-text-field v-model="user.lastname" label="Last Name"></v-text-field>
+          <v-text-field v-model="user.lastname" :label="$t('user_group.user._form.last_name')"></v-text-field>
         </v-col>
         <v-col cols="12" md="4">
-          <v-select :items="gender" v-model="user.gender" label="Gender"></v-select>
+          <v-select
+            :items="gender"
+            v-model="user.gender"
+            :label="$t('user_group.user._form.gender')"
+          ></v-select>
         </v-col>
         <v-col cols="12" md="4">
           <v-dialog
@@ -66,7 +79,7 @@
             <template v-slot:activator="{ on, attrs }">
               <v-text-field
                 v-model="user.birthdate"
-                label="Birthdate"
+                :label="$t('user_group.user._form.birthdate')"
                 readonly
                 v-bind="attrs"
                 v-on="on"
@@ -74,30 +87,48 @@
             </template>
             <v-date-picker v-model="user.birthdate" width="100%">
               <v-spacer></v-spacer>
-              <v-btn text color="primary" @click="birthdate.modal = false">Cancel</v-btn>
-              <v-btn text color="primary" @click="$refs.dialog.save(user.birthdate)">OK</v-btn>
+              <v-btn
+                text
+                color="primary"
+                @click="birthdate.modal = false"
+              >{{ $t('user_group.user._form.cancel') }}</v-btn>
+              <v-btn
+                text
+                color="primary"
+                @click="$refs.dialog.save(user.birthdate)"
+              >{{ $t('user_group.user._form.ok') }}</v-btn>
             </v-date-picker>
           </v-dialog>
         </v-col>
         <v-col cols="12" md="4">
-          <v-text-field v-model="user.age" :counter="2" type="number" label="Age"></v-text-field>
+          <v-text-field
+            v-model="user.age"
+            :counter="2"
+            type="number"
+            :label="$t('user_group.user._form.age')"
+          ></v-text-field>
         </v-col>
         <v-col cols="12" md="4">
-          <v-text-field v-model="user.address" label="Address"></v-text-field>
+          <v-text-field v-model="user.address" :label="$t('user_group.user._form.address')"></v-text-field>
         </v-col>
         <v-col cols="12" md="4">
-          <v-text-field v-model="user.city" label="City"></v-text-field>
+          <v-text-field v-model="user.city" :label="$t('user_group.user._form.city')"></v-text-field>
         </v-col>
         <v-col cols="12" md="4">
-          <v-text-field v-model="user.postal_code" :counter="10" label="Postal Code"></v-text-field>
+          <v-text-field
+            v-model="user.postal_code"
+            :counter="10"
+            :label="$t('user_group.user._form.postal_code')"
+          ></v-text-field>
         </v-col>
         <v-col cols="12" md="4">
-          <v-text-field v-model="user.country" label="Country"></v-text-field>
+          <v-text-field v-model="user.country" :label="$t('user_group.user._form.country')"></v-text-field>
         </v-col>
       </v-row>
       <div class="my-2 text-right">
         <v-btn class="mx-5" color="gray" @click="cancel" depressed large>
-          <v-icon>mdi-close</v-icon>CANCEL
+          <v-icon>mdi-close</v-icon>
+          {{ $t('user_group.user._form.cancel') }}
         </v-btn>
         <v-btn
           :loading="loading"
@@ -107,7 +138,8 @@
           large
           color="primary"
         >
-          <v-icon>mdi-content-save</v-icon>SAVE
+          <v-icon>mdi-content-save</v-icon>
+          {{ $t('user_group.user._form.save')}}
         </v-btn>
       </div>
     </v-container>

@@ -26,6 +26,26 @@
             "action": "ACTION"
           }
         }
+      },
+      "_form": {
+        "account_details": "ACCOUNT DETAILS",
+        "email": "Email *",
+        "username": "Username *",
+        "password": "Password *",
+        "confirm_password": "Confirm Password *",
+        "personal_details": "PERSONAL DETAILS",
+        "first_name": "First name",
+        "last_name": "Last name",
+        "gender": "Gender",
+        "birthdate": "Birthdate",
+        "age": "Age",
+        "address": "Address",
+        "city": "City",
+        "postal_code": "Postal code",
+        "country": "Country",
+        "ok": "Ok",
+        "cancel": "Cancel",
+        "save": "Save"
       }
     }
   }
