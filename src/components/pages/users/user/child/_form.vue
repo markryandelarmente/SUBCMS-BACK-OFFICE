@@ -11,7 +11,7 @@
         <v-col cols="4" md="4">
           <v-avatar size="200" class="mx-auto">
             <img
-              src="https://www.nepic.co.uk/wp-content/uploads/2016/11/blank-staff-circle-male.png"
+              :src="user.profile_image ? user.profile_image : 'https://www.nepic.co.uk/wp-content/uploads/2016/11/blank-staff-circle-male.png'"
             />
           </v-avatar>
         </v-col>
