@@ -18,7 +18,26 @@ const USERS_QUERY = gql`
   }
 `;
 
-const USER_STORE = gql`
+const USER_QUERY = gql`
+  query user($id: ID) {
+    user(id: $id) {
+      firstname
+      lastname
+      username
+      email
+      profile_image
+      gender
+      age
+      birthdate
+      address
+      city
+      postal_code
+      country
+    }
+  }
+`;
+
+const USER_STORE_MUTATION = gql`
   mutation user_store($input: UserInput) {
     user_store(input: $input) {
       id
@@ -32,4 +51,4 @@ const USER_STORE = gql`
   }
 `;
 
-export { USERS_QUERY, USER_STORE };
+export { USERS_QUERY, USER_STORE_MUTATION, USER_QUERY };
