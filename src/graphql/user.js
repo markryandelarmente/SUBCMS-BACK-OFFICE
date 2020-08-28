@@ -21,6 +21,7 @@ const USERS_QUERY = gql`
 const USER_QUERY = gql`
   query user($id: ID) {
     user(id: $id) {
+      id
       firstname
       lastname
       username
@@ -51,4 +52,18 @@ const USER_STORE_MUTATION = gql`
   }
 `;
 
-export { USERS_QUERY, USER_STORE_MUTATION, USER_QUERY };
+const USER_UPDATE_MUTATION = gql`
+  mutation user_update($input: UserInput) {
+    user_update(input: $input) {
+      id
+      username
+      email
+      firstname
+      lastname
+      created_at
+      updated_at
+    }
+  }
+`;
+
+export { USERS_QUERY, USER_QUERY, USER_STORE_MUTATION, USER_UPDATE_MUTATION };

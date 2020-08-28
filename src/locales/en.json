@@ -45,7 +45,8 @@
         "country": "Country",
         "ok": "Ok",
         "cancel": "Cancel",
-        "save": "Save"
+        "save": "Save",
+        "update": "Update"
       }
     }
   }

@@ -139,7 +139,7 @@
           color="primary"
         >
           <v-icon>mdi-content-save</v-icon>
-          {{ $t('user_group.user._form.save')}}
+          {{ is_edit ? $t('user_group.user._form.update') : $t('user_group.user._form.save')}}
         </v-btn>
       </div>
     </v-container>
@@ -147,13 +147,18 @@
 </template>
 
 <script>
-import { USER_STORE_MUTATION, USER_QUERY } from "@/graphql/user.js";
+import {
+  USER_STORE_MUTATION,
+  USER_UPDATE_MUTATION,
+  USER_QUERY,
+} from "@/graphql/user.js";
 
 export default {
   data: () => ({
     is_edit: false,
     loading: false,
     user: {
+      id: null,
       firstname: "",
       lastname: "",
       username: "",
@@ -187,14 +192,16 @@ export default {
           variables: { id: id },
         })
         .then(({ data }) => {
-          this.user = data.user;
+          this.user = {
+            ...data.user,
+          };
         });
     },
     submit() {
       this.loading = true;
       this.$apollo
         .mutate({
-          mutation: USER_STORE_MUTATION,
+          mutation: this.is_edit ? USER_UPDATE_MUTATION : USER_STORE_MUTATION,
           variables: {
             input: {
               ...this.user,
