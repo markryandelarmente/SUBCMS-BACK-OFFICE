@@ -23,7 +23,11 @@
       <v-btn icon @click="$router.push({ name: 'user_create' })">
         <v-icon>mdi-plus</v-icon>
       </v-btn>
-      <v-btn icon :disabled="!table.total">
+      <v-btn
+        icon
+        :disabled="table.selected && table.selected.length ? false : true"
+        @click="openDeleteModal(table.selected)"
+      >
         <v-icon>mdi-trash-can-outline</v-icon>
       </v-btn>
     </v-toolbar>
@@ -48,7 +52,12 @@
         <v-btn icon color="success" @click="edit(item.action.value)">
           <v-icon small>mdi-pencil-outline</v-icon>
         </v-btn>
-        <v-btn icon color="error">
+        <v-btn
+          icon
+          color="error"
+          @click="openDeleteModal(item.id)"
+          :disabled="table.selected && table.selected.length ? true : false"
+        >
           <v-icon small>mdi-trash-can-outline</v-icon>
         </v-btn>
       </template>
@@ -61,11 +70,34 @@
     <div class="text-center mt-5 mb-5">
       <v-pagination v-model="table.filter.page" :length="table.pageCount" :total-visible="10"></v-pagination>
     </div>
+    <v-dialog v-model="deleteDialog.activate" persistent max-width="400">
+      <v-card>
+        <v-card-title class="headline">Are you sure you want to delete {{ deleteDialog.text }}?</v-card-title>
+        <v-card-text>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ut, laborum.</v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn text @click="deleteDialog.activate = false">Cancel</v-btn>
+          <v-btn
+            color="primary"
+            text
+            @click="table.selected && table.selected.length ? deleteMultipleUser() : deleteSingleUser()"
+          >Yes</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-snackbar
+      color="success"
+      v-model="toaster.activate"
+      :timeout="2000"
+      :bottom="true"
+      :left="true"
+      width="auto"
+    >{{ toaster.text }}</v-snackbar>
   </v-card>
 </template>
 
 <script>
-import { USERS_QUERY } from "@/graphql/user.js";
+import { USERS_QUERY, USER_DELETE_MUTATION } from "@/graphql/user.js";
 export default {
   data: () => ({
     table: {
@@ -89,7 +121,17 @@ export default {
       selected: [],
       data: [],
     },
+    deleteDialog: {
+      activate: false,
+      user_id: null,
+      text: "",
+    },
+    toaster: {
+      activate: false,
+      text: "",
+    },
   }),
+
   created() {
     this.fetchData();
   },
@@ -127,6 +169,45 @@ export default {
         this.table.filter.column = column;
         this.table.filter.order = order;
       }
+    },
+    openDeleteModal(ids) {
+      this.deleteDialog = {
+        activate: true,
+        user_id: ids,
+        text: ids.length > 1 ? "users" : "user",
+      };
+    },
+    deleteSingleUser() {
+      this.deleteUser([this.deleteDialog.user_id]);
+      this.deleteDialog.activate = false;
+    },
+    deleteMultipleUser() {
+      this.deleteUser(
+        this.table.selected.map((user) => {
+          return user.id;
+        })
+      );
+      this.deleteDialog.activate = false;
+    },
+    deleteUser(ids) {
+      this.$apollo
+        .mutate({
+          mutation: USER_DELETE_MUTATION,
+          variables: {
+            ids: ids,
+          },
+        })
+        .then(() => {
+          this.fetchData();
+          this.toaster = {
+            activate: true,
+            text: ids.length > 1 ? "Users deleted!" : "User deleted!",
+          };
+          this.table.selected = [];
+        })
+        .catch(() => {
+          this.loading = false;
+        });
     },
   },
   computed: {

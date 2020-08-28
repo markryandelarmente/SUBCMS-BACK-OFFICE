@@ -66,4 +66,20 @@ const USER_UPDATE_MUTATION = gql`
   }
 `;
 
-export { USERS_QUERY, USER_QUERY, USER_STORE_MUTATION, USER_UPDATE_MUTATION };
+const USER_DELETE_MUTATION = gql`
+  mutation user_delete($ids: [ID]) {
+    user_delete(ids: $ids) {
+      id
+      username
+      email
+    }
+  }
+`;
+
+export {
+  USERS_QUERY,
+  USER_QUERY,
+  USER_STORE_MUTATION,
+  USER_UPDATE_MUTATION,
+  USER_DELETE_MUTATION,
+};
