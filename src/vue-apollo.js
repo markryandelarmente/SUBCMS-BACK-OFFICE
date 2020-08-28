@@ -6,6 +6,7 @@ import {
 } from "vue-cli-plugin-apollo/graphql-client";
 import { setContext } from "apollo-link-context";
 import * as cookie from "@/plugins/cookie.js";
+import { InMemoryCache } from "apollo-cache-inmemory";
 
 // Install the vue plugin
 Vue.use(VueApollo);
@@ -59,7 +60,9 @@ const defaultOptions = {
   link: authLink,
 
   // Override default cache
-  // cache: myCache
+  cache: new InMemoryCache({
+    addTypename: false,
+  }),
 
   // Override the way the Authorization header is set
   // getAuth: (tokenName) => ...
@@ -80,12 +83,17 @@ export function createProvider(options = {}) {
   });
   apolloClient.wsClient = wsClient;
 
+  apolloClient.defaultOptions = {
+    query: { fetchPolicy: "network-only" },
+    watchQuery: { fetchPolicy: "network-only" },
+  };
+
   // Create vue apollo provider
   const apolloProvider = new VueApollo({
     defaultClient: apolloClient,
     defaultOptions: {
       $query: {
-        // fetchPolicy: 'cache-and-network',
+        // fetchPolicy: "network-only",
       },
     },
     errorHandler(error) {

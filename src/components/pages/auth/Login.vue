@@ -2,13 +2,7 @@
   <v-app>
     <v-dialog v-model="dialog" persistent max-width="600px" min-width="360px">
       <div>
-        <v-tabs
-          show-arrows
-          background-color="secondary"
-          icons-and-text
-          dark
-          grow
-        >
+        <v-tabs show-arrows background-color="secondary" icons-and-text dark grow>
           <v-tabs-slider color="purple darken-4"></v-tabs-slider>
           <v-tab>
             <v-icon large>mdi-account</v-icon>
@@ -20,11 +14,7 @@
                 <v-form ref="loginForm">
                   <v-row>
                     <v-col cols="12">
-                      <v-text-field
-                        v-model="user.email"
-                        label="Email"
-                        required
-                      ></v-text-field>
+                      <v-text-field v-model="user.email" label="Email" required></v-text-field>
                     </v-col>
                     <v-col cols="12">
                       <v-text-field
@@ -39,9 +29,7 @@
                     <v-col class="d-flex" cols="12" sm="6" xsm="12"></v-col>
                     <v-spacer></v-spacer>
                     <v-col class="d-flex" cols="12" sm="3" xsm="12" align-end>
-                      <v-btn @click="login" x-large block color="primary"
-                        >Login</v-btn
-                      >
+                      <v-btn @click="login" x-large block color="primary">Login</v-btn>
                     </v-col>
                   </v-row>
                 </v-form>
@@ -55,7 +43,7 @@
 </template>
 
 <script>
-import { LOGIN_MUTATION } from "@/graphql/auth.js";
+import { LOGIN_MUTATION, SELF_QUERY } from "@/graphql/auth.js";
 import * as cookie from "@/plugins/cookie.js";
 
 export default {
@@ -67,7 +55,30 @@ export default {
       password: "",
     },
   }),
+  created() {
+    this.checkIfAuthenticated();
+  },
   methods: {
+    checkIfAuthenticated() {
+      this.token = cookie.getCookie("token");
+
+      if (this.token) {
+        this.$apollo
+          .query({
+            query: SELF_QUERY,
+          })
+          .then(({ data }) => {
+            let { self: user } = data;
+            if (user) {
+              this.$store.commit("authenticated/SET_TOKEN", this.token);
+              this.$store.commit("authenticated/SET_USER", user);
+              this.$router.push({ name: "dashboard" });
+            }
+          });
+      } else {
+        this.$router.push({ name: "login" });
+      }
+    },
     login() {
       this.$apollo
         .mutate({

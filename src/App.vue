@@ -31,9 +31,14 @@ export default {
             if (user) {
               this.$store.commit("authenticated/SET_TOKEN", this.token);
               this.$store.commit("authenticated/SET_USER", user);
-
-              // this.$router.push({ name: "dashboard" });
+              if (this.$route.path == "/") {
+                this.$router.push({ name: "dashboard" });
+              }
             }
+          })
+          .catch((err) => {
+            err;
+            this.$router.push({ name: "login" });
           });
       } else {
         this.$router.push({ name: "login" });
@@ -47,7 +52,7 @@ export default {
     }),
   },
   watch: {
-    TOKEN: function(val) {
+    TOKEN: function (val) {
       this.token = val;
     },
   },
