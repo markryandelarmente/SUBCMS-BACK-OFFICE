@@ -28,9 +28,39 @@
 <script>
 export default {
   name: "Stat",
-  props: {
-    stats: {
-      type: Array,
+  props: {},
+  computed: {
+    stats: function () {
+      return [
+        {
+          icon: "mdi-account-arrow-right-outline",
+          text: `${this.$t("user_group.user._index.stat.total_users")}`,
+          value: `1000`,
+          description:
+            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui, cumque?",
+        },
+        {
+          icon: "mdi-account-check-outline",
+          text: `${this.$t("user_group.user._index.stat.new_users")}`,
+          value: "102",
+          description:
+            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui, cumque?",
+        },
+        {
+          icon: "mdi-clipboard-alert-outline",
+          text: `${this.$t("user_group.user._index.stat.pending_tickets")}`,
+          value: "23",
+          description:
+            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui, cumque?",
+        },
+        {
+          icon: "mdi-clipboard-check-outline",
+          text: `${this.$t("user_group.user._index.stat.solved_tickets")}`,
+          value: "78",
+          description:
+            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui, cumque?",
+        },
+      ];
     },
   },
 };
