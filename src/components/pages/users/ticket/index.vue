@@ -1,12 +1,22 @@
 <template>
-  <div>
-    <h1>TICKET LAYOUT</h1>
-    <router-view></router-view>
-  </div>
+  <v-row>
+    <v-col md="2">
+      <Stat />
+    </v-col>
+    <v-col md="9" class="text-center mt-5">
+      <router-view></router-view>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
-export default {};
+import Stat from "../../../global/_stat";
+export default {
+  components: {
+    Stat,
+  },
+  computed: {},
+};
 </script>
 
 <style>

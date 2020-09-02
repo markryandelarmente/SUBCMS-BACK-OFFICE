@@ -105,7 +105,7 @@ export default {
         search_expanded: false,
         title: "Users",
       },
-      height: 600,
+      height: 800,
       time: 0,
       loading: true,
       total: 0,

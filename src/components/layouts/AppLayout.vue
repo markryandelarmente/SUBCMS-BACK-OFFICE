@@ -1,98 +1,114 @@
 <template>
-  <div style>
-    <v-navigation-drawer
-      elevation="0"
-      app
-      v-model="drawer"
-      width="200"
-      class="text-center"
-      style="border:none"
-    >
-      <div>
-        <img src="../../assets/logo.png" class="mt-3" width="40" />
-      </div>
-      <div class="main-nav">
-        <v-btn
-          :to="{ name: 'dashboard' }"
-          :color="active_route == 'dashboard' ? 'primary' : ''"
-          icon
-          large
-        >
-          <v-icon>mdi-home</v-icon>
-        </v-btn>
-        <v-btn
-          :to="{ name: 'resources' }"
-          :color="active_route == 'resources' ? 'primary' : ''"
-          icon
-          medium
-        >
-          <v-icon>mdi-apps</v-icon>
-        </v-btn>
-        <v-btn
-          :to="{ name: 'subscriptions' }"
-          :color="active_route == 'subscriptions' ? 'primary' : ''"
-          icon
-          medium
-        >
-          <v-icon>mdi-clipboard-text-multiple</v-icon>
-        </v-btn>
-        <v-btn
-          :to="{ name: 'users' }"
-          :color="active_route == 'users' ? 'primary' : ''"
-          icon
-          medium
-        >
-          <v-icon>mdi-account-multiple</v-icon>
-        </v-btn>
-        <v-btn
-          :to="{ name: 'settings' }"
-          :color="active_route == 'settings' ? 'primary' : ''"
-          icon
-          medium
-        >
-          <v-icon>mdi-cog</v-icon>
-        </v-btn>
-      </div>
-    </v-navigation-drawer>
-
-    <v-app-bar dark color="secondary" app height="80" elevation="0">
-      <v-row justify="start">
-        <v-col md="6"></v-col>
-        <v-col md="6">
-          <v-row justify="end">
-            <v-col offset-md="4" md="5">
-              <v-text-field
-                clearable
-                solo-inverted
-                hide-details
-                prepend-inner-icon="mdi-magnify"
-                label="Search"
-                class="hidden-sm-and-down"
-              ></v-text-field>
-            </v-col>
-            <v-col md="3">
-              <v-btn icon>
-                <v-icon>mdi-apps</v-icon>
-              </v-btn>
-              <v-btn icon>
+  <div id="app">
+    <v-app id="inspire">
+      <v-app id="inspire">
+        <v-app-bar dark color="secondary" height="80" elevation="0" app clipped-right>
+          <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+          <v-toolbar-title>SUBCMS</v-toolbar-title>
+          <v-spacer></v-spacer>
+          <v-toolbar dark color="secondary" height="80" elevation="0">
+            <v-spacer></v-spacer>
+            <v-btn icon large class="mr-3" @click="tool_bar.search_expanded = true">
+              <v-icon>mdi-magnify</v-icon>
+            </v-btn>
+            <v-expand-x-transition>
+              <div v-show="tool_bar.search_expanded" style="width:400px">
+                <v-text-field label="Start typing to search" single-line hide-details></v-text-field>
+              </div>
+            </v-expand-x-transition>
+            <v-badge color="primary" content="6" overlap class="mr-3">
+              <v-btn icon large>
                 <v-icon>mdi-bell</v-icon>
               </v-btn>
-              <v-btn icon large>
-                <v-avatar size="32px" item>
-                  <v-img
-                    src="https://jgi.doe.gov/wp-content/uploads/2014/04/Steven_Hallam-slide.jpg"
-                    alt="Vuetify"
-                  ></v-img>
-                </v-avatar>
-              </v-btn>
-            </v-col>
-          </v-row>
-        </v-col>
-      </v-row>
-    </v-app-bar>
-    <v-main>
-      <router-view></router-view>
-    </v-main>
+            </v-badge>
+
+            <v-btn icon large class="mr-3">
+              <v-icon>mdi-apps</v-icon>
+            </v-btn>
+
+            <v-btn icon large class="mr-3">
+              <v-avatar size="32px" item>
+                <v-img
+                  src="https://jgi.doe.gov/wp-content/uploads/2014/04/Steven_Hallam-slide.jpg"
+                  alt="Vuetify"
+                ></v-img>
+              </v-avatar>
+            </v-btn>
+          </v-toolbar>
+        </v-app-bar>
+
+        <v-navigation-drawer
+          elevation="0"
+          app
+          v-model="drawer"
+          width="200"
+          class="text-center"
+          style="border:none"
+        >
+          <div>
+            <img src="../../assets/logo.png" class="mt-3" width="40" />
+          </div>
+          <div class="main-nav">
+            <v-btn
+              :to="{ name: 'dashboard' }"
+              :color="active_route == 'dashboard' ? 'primary' : ''"
+              icon
+              large
+            >
+              <v-icon>mdi-home</v-icon>
+            </v-btn>
+            <v-btn
+              :to="{ name: 'resources' }"
+              :color="active_route == 'resources' ? 'primary' : ''"
+              icon
+              medium
+            >
+              <v-icon>mdi-apps</v-icon>
+            </v-btn>
+            <v-btn
+              :to="{ name: 'subscriptions' }"
+              :color="active_route == 'subscriptions' ? 'primary' : ''"
+              icon
+              medium
+            >
+              <v-icon>mdi-clipboard-text-multiple</v-icon>
+            </v-btn>
+            <v-btn
+              :to="{ name: 'users' }"
+              :color="active_route == 'users' ? 'primary' : ''"
+              icon
+              medium
+            >
+              <v-icon>mdi-account-multiple</v-icon>
+            </v-btn>
+            <v-btn
+              :to="{ name: 'settings' }"
+              :color="active_route == 'settings' ? 'primary' : ''"
+              icon
+              medium
+            >
+              <v-icon>mdi-cog</v-icon>
+            </v-btn>
+          </div>
+        </v-navigation-drawer>
+
+        <v-main>
+          <v-container fluid>
+            <v-row justify="center">
+              <v-col cols="11" class="shrink">
+                <router-view></router-view>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-main>
+
+        <v-footer app>
+          <span>SUBCMS</span>
+          <v-spacer></v-spacer>
+          <span>&copy; {{ new Date().getFullYear() }}</span>
+        </v-footer>
+      </v-app>
+    </v-app>
   </div>
 </template>
 
@@ -104,8 +120,15 @@ export default {
     source: String,
   },
   data: () => ({
-    drawer: null,
     active_route: "",
+    tool_bar: {
+      search_expanded: false,
+    },
+
+    drawer: null,
+    drawerRight: null,
+    right: false,
+    left: false,
   }),
   mounted() {
     this.active_route = this.$route.name;
