@@ -1,9 +1,9 @@
 <template>
   <v-row>
-    <v-col md="2">
+    <v-col md="2" sm="12">
       <Stat />
     </v-col>
-    <v-col md="9" class="text-center mt-5">
+    <v-col md="10" sm="12" class="text-center mt-5">
       <router-view></router-view>
     </v-col>
   </v-row>
