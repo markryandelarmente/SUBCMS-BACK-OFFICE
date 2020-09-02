@@ -15,6 +15,8 @@ import user_form from "../components/pages/users/user/child/_form";
 // TICKETS
 import TicketIndex from "../components/pages/users/ticket/index";
 import ticket_index from "../components/pages/users/ticket/child/_index";
+// ROLE AND PERMISSION
+import RolePermissionIndex from "../components/pages/users/role_permission/index";
 
 import SettingIndex from "../components/pages/setting/index";
 
@@ -64,6 +66,11 @@ export default [
             children: [
               { path: "", name: "ticket_index", component: ticket_index },
             ],
+          },
+          {
+            path: "roles/permissions",
+            name: "roles_permissions",
+            component: RolePermissionIndex,
           },
         ],
       },

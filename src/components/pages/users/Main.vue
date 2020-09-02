@@ -7,7 +7,7 @@
       <v-tab :to="{ name: 'tickets' }">
         <strong>{{ $t("user_group.main.tickets") }}</strong>
       </v-tab>
-      <v-tab>
+      <v-tab :to="{ name: 'roles_permissions' }">
         <strong>{{ $t("user_group.main.roles_permissions") }}</strong>
       </v-tab>
     </v-tabs>
