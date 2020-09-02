@@ -55,41 +55,38 @@
       </div>
     </v-navigation-drawer>
 
-    <v-app-bar dark color="secondary" app height="80" elevation="0">
-      <v-row justify="start">
-        <v-col md="6"></v-col>
-        <v-col md="6">
-          <v-row justify="end">
-            <v-col offset-md="4" md="5">
-              <v-text-field
-                clearable
-                solo-inverted
-                hide-details
-                prepend-inner-icon="mdi-magnify"
-                label="Search"
-                class="hidden-sm-and-down"
-              ></v-text-field>
-            </v-col>
-            <v-col md="3">
-              <v-btn icon>
-                <v-icon>mdi-apps</v-icon>
-              </v-btn>
-              <v-btn icon>
-                <v-icon>mdi-bell</v-icon>
-              </v-btn>
-              <v-btn icon large>
-                <v-avatar size="32px" item>
-                  <v-img
-                    src="https://jgi.doe.gov/wp-content/uploads/2014/04/Steven_Hallam-slide.jpg"
-                    alt="Vuetify"
-                  ></v-img>
-                </v-avatar>
-              </v-btn>
-            </v-col>
-          </v-row>
-        </v-col>
-      </v-row>
-    </v-app-bar>
+    <v-toolbar dark color="secondary" height="80" elevation="0">
+      <v-app-bar-nav-icon></v-app-bar-nav-icon>
+
+      <v-toolbar-title>SUBCMS</v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-btn icon large class="mr-3" @click="tool_bar.search_expanded = true">
+        <v-icon>mdi-magnify</v-icon>
+      </v-btn>
+      <v-expand-x-transition>
+        <div v-show="tool_bar.search_expanded" style="width:400px">
+          <v-text-field label="Start typing to search" single-line hide-details></v-text-field>
+        </div>
+      </v-expand-x-transition>
+      <v-badge color="primary" content="6" overlap class="mr-3">
+        <v-btn icon large>
+          <v-icon>mdi-bell</v-icon>
+        </v-btn>
+      </v-badge>
+
+      <v-btn icon large class="mr-3">
+        <v-icon>mdi-apps</v-icon>
+      </v-btn>
+
+      <v-btn icon large class="mr-3">
+        <v-avatar size="32px" item>
+          <v-img
+            src="https://jgi.doe.gov/wp-content/uploads/2014/04/Steven_Hallam-slide.jpg"
+            alt="Vuetify"
+          ></v-img>
+        </v-avatar>
+      </v-btn>
+    </v-toolbar>
     <v-main>
       <router-view></router-view>
     </v-main>
@@ -106,6 +103,9 @@ export default {
   data: () => ({
     drawer: null,
     active_route: "",
+    tool_bar: {
+      search_expanded: false,
+    },
   }),
   mounted() {
     this.active_route = this.$route.name;
