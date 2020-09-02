@@ -18,10 +18,14 @@
             </v-expand-x-transition>
             <v-badge color="primary" content="6" overlap class="mr-3">
               <v-btn icon large>
-                <v-icon>mdi-bell</v-icon>
+                <v-icon>mdi-message-outline</v-icon>
               </v-btn>
             </v-badge>
-
+            <v-badge color="primary" content="10" overlap class="mr-3">
+              <v-btn icon large>
+                <v-icon>mdi-bell-outline</v-icon>
+              </v-btn>
+            </v-badge>
             <v-btn icon large class="mr-3">
               <v-icon>mdi-apps</v-icon>
             </v-btn>
@@ -49,46 +53,85 @@
             <img src="../../assets/logo.png" class="mt-3" width="40" />
           </div>
           <div class="main-nav">
-            <v-btn
-              :to="{ name: 'dashboard' }"
-              :color="active_route == 'dashboard' ? 'primary' : ''"
-              icon
-              large
-            >
-              <v-icon>mdi-home</v-icon>
-            </v-btn>
-            <v-btn
-              :to="{ name: 'resources' }"
-              :color="active_route == 'resources' ? 'primary' : ''"
-              icon
-              medium
-            >
-              <v-icon>mdi-apps</v-icon>
-            </v-btn>
-            <v-btn
-              :to="{ name: 'subscriptions' }"
-              :color="active_route == 'subscriptions' ? 'primary' : ''"
-              icon
-              medium
-            >
-              <v-icon>mdi-clipboard-text-multiple</v-icon>
-            </v-btn>
-            <v-btn
-              :to="{ name: 'users' }"
-              :color="active_route == 'users' ? 'primary' : ''"
-              icon
-              medium
-            >
-              <v-icon>mdi-account-multiple</v-icon>
-            </v-btn>
-            <v-btn
-              :to="{ name: 'settings' }"
-              :color="active_route == 'settings' ? 'primary' : ''"
-              icon
-              medium
-            >
-              <v-icon>mdi-cog</v-icon>
-            </v-btn>
+            <v-tooltip v-model="sidebar.dashboard" right color="primary">
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  :to="{ name: 'dashboard' }"
+                  :color="active_route == 'dashboard' ? 'primary' : ''"
+                  icon
+                  large
+                  v-bind="attrs"
+                  v-on="on"
+                >
+                  <v-icon>mdi-home</v-icon>
+                </v-btn>
+              </template>
+              <span>DASHBOARD</span>
+            </v-tooltip>
+
+            <v-tooltip v-model="sidebar.resources" right color="primary">
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  :to="{ name: 'resources' }"
+                  :color="active_route == 'resources' ? 'primary' : ''"
+                  icon
+                  medium
+                  v-bind="attrs"
+                  v-on="on"
+                >
+                  <v-icon>mdi-apps</v-icon>
+                </v-btn>
+              </template>
+              <span>RESOURCES</span>
+            </v-tooltip>
+
+            <v-tooltip v-model="sidebar.subscriptions" right color="primary">
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  :to="{ name: 'subscriptions' }"
+                  :color="active_route == 'subscriptions' ? 'primary' : ''"
+                  icon
+                  medium
+                  v-bind="attrs"
+                  v-on="on"
+                >
+                  <v-icon>mdi-clipboard-text-multiple</v-icon>
+                </v-btn>
+              </template>
+              <span>SUBSCRIPTIONS</span>
+            </v-tooltip>
+
+            <v-tooltip v-model="sidebar.users" right color="primary">
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  :to="{ name: 'users' }"
+                  :color="active_route == 'users' ? 'primary' : ''"
+                  icon
+                  medium
+                  v-bind="attrs"
+                  v-on="on"
+                >
+                  <v-icon>mdi-account-multiple</v-icon>
+                </v-btn>
+              </template>
+              <span>USERS</span>
+            </v-tooltip>
+
+            <v-tooltip v-model="sidebar.settings" right color="primary">
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  :to="{ name: 'settings' }"
+                  :color="active_route == 'settings' ? 'primary' : ''"
+                  icon
+                  medium
+                  v-bind="attrs"
+                  v-on="on"
+                >
+                  <v-icon>mdi-cog</v-icon>
+                </v-btn>
+              </template>
+              <span>SETTINGS</span>
+            </v-tooltip>
           </div>
         </v-navigation-drawer>
 
@@ -129,6 +172,13 @@ export default {
     drawerRight: null,
     right: false,
     left: false,
+    sidebar: {
+      dashboard: false,
+      resources: false,
+      subscriptions: false,
+      users: false,
+      settings: false,
+    },
   }),
   mounted() {
     this.active_route = this.$route.name;
