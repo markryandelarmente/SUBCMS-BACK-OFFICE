@@ -13,7 +13,9 @@
     </v-tabs>
     <v-container class="fill-height" fluid>
       <v-row justify="center" align="center">
-        <router-view></router-view>
+        <v-col cols="12">
+          <router-view></router-view>
+        </v-col>
       </v-row>
     </v-container>
   </div>
