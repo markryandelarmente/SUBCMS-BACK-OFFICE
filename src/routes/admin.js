@@ -9,7 +9,7 @@ import SubscriptionIndex from "../components/pages/subscription/index";
 // ===================================
 // RESOURCES GROUP
 // ===================================
-import ResourcesMain from "../components/pages/contents/Main";
+import ContentsMain from "../components/pages/contents/Main";
 // CONTENTS
 import ContentIndex from "../components/pages/contents/content/index";
 import content_index from "../components/pages/contents/content/child/_index";
@@ -51,7 +51,7 @@ export default [
       {
         path: "",
         name: "contents",
-        component: ResourcesMain,
+        component: ContentsMain,
         redirect: { name: "contents" },
         children: [
           {
