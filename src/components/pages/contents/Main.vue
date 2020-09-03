@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-tabs>
-      <v-tab>
+      <v-tab :to="{ name: 'contents' }">
         <strong>CONTENTS</strong>
       </v-tab>
       <v-tab>
@@ -16,7 +16,7 @@
     </v-tabs>
     <v-container class="fill-height" fluid>
       <v-row justify="center" align="center">
-        <v-col cols="12">
+        <v-col cols="12" class="m-0 p-0">
           <router-view></router-view>
         </v-col>
       </v-row>
