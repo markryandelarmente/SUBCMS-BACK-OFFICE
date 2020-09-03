@@ -1,6 +1,5 @@
 import AppLayout from "../components/layouts/AppLayout";
 import DashboardIndex from "../components/pages/dashboard/index";
-import ResourceIndex from "../components/pages/resource/index";
 import SubscriptionIndex from "../components/pages/subscription/index";
 
 // ===================================
@@ -10,6 +9,7 @@ import SubscriptionIndex from "../components/pages/subscription/index";
 // ===================================
 // RESOURCES GROUP
 // ===================================
+import ResourcesMain from "../components/pages/resource/Main";
 
 // ===================================
 // SUBSCRIPTION GROUP
@@ -48,7 +48,7 @@ export default [
       {
         path: "resources",
         name: "resources",
-        component: ResourceIndex,
+        component: ResourcesMain,
       },
       {
         path: "subscriptions",
