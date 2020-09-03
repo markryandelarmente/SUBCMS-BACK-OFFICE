@@ -9,7 +9,10 @@ import SubscriptionIndex from "../components/pages/subscription/index";
 // ===================================
 // RESOURCES GROUP
 // ===================================
-import ResourcesMain from "../components/pages/resource/Main";
+import ResourcesMain from "../components/pages/contents/Main";
+// CONTENTS
+import ContentIndex from "../components/pages/contents/content/index";
+import content_index from "../components/pages/contents/content/child/_index";
 
 // ===================================
 // SUBSCRIPTION GROUP
@@ -46,9 +49,21 @@ export default [
         component: DashboardIndex,
       },
       {
-        path: "resources",
-        name: "resources",
+        path: "",
+        name: "contents",
         component: ResourcesMain,
+        redirect: { name: "contents" },
+        children: [
+          {
+            path: "contents",
+            name: "contents",
+            component: ContentIndex,
+            redirect: { name: "content_index" },
+            children: [
+              { path: "", name: "content_index", component: content_index },
+            ],
+          },
+        ],
       },
       {
         path: "subscriptions",
