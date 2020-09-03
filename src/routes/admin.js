@@ -4,10 +4,21 @@ import ResourceIndex from "../components/pages/resource/index";
 import SubscriptionIndex from "../components/pages/subscription/index";
 
 // ===================================
+// DASHBOARD GROUP
+// ===================================
+
+// ===================================
+// RESOURCES GROUP
+// ===================================
+
+// ===================================
+// SUBSCRIPTION GROUP
+// ===================================
+
+// ===================================
 // USER GROUP
 // ===================================
 import UsersMain from "../components/pages/users/Main";
-
 // USERS
 import UserIndex from "../components/pages/users/user/index";
 import user_index from "../components/pages/users/user/child/_index";
@@ -18,6 +29,9 @@ import ticket_index from "../components/pages/users/ticket/child/_index";
 // ROLE AND PERMISSION
 import RolePermissionIndex from "../components/pages/users/role_permission/index";
 
+// ===================================
+// SETTING GROUP
+// ===================================
 import SettingIndex from "../components/pages/setting/index";
 
 export default [
