@@ -1,6 +1,6 @@
 <template>
   <v-row>
-    <v-col md="12" sm="12">
+    <v-col md="10" sm="10">
       <v-sheet>
         <v-chip-group active-class="primary--text">
           <v-chip
@@ -12,6 +12,14 @@
           >{{ category.label }}</v-chip>
         </v-chip-group>
       </v-sheet>
+    </v-col>
+    <v-col md="2" sm="2">
+      <v-toolbar elevation="0">
+        <v-spacer></v-spacer>
+        <v-btn icon>
+          <v-icon large>mdi-plus</v-icon>
+        </v-btn>
+      </v-toolbar>
     </v-col>
     <v-col v-for="n in 10" :key="n" class="d-flex child-flex" md="2" sm="6">
       <v-card elevation="1" max-width="400">
