@@ -16,7 +16,7 @@
     <v-col md="2" sm="2">
       <v-toolbar elevation="0">
         <v-spacer></v-spacer>
-        <v-btn icon>
+        <v-btn icon @click="$router.push({name: 'content_create'})">
           <v-icon large>mdi-plus</v-icon>
         </v-btn>
       </v-toolbar>
