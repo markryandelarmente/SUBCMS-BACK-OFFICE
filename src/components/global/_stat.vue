@@ -5,7 +5,7 @@
       :key="stat.icon + stat.value"
       max-width="350"
       outlined
-      class="mt-5"
+      class="mt-5 rounded-lg"
     >
       <div class="mt-5 ml-5">
         <v-icon>{{ stat.icon }}</v-icon>

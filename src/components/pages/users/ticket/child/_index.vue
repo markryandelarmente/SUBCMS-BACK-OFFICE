@@ -1,5 +1,5 @@
 <template>
-  <v-card outlined>
+  <v-card outlined class="rounded-lg">
     <v-toolbar elevation="0" class="mt-3">
       <v-app-bar-nav-icon></v-app-bar-nav-icon>
 
