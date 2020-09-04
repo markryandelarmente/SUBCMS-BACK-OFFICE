@@ -1,14 +1,18 @@
 <template>
   <v-row>
-    <v-col md="2">
-      <v-select prepend-icon="mdi-filter-outline" :items="items" label="Filter"></v-select>
+    <v-col md="2" sm="12">
+      <v-select
+        prepend-icon="mdi-filter-outline"
+        :items="items"
+        label="Filter"
+      ></v-select>
     </v-col>
-    <v-col md="2">
+    <v-col md="2" sm="12">
       <v-text-field label="Seach">
         <v-icon slot="prepend">mdi-magnify</v-icon>
       </v-text-field>
     </v-col>
-    <v-col md="2">
+    <v-col md="2" sm="12">
       <v-text-field label="Date uploaded">
         <v-icon slot="prepend">mdi-calendar-outline</v-icon>
       </v-text-field>
@@ -29,8 +33,15 @@
                   class="grey lighten-2"
                 >
                   <template v-slot:placeholder>
-                    <v-row class="fill-height ma-0" align="center" justify="center">
-                      <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
+                    <v-row
+                      class="fill-height ma-0"
+                      align="center"
+                      justify="center"
+                    >
+                      <v-progress-circular
+                        indeterminate
+                        color="grey lighten-5"
+                      ></v-progress-circular>
                     </v-row>
                   </template>
                 </v-img>
@@ -57,5 +68,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>
