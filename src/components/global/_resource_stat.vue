@@ -15,6 +15,7 @@
         <v-list-item-content class="text-center">
           <v-list-item-title class="headline">
             <strong class="display-1">{{ stat.value }}</strong>
+            <span class="subtitle-1" v-if="stat.subtitle">&nbsp; {{ stat.subtitle }}</span>
           </v-list-item-title>
           <v-list-item-subtitle class="pb-5">
             <small>{{ stat.description }}</small>
@@ -27,36 +28,28 @@
 
 <script>
 export default {
-  name: "Stat",
-  props: {},
   computed: {
     stats: function () {
       return [
         {
-          icon: "mdi-account-arrow-right-outline",
-          text: `${this.$t("user_group.user._index.stat.total_users")}`,
-          value: `1000`,
+          icon: "mdi-video-outline",
+          text: "Videos",
+          value: `32`,
           description:
             "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui, cumque?",
         },
         {
-          icon: "mdi-account-check-outline",
-          text: `${this.$t("user_group.user._index.stat.new_users")}`,
+          icon: "mdi-image-outline",
+          text: "Images",
           value: "102",
           description:
             "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui, cumque?",
         },
         {
-          icon: "mdi-clipboard-alert-outline",
-          text: `${this.$t("user_group.user._index.stat.pending_tickets")}`,
-          value: "23",
-          description:
-            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui, cumque?",
-        },
-        {
-          icon: "mdi-clipboard-check-outline",
-          text: `${this.$t("user_group.user._index.stat.solved_tickets")}`,
-          value: "78",
+          icon: "mdi-cloud-outline",
+          text: "Storage",
+          value: "34",
+          subtitle: "GB",
           description:
             "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui, cumque?",
         },

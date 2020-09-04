@@ -24,7 +24,7 @@
     <v-col v-for="n in 10" :key="n" class="d-flex child-flex" md="2" sm="6">
       <v-card elevation="1" max-width="400">
         <v-img
-          class="white--text align-end"
+          class="grey lighten-2"
           height="200px"
           :src="`https://picsum.photos/500/300?image=${n * 5 + 10}`"
           :lazy-src="`https://picsum.photos/10/6?image=${n * 5 + 10}`"
