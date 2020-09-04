@@ -1,9 +1,9 @@
 <template>
   <v-row>
-    <v-col md="2">
+    <v-col md="2" sm="12">
       <Stat />
     </v-col>
-    <v-col md="10">
+    <v-col md="10" sm="12">
       <router-view></router-view>
     </v-col>
   </v-row>
@@ -19,7 +19,7 @@ export default {
   created() {},
   methods: {},
   computed: {
-    stats: function () {
+    stats: function() {
       return [
         {
           icon: "mdi-video-outline",
@@ -50,5 +50,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>
