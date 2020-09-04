@@ -2,20 +2,24 @@
   <v-form>
     <v-container>
       <v-toolbar-title class="text-left">
-        {{ $t('user_group.user._form.account_details') }}
+        {{ $t("user_group.user._form.account_details") }}
         <v-btn class="float-right" color="gray" @click="cancel" icon>
           <v-icon>mdi-arrow-left</v-icon>
         </v-btn>
       </v-toolbar-title>
       <v-row>
-        <v-col cols="4" md="4">
+        <v-col sm="12" md="4">
           <v-avatar size="200" class="mx-auto">
             <img
-              :src="user.profile_image ? user.profile_image : 'https://www.nepic.co.uk/wp-content/uploads/2016/11/blank-staff-circle-male.png'"
+              :src="
+                user.profile_image
+                  ? user.profile_image
+                  : 'https://www.nepic.co.uk/wp-content/uploads/2016/11/blank-staff-circle-male.png'
+              "
             />
           </v-avatar>
         </v-col>
-        <v-col cols="8" md="8">
+        <v-col sm="12" md="8">
           <v-row>
             <v-col cols="12" md="6">
               <v-text-field
@@ -53,13 +57,21 @@
           </v-row>
         </v-col>
       </v-row>
-      <v-toolbar-title class="text-left mt-5">{{ $t('user_group.user._form.personal_details') }}</v-toolbar-title>
+      <v-toolbar-title class="text-left mt-5">{{
+        $t("user_group.user._form.personal_details")
+      }}</v-toolbar-title>
       <v-row>
-        <v-col cols="12" md="4">
-          <v-text-field v-model="user.firstname" :label="$t('user_group.user._form.first_name')"></v-text-field>
+        <v-col sm="12" md="4">
+          <v-text-field
+            v-model="user.firstname"
+            :label="$t('user_group.user._form.first_name')"
+          ></v-text-field>
         </v-col>
         <v-col cols="12" md="4">
-          <v-text-field v-model="user.lastname" :label="$t('user_group.user._form.last_name')"></v-text-field>
+          <v-text-field
+            v-model="user.lastname"
+            :label="$t('user_group.user._form.last_name')"
+          ></v-text-field>
         </v-col>
         <v-col cols="12" md="4">
           <v-select
@@ -87,16 +99,15 @@
             </template>
             <v-date-picker v-model="user.birthdate" width="100%">
               <v-spacer></v-spacer>
-              <v-btn
-                text
-                color="primary"
-                @click="birthdate.modal = false"
-              >{{ $t('user_group.user._form.cancel') }}</v-btn>
+              <v-btn text color="primary" @click="birthdate.modal = false">{{
+                $t("user_group.user._form.cancel")
+              }}</v-btn>
               <v-btn
                 text
                 color="primary"
                 @click="$refs.dialog.save(user.birthdate)"
-              >{{ $t('user_group.user._form.ok') }}</v-btn>
+                >{{ $t("user_group.user._form.ok") }}</v-btn
+              >
             </v-date-picker>
           </v-dialog>
         </v-col>
@@ -109,10 +120,16 @@
           ></v-text-field>
         </v-col>
         <v-col cols="12" md="4">
-          <v-text-field v-model="user.address" :label="$t('user_group.user._form.address')"></v-text-field>
+          <v-text-field
+            v-model="user.address"
+            :label="$t('user_group.user._form.address')"
+          ></v-text-field>
         </v-col>
         <v-col cols="12" md="4">
-          <v-text-field v-model="user.city" :label="$t('user_group.user._form.city')"></v-text-field>
+          <v-text-field
+            v-model="user.city"
+            :label="$t('user_group.user._form.city')"
+          ></v-text-field>
         </v-col>
         <v-col cols="12" md="4">
           <v-text-field
@@ -122,13 +139,16 @@
           ></v-text-field>
         </v-col>
         <v-col cols="12" md="4">
-          <v-text-field v-model="user.country" :label="$t('user_group.user._form.country')"></v-text-field>
+          <v-text-field
+            v-model="user.country"
+            :label="$t('user_group.user._form.country')"
+          ></v-text-field>
         </v-col>
       </v-row>
       <div class="my-2 text-right">
         <v-btn class="mx-5" color="gray" @click="cancel" depressed large>
           <v-icon>mdi-close</v-icon>
-          {{ $t('user_group.user._form.cancel') }}
+          {{ $t("user_group.user._form.cancel") }}
         </v-btn>
         <v-btn
           :loading="loading"
@@ -139,7 +159,11 @@
           color="primary"
         >
           <v-icon>mdi-content-save</v-icon>
-          {{ is_edit ? $t('user_group.user._form.update') : $t('user_group.user._form.save')}}
+          {{
+            is_edit
+              ? $t("user_group.user._form.update")
+              : $t("user_group.user._form.save")
+          }}
         </v-btn>
       </div>
     </v-container>
@@ -231,12 +255,11 @@ export default {
     },
   },
   watch: {
-    "user.birthdate": function (val) {
+    "user.birthdate": function(val) {
       val ? (this.user.age = this._calculateAge(val)) : "";
     },
   },
 };
 </script>
 
-<style>
-</style>
+<style></style>
