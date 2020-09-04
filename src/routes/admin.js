@@ -13,6 +13,9 @@ import ContentsMain from "../components/pages/contents/Main";
 // CONTENTS
 import ContentIndex from "../components/pages/contents/content/index";
 import content_index from "../components/pages/contents/content/child/_index";
+// RESOURCES
+import ResourceIndex from "../components/pages/contents/resource/index";
+import resource_index from "../components/pages/contents/resource/child/_index";
 
 // ===================================
 // SUBSCRIPTION GROUP
@@ -61,6 +64,15 @@ export default [
             redirect: { name: "content_index" },
             children: [
               { path: "", name: "content_index", component: content_index },
+            ],
+          },
+          {
+            path: "resources",
+            name: "resources",
+            component: ResourceIndex,
+            redirect: { name: "resource_index" },
+            children: [
+              { path: "", name: "resource_index", component: resource_index },
             ],
           },
         ],
