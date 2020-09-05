@@ -6,6 +6,9 @@ import { createProvider } from "./vue-apollo";
 import routes from "./routes";
 import { store } from "./store";
 import i18n from "./i18n";
+import Vue2Editor from "vue2-editor";
+
+Vue.use(Vue2Editor);
 
 Vue.config.productionTip = false;
 
