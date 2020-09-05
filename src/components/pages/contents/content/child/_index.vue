@@ -9,8 +9,7 @@
             v-for="(category, index) in categories"
             :key="index"
             class="ma-2"
-            >{{ category.label }}</v-chip
-          >
+          >{{ category.label }}</v-chip>
         </v-chip-group>
       </v-sheet>
     </v-col>
@@ -33,26 +32,24 @@
         >
           <template v-slot:placeholder>
             <v-row class="fill-height ma-0" align="center" justify="center">
-              <v-progress-circular
-                indeterminate
-                color="grey lighten-5"
-              ></v-progress-circular>
-            </v-row> </template
-        ></v-img>
+              <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
+            </v-row>
+          </template>
+        </v-img>
 
         <v-card-actions class="pb-0">
           <v-list-item class="list-item">
             <v-card-subtitle class="pl-0">
               <v-icon small>mdi-heart-outline</v-icon>&nbsp; 200
-              <span class="mx-3"></span>
+              <span class="mx-2"></span>
               <v-icon small>mdi-message-outline</v-icon>&nbsp; 16
+              <span class="mx-2"></span>
+              <v-icon small>mdi-eye-outline</v-icon>&nbsp; 16K
             </v-card-subtitle>
 
             <v-row justify="end">
               <span class="mr-1">·</span>
-              <v-icon @click="alarm" small class="mr-1"
-                >mdi-dots-vertical</v-icon
-              >
+              <v-icon @click="alarm" small class="mr-1">mdi-dots-vertical</v-icon>
             </v-row>
           </v-list-item>
         </v-card-actions>
