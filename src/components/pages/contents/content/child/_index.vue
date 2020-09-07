@@ -9,7 +9,8 @@
             v-for="(category, index) in categories"
             :key="index"
             class="ma-2"
-          >{{ category.label }}</v-chip>
+            >{{ category.label }}</v-chip
+          >
         </v-chip-group>
       </v-sheet>
     </v-col>
@@ -32,7 +33,10 @@
         >
           <template v-slot:placeholder>
             <v-row class="fill-height ma-0" align="center" justify="center">
-              <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
+              <v-progress-circular
+                indeterminate
+                color="grey lighten-5"
+              ></v-progress-circular>
             </v-row>
           </template>
         </v-img>
@@ -49,7 +53,9 @@
 
             <v-row justify="end">
               <span class="mr-1">·</span>
-              <v-icon @click="alarm" small class="mr-1">mdi-dots-vertical</v-icon>
+              <v-icon @click="alarm" small class="mr-1"
+                >mdi-dots-vertical</v-icon
+              >
             </v-row>
           </v-list-item>
         </v-card-actions>
@@ -57,7 +63,10 @@
         <v-card-text class="text--secondary pt-0">
           <div class="font-weight-medium">Upper body workout</div>
 
-          <div class="font-weight-light">2months ago</div>
+          <div class="font-weight-light">
+            Lorem ipsum dolor sit amet consectetur ...
+          </div>
+          <div class="font-weight-thin">2months ago</div>
         </v-card-text>
 
         <v-card-actions></v-card-actions>
