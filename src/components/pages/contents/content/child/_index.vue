@@ -1,6 +1,9 @@
 <template>
   <v-row>
-    <v-col md="10" sm="10">
+    <v-col md="1" sm="12">
+      <v-select v-model="contents.filter.type" :items="computedTypes" label="Types"></v-select>
+    </v-col>
+    <v-col md="9" sm="10">
       <v-sheet>
         <v-chip-group active-class="primary--text">
           <v-chip
@@ -13,7 +16,7 @@
         </v-chip-group>
       </v-sheet>
     </v-col>
-    <v-col md="2" sm="2">
+    <v-col md="1" sm="2">
       <v-toolbar elevation="0">
         <v-spacer></v-spacer>
         <v-btn icon @click="content_type.dialog = true">
@@ -22,7 +25,7 @@
       </v-toolbar>
     </v-col>
     <v-col cols="12">
-      <v-row>
+      <v-row v-if="contents.data && contents.data.length">
         <v-col v-for="(content, index) in contents.data" :key="index" md="2" sm="6" xs="12">
           <v-card elevation="1" max-width="380">
             <v-img
@@ -76,6 +79,9 @@
             </v-card-actions>
           </v-card>
         </v-col>
+      </v-row>
+      <v-row v-else>
+        <h2 class="font-weight-regular">No content</h2>
       </v-row>
     </v-col>
 
@@ -218,21 +224,21 @@ export default {
       items: [
         {
           id: 1,
-          text: "Video",
+          text: "PROGRAM",
         },
         {
           id: 2,
-          text: "Article",
+          text: "VIDEO",
         },
         {
           id: 3,
-          text: "Program",
+          text: "ARTICLE",
         },
       ],
     },
     contents: {
       filter: {
-        type: "",
+        type: 0,
         count: 12,
         page: 1,
         order: "desc",
@@ -280,8 +286,32 @@ export default {
     computedFilter: function () {
       return Object.assign({}, this.contents.filter);
     },
+    computedTypes: function () {
+      let items = this.content_type.items.map((type) => {
+        return {
+          text: type.text,
+          value: type.id,
+        };
+      });
+      items.push({
+        text: "ALL",
+        value: 0,
+      });
+      return items.sort((a, b) => {
+        var textA = a.text.toUpperCase();
+        var textB = b.text.toUpperCase();
+        return textA < textB ? -1 : textA > textB ? 1 : 0;
+      });
+    },
   },
-  watch: {},
+  watch: {
+    contents: {
+      handler: function () {
+        this.fetchData();
+      },
+      deep: true,
+    },
+  },
 };
 </script>
 
