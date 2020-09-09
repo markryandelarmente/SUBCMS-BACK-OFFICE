@@ -16,7 +16,7 @@
         </v-chip-group>
       </v-sheet>
     </v-col>
-    <v-col md="1" sm="2">
+    <v-col md="2" sm="2">
       <v-toolbar elevation="0">
         <v-spacer></v-spacer>
         <v-btn icon @click="content_type.dialog = true">
@@ -224,22 +224,21 @@ export default {
       items: [
         {
           id: 1,
-          text: "PROGRAM",
+          text: "PROGRAMS",
         },
         {
           id: 2,
-          text: "VIDEO",
+          text: "VIDEOS",
         },
         {
           id: 3,
-          text: "ARTICLE",
+          text: "ARTICLES",
         },
       ],
     },
     contents: {
       filter: {
         type: 0,
-        count: 12,
         page: 1,
         order: "desc",
         column: "created_at",
