@@ -65,7 +65,7 @@
 
             <v-card-actions>
               <v-chip outlined>
-                <v-icon small>mdi-video-outline</v-icon>
+                <v-icon small>{{ renderCardIcon(content.content_type.id) }}</v-icon>
                 <span class="subtitle-2 font-weight-light ml-1">{{ content.content_type.name }}</span>
               </v-chip>
             </v-card-actions>
@@ -247,6 +247,15 @@ export default {
     alarm() {},
     selectType() {
       console.log("hey");
+    },
+    renderCardIcon: function (id) {
+      if (id == 1) {
+        return "mdi-video-plus-outline";
+      } else if (id == 2) {
+        return "mdi-video-outline";
+      } else {
+        return "mdi-post-outline";
+      }
     },
     fetchData() {
       this.$apollo
