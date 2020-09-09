@@ -61,7 +61,12 @@
           <div class="font-weight-thin">2months ago</div>
         </v-card-text>
 
-        <v-card-actions></v-card-actions>
+        <v-card-actions>
+          <v-chip outlined>
+            <v-icon small>mdi-video-outline</v-icon>
+            <span class="subtitle-2 font-weight-light ml-1">Program</span>
+          </v-chip>
+        </v-card-actions>
       </v-card>
     </v-col>
     <v-dialog v-model="content_type.dialog" scrollable max-width="400px">
@@ -82,7 +87,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn text @click="content_type.dialog = false">Close</v-btn>
-          <v-btn color="primary" text @click="$router.push({name: 'content_create'})">Ok</v-btn>
+          <v-btn color="primary" text @click="$router.push({ name: 'content_create' })">Ok</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
