@@ -68,6 +68,11 @@
                 <v-icon small>{{ renderCardIcon(content.content_type.id) }}</v-icon>
                 <span class="subtitle-2 font-weight-light ml-1">{{ content.content_type.name }}</span>
               </v-chip>
+              <v-spacer></v-spacer>
+              <v-icon
+                small
+                :color="content.is_free == 'FREE' ? 'success': 'default'"
+              >{{ content.is_free == "FREE" ? 'mdi-check-circle-outline': 'mdi-lock-open-outline' }}</v-icon>
             </v-card-actions>
           </v-card>
         </v-col>
