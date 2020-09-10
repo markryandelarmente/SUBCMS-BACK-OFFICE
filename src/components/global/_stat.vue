@@ -30,14 +30,14 @@ export default {
       return [
         {
           icon: "mdi-account-arrow-right-outline",
-          text: `${this.$t("user_group.user._index.stat.total_users")}`,
+          text: `${this.$t("user_group.user._index.stat.total_subscribers")}`,
           value: `1000`,
           description:
             "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui, cumque?",
         },
         {
           icon: "mdi-account-check-outline",
-          text: `${this.$t("user_group.user._index.stat.new_users")}`,
+          text: `${this.$t("user_group.user._index.stat.new_subscribers")}`,
           value: "102",
           description:
             "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui, cumque?",
