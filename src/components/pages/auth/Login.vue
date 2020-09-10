@@ -14,7 +14,12 @@
                 <v-form ref="loginForm">
                   <v-row>
                     <v-col cols="12">
-                      <v-text-field v-model="user.email" label="Email" required></v-text-field>
+                      <v-text-field
+                        v-model="user.email"
+                        label="Email"
+                        required
+                        @keyup.enter="handleEnterEvent"
+                      ></v-text-field>
                     </v-col>
                     <v-col cols="12">
                       <v-text-field
@@ -24,6 +29,7 @@
                         type="password"
                         counter
                         required
+                        @keyup.enter="handleEnterEvent"
                       ></v-text-field>
                     </v-col>
                     <v-col class="d-flex" cols="12" sm="6" xsm="12"></v-col>
@@ -59,6 +65,9 @@ export default {
     this.checkIfAuthenticated();
   },
   methods: {
+    handleEnterEvent() {
+      this.login();
+    },
     checkIfAuthenticated() {
       this.token = cookie.getCookie("token");
 
