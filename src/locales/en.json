@@ -8,13 +8,14 @@
     "user": {
       "_index": {
         "stat": {
-          "total_users": "Total Users",
-          "new_users": "New Users",
+          "total_users": "Total User",
+          "new_users": "New User",
           "pending_tickets": "Pending Tickets",
           "solved_tickets": "Solved Tickets"
         },
         "table": {
           "title": "Users",
+          "roles": "Roles",
           "search": "Search",
           "loading": "Loading . . . Please wait",
           "headers": {
@@ -22,6 +23,7 @@
             "firstname": "FIRSTNAME",
             "lastname": "LASTNAME",
             "email": "EMAIL",
+            "role": "ROLE",
             "registered_at": "REGISTERED AT",
             "action": "ACTION"
           }
@@ -33,6 +35,7 @@
         "username": "Username *",
         "password": "Password *",
         "confirm_password": "Confirm Password *",
+        "role": "Role *",
         "personal_details": "PERSONAL DETAILS",
         "first_name": "First name",
         "last_name": "Last name",

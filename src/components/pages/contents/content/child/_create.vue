@@ -17,20 +17,98 @@
         <v-stepper-items>
           <v-stepper-content step="1">
             <v-card class="mb-12" elevation="0" height="auto">
-              <v-row justify="center">
-                <v-col md="4">
-                  <v-text-field label="Title" required></v-text-field>
+              <v-row>
+                <v-col md="6" sm="12">
+                  <v-file-input
+                    :value="program.image"
+                    v-model="program.image"
+                    accept="image/*"
+                    label="Upload image"
+                    prepend-icon="mdi-camera"
+                    @change="imageHandler"
+                  ></v-file-input>
+                  <v-text-field v-model="program.title" label="Title" required></v-text-field>
 
-                  <v-text-field label="Description" class="mt-5" required></v-text-field>
+                  <vue-editor v-model="program.description" class="mt-3" />
 
-                  <v-text-field label="Categories" class="mt-5" required></v-text-field>
+                  <v-select
+                    class="mt-5"
+                    v-model="program.categories"
+                    :items="categories"
+                    label="Categories"
+                    multiple
+                  >
+                    <template v-slot:selection="{ item }">
+                      <v-chip color="accent">
+                        <span>{{ item }}</span>
+                      </v-chip>
+                    </template>
+                  </v-select>
+                </v-col>
+                <v-col md="6" sm="12">
+                  <v-row justify="center">
+                    <v-col md="6" sm="12">
+                      <span class="text--secondary">Preview</span>
+                      <v-card elevation="1" class="rounded-lg">
+                        <v-img
+                          class="grey lighten-2"
+                          height="250px"
+                          :src="
+                            program.preview
+                              ? program.preview
+                              : 'https://www.generationsforpeace.org/wp-content/uploads/2018/03/empty.jpg'
+                          "
+                          aspect-ratio="1"
+                        ></v-img>
+
+                        <v-card-actions class="pb-0">
+                          <v-list-item class="list-item">
+                            <v-card-subtitle class="pl-0">
+                              <v-icon small>mdi-heart-outline</v-icon>&nbsp; 0
+                              <span class="mx-2"></span>
+                              <v-icon small>mdi-message-outline</v-icon>&nbsp; 0
+                              <span class="mx-2"></span>
+                              <v-icon small>mdi-eye-outline</v-icon>&nbsp; 0
+                            </v-card-subtitle>
+
+                            <v-row justify="end">
+                              <span class="mr-1">·</span>
+                              <v-icon small class="mr-1">mdi-dots-vertical</v-icon>
+                            </v-row>
+                          </v-list-item>
+                        </v-card-actions>
+
+                        <v-card-text class="text--secondary pt-0">
+                          <h3
+                            class="font-weight-medium"
+                          >{{ program.title ? program.title : "Title" }}</h3>
+
+                          <div
+                            v-if="program.description"
+                            v-html="program.description"
+                            class="font-weight-light"
+                          >{{ program.description }}</div>
+                          <div v-else class="font-weight-light">Description</div>
+                          <div class="font-weight-thin">Uploaded at</div>
+                        </v-card-text>
+
+                        <v-card-actions>
+                          <v-chip
+                            v-for="(category, index) in program.categories"
+                            :key="index"
+                            class="ma-2"
+                          >{{ category }}</v-chip>
+                        </v-card-actions>
+                      </v-card>
+                    </v-col>
+                  </v-row>
                 </v-col>
               </v-row>
             </v-card>
 
             <v-row>
               <v-spacer></v-spacer>
-              <v-btn color="primary" @click="e1 = 2">Continue</v-btn>
+              <v-btn color="primary" @click="e1 = 2">Save & Continue</v-btn>
               <v-btn text>Cancel</v-btn>
             </v-row>
           </v-stepper-content>
@@ -40,9 +118,11 @@
               <v-row justify="center">
                 <v-col md="4" class="text-center">
                   <h2 class="font-weight-regular">The Ultimate Upper body workout</h2>
-                  <p
-                    class="font-weight-light subtitle-2"
-                  >Lorem ipsum, dolor sit amet consectetur adipisicing elit. Architecto culpa eaque ipsa. Ut deserunt laudantium eaque? Corporis repellendus cum reprehenderit.</p>
+                  <p class="font-weight-light subtitle-2">
+                    Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                    Architecto culpa eaque ipsa. Ut deserunt laudantium eaque?
+                    Corporis repellendus cum reprehenderit.
+                  </p>
                 </v-col>
               </v-row>
               <v-row>
@@ -164,7 +244,7 @@
 
             <v-row>
               <v-spacer></v-spacer>
-              <v-btn color="primary" @click="e1 = 3">Continue</v-btn>
+              <v-btn color="primary" @click="e1 = 3">Save & Continue</v-btn>
               <v-btn text>Cancel</v-btn>
             </v-row>
           </v-stepper-content>
@@ -174,7 +254,7 @@
 
             <v-row>
               <v-spacer></v-spacer>
-              <v-btn color="primary" @click="e1 = 1">Continue</v-btn>
+              <v-btn color="primary" @click="e1 = 1">Save & Continue</v-btn>
               <v-btn text>Cancel</v-btn>
             </v-row>
           </v-stepper-content>
@@ -208,7 +288,26 @@ export default {
         subtitle: "Jan 28, 2014",
       },
     ],
+
+    program: {
+      title: "",
+      image: null,
+      preview: "",
+      description: "<p class='text--secondary'>Description</p>",
+      categories: [],
+    },
+    categories: ["Arm", "Chest", "Shoulder", "Back"],
   }),
+  methods: {
+    imageHandler(file) {
+      const reader = new FileReader();
+      reader.addEventListener(
+        "load",
+        (e) => (this.program.preview = e.target.result)
+      );
+      reader.readAsDataURL(file);
+    },
+  },
 };
 </script>
 

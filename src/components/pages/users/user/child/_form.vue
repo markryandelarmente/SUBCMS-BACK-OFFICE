@@ -54,6 +54,15 @@
                 required
               ></v-text-field>
             </v-col>
+            <v-col cols="12" md="6">
+              <v-select
+                dense
+                v-model="user.role"
+                :items="computedRoles"
+                :label="$t('user_group.user._form.role')"
+                class="mt-3"
+              ></v-select>
+            </v-col>
           </v-row>
         </v-col>
       </v-row>
@@ -176,7 +185,7 @@ import {
   USER_UPDATE_MUTATION,
   USER_QUERY,
 } from "@/graphql/user.js";
-
+import { ROLES_QUERY } from "@/graphql/role.js";
 export default {
   data: () => ({
     is_edit: false,
@@ -197,8 +206,10 @@ export default {
       country: "",
       password: "",
       confirm_password: "",
+      role: null,
     },
     gender: ["Male", "Female"],
+    roles: [],
     birthdate: {
       modal: false,
     },
@@ -207,8 +218,18 @@ export default {
     this.$route.params.id
       ? ((this.is_edit = true), this.fetchUser(this.$route.params.id))
       : false;
+    this.fetchRole();
   },
   methods: {
+    fetchRole() {
+      this.$apollo
+        .query({
+          query: ROLES_QUERY,
+        })
+        .then(({ data }) => {
+          this.roles = data.roles;
+        });
+    },
     fetchUser(id) {
       this.$apollo
         .query({
@@ -218,11 +239,13 @@ export default {
         .then(({ data }) => {
           this.user = {
             ...data.user,
+            role: data.user.roles[0].id,
           };
         });
     },
     submit() {
       this.loading = true;
+      delete this.user.roles;
       this.$apollo
         .mutate({
           mutation: this.is_edit ? USER_UPDATE_MUTATION : USER_STORE_MUTATION,
@@ -252,6 +275,17 @@ export default {
       }
 
       return age;
+    },
+  },
+  computed: {
+    computedRoles: function() {
+      return this.roles.map((role) => {
+        return {
+          ...role,
+          text: role.name.toUpperCase(),
+          value: role.id,
+        };
+      });
     },
   },
   watch: {

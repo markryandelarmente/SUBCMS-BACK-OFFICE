@@ -13,6 +13,10 @@ const USERS_QUERY = gql`
         firstname
         lastname
         created_at
+        roles {
+          id
+          name
+        }
       }
     }
   }
@@ -34,6 +38,10 @@ const USER_QUERY = gql`
       city
       postal_code
       country
+      roles {
+        id
+        name
+      }
     }
   }
 `;
