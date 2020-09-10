@@ -8,8 +8,8 @@
     "user": {
       "_index": {
         "stat": {
-          "total_users": "Total User",
-          "new_users": "New User",
+          "total_users": "Total Users",
+          "new_users": "New Users",
           "pending_tickets": "Pending Tickets",
           "solved_tickets": "Solved Tickets"
         },
