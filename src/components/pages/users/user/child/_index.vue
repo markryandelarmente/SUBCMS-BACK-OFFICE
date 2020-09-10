@@ -142,7 +142,7 @@ export default {
       total: 0,
       pageCount: 0,
       filter: {
-        role: "user",
+        role: "",
         count: 20,
         page: 1,
         order: "desc",
@@ -165,11 +165,15 @@ export default {
   }),
 
   created() {
-    this.fetchData();
+    this.initData();
   },
   methods: {
     edit(id) {
       this.$router.push({ name: "user_edit", params: { id: id } });
+    },
+    async initData() {
+      await this.fetchRoles();
+      await this.fetchData();
     },
     fetchData() {
       this.$apollo
@@ -193,7 +197,8 @@ export default {
           this.table.data = users;
           this.$store.commit("user/SET_USERS", data.users);
         });
-
+    },
+    fetchRoles() {
       this.$apollo
         .query({
           query: ROLES_QUERY,

@@ -35,6 +35,7 @@
         "username": "Username *",
         "password": "Password *",
         "confirm_password": "Confirm Password *",
+        "role": "Role *",
         "personal_details": "PERSONAL DETAILS",
         "first_name": "First name",
         "last_name": "Last name",
