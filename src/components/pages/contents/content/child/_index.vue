@@ -1,7 +1,12 @@
 <template>
   <v-row>
     <v-col md="1" sm="12">
-      <v-select v-model="contents.filter.type" :items="computedTypes" label="Types"></v-select>
+      <v-select
+        prepend-icon="mdi-filter-outline"
+        v-model="contents.filter.type"
+        :items="computedTypes"
+        label="Types"
+      ></v-select>
     </v-col>
     <v-col md="9" sm="10">
       <v-sheet>
