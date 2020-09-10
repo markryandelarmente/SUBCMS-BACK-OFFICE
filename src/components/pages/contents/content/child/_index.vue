@@ -27,7 +27,7 @@
     <v-col cols="12">
       <v-row v-if="contents.data && contents.data.length">
         <v-col v-for="(content, index) in contents.data" :key="index" md="2" sm="6" xs="12">
-          <v-card elevation="1" max-width="380">
+          <v-card elevation="1" max-width="380" min-height="400">
             <v-img
               class="grey lighten-2"
               height="200px"
@@ -62,7 +62,7 @@
             <v-card-text class="text--secondary pt-0">
               <div class="font-weight-medium">{{ content.title }}</div>
 
-              <div class="font-weight-light">{{ content.description }} ...</div>
+              <div class="font-weight-light">{{ cutDescription(content.description) }}...</div>
               <div class="font-weight-thin">2months ago</div>
             </v-card-text>
 
@@ -279,6 +279,9 @@ export default {
           this.contents.loading = false;
           this.contents.data = data.contents.data;
         });
+    },
+    cutDescription(str) {
+      return str ? str.split(" ").splice(0, 4).join(" ") : "";
     },
   },
   computed: {

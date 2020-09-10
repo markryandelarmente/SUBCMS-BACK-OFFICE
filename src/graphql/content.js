@@ -8,6 +8,7 @@ const CONTENTS_QUERY = gql`
       data {
         id
         title
+        description
         is_free
         image {
           id
