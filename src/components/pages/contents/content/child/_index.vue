@@ -97,7 +97,7 @@
         <v-card-text style="height: 200px;">
           <v-radio-group v-model="content_type.selected" column>
             <v-radio
-              v-for="(type, index) in content_type.items"
+              v-for="(type, index) in computedContentTypes"
               :key="index"
               :label="type.text"
               :value="type"
@@ -308,6 +308,14 @@ export default {
         var textA = a.text.toUpperCase();
         var textB = b.text.toUpperCase();
         return textA < textB ? -1 : textA > textB ? 1 : 0;
+      });
+    },
+    computedContentTypes: function () {
+      return this.content_type.items.map(function (item) {
+        return {
+          ...item,
+          text: item.text.slice(0, -1),
+        };
       });
     },
   },
