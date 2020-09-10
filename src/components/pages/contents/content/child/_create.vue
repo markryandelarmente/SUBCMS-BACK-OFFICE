@@ -12,14 +12,21 @@ import Video from "./forms/_video";
 import Article from "./forms/_article";
 export default {
   data: () => ({
-    type: 3,
+    type: null,
   }),
+  created() {
+    this.checkQueryString();
+  },
   components: {
     Program,
     Video,
     Article,
   },
-  methods: {},
+  methods: {
+    checkQueryString() {
+      this.type = this.$route.query.id;
+    },
+  },
 };
 </script>
 

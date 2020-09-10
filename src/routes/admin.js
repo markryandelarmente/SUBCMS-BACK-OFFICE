@@ -66,7 +66,7 @@ export default [
             children: [
               { path: "", name: "content_index", component: content_index },
               {
-                path: "/create",
+                path: "create",
                 name: "content_create",
                 component: content_create,
               },
