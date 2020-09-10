@@ -15,6 +15,7 @@
         },
         "table": {
           "title": "Users",
+          "roles": "Roles",
           "search": "Search",
           "loading": "Loading . . . Please wait",
           "headers": {
@@ -22,6 +23,7 @@
             "firstname": "FIRSTNAME",
             "lastname": "LASTNAME",
             "email": "EMAIL",
+            "role": "ROLE",
             "registered_at": "REGISTERED AT",
             "action": "ACTION"
           }
