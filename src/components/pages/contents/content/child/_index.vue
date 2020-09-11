@@ -17,7 +17,8 @@
             v-for="(category, index) in categories"
             :key="index"
             class="ma-2"
-          >{{ category.label }}</v-chip>
+            >{{ category.label }}</v-chip
+          >
         </v-chip-group>
       </v-sheet>
     </v-col>
@@ -31,8 +32,19 @@
     </v-col>
     <v-col cols="12">
       <v-row v-if="contents.data && contents.data.length">
-        <v-col v-for="(content, index) in contents.data" :key="index" md="2" sm="6" xs="12">
-          <v-card elevation="1" max-width="380" min-height="400">
+        <v-col
+          v-for="(content, index) in contents.data"
+          :key="index"
+          md="2"
+          sm="6"
+          xs="12"
+        >
+          <v-card
+            elevation="1"
+            max-width="380"
+            min-height="400"
+            @click="viewContent"
+          >
             <v-img
               class="grey lighten-2"
               height="200px"
@@ -42,7 +54,10 @@
             >
               <template v-slot:placeholder>
                 <v-row class="fill-height ma-0" align="center" justify="center">
-                  <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
+                  <v-progress-circular
+                    indeterminate
+                    color="grey lighten-5"
+                  ></v-progress-circular>
                 </v-row>
               </template>
             </v-img>
@@ -59,7 +74,9 @@
 
                 <v-row justify="end">
                   <span class="mr-1">·</span>
-                  <v-icon @click="alarm" small class="mr-1">mdi-dots-vertical</v-icon>
+                  <v-icon @click="alarm" small class="mr-1"
+                    >mdi-dots-vertical</v-icon
+                  >
                 </v-row>
               </v-list-item>
             </v-card-actions>
@@ -67,20 +84,31 @@
             <v-card-text class="text--secondary pt-0">
               <div class="font-weight-medium">{{ content.title }}</div>
 
-              <div class="font-weight-light">{{ cutDescription(content.description) }}...</div>
+              <div class="font-weight-light">
+                {{ cutDescription(content.description) }}...
+              </div>
               <div class="font-weight-thin">2months ago</div>
             </v-card-text>
 
             <v-card-actions>
               <v-chip outlined>
-                <v-icon small>{{ renderCardIcon(content.content_type.id) }}</v-icon>
-                <span class="subtitle-2 font-weight-light ml-1">{{ content.content_type.name }}</span>
+                <v-icon small>{{
+                  renderCardIcon(content.content_type.id)
+                }}</v-icon>
+                <span class="subtitle-2 font-weight-light ml-1">{{
+                  content.content_type.name
+                }}</span>
               </v-chip>
               <v-spacer></v-spacer>
               <v-icon
                 small
-                :color="content.is_free == 'FREE' ? 'success': 'default'"
-              >{{ content.is_free == "FREE" ? 'mdi-check-circle-outline': 'mdi-lock-open-outline' }}</v-icon>
+                :color="content.is_free == 'FREE' ? 'success' : 'default'"
+                >{{
+                  content.is_free == "FREE"
+                    ? "mdi-check-circle-outline"
+                    : "mdi-lock-open-outline"
+                }}</v-icon
+              >
             </v-card-actions>
           </v-card>
         </v-col>
@@ -111,8 +139,43 @@
           <v-btn
             color="primary"
             text
-            @click="$router.push({ name: 'content_create', query: content_type.selected })"
-          >Ok</v-btn>
+            @click="
+              $router.push({
+                name: 'content_create',
+                query: content_type.selected,
+              })
+            "
+            >Ok</v-btn
+          >
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-dialog v-model="content.dialog" persistent width="1200">
+      <v-card elevation="0">
+        <v-card-title class="headline"></v-card-title>
+        <v-card-text>
+          <v-row>
+            <v-col md="12" sm="12" class="text-center">
+              <vue-plyr>
+                <video
+                  controls
+                  poster="http://192.168.1.70:8181/images/contents/articles/3.jpeg"
+                  src="http://localhost:8181/videos/content_video.mp4"
+                ></video>
+              </vue-plyr>
+            </v-col>
+            <v-col md="12">
+              <h2 class="font-weight-medium">
+                The upper body workout
+              </h2>
+            </v-col>
+          </v-row>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="green darken-1" text @click="content.dialog = false"
+            >Close</v-btn
+          >
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -258,6 +321,9 @@ export default {
       pageCount: 0,
       data: [],
     },
+    content: {
+      dialog: false,
+    },
   }),
   created() {
     this.fetchData();
@@ -267,7 +333,7 @@ export default {
     selectType() {
       console.log("hey");
     },
-    renderCardIcon: function (id) {
+    renderCardIcon: function(id) {
       if (id == 1) {
         return "mdi-video-plus-outline";
       } else if (id == 2) {
@@ -290,14 +356,22 @@ export default {
         });
     },
     cutDescription(str) {
-      return str ? str.split(" ").splice(0, 4).join(" ") : "";
+      return str
+        ? str
+            .split(" ")
+            .splice(0, 4)
+            .join(" ")
+        : "";
+    },
+    viewContent() {
+      this.content.dialog = true;
     },
   },
   computed: {
-    computedFilter: function () {
+    computedFilter: function() {
       return Object.assign({}, this.contents.filter);
     },
-    computedTypes: function () {
+    computedTypes: function() {
       let items = this.content_type.items.map((type) => {
         return {
           text: type.text,
@@ -314,8 +388,8 @@ export default {
         return textA < textB ? -1 : textA > textB ? 1 : 0;
       });
     },
-    computedContentTypes: function () {
-      return this.content_type.items.map(function (item) {
+    computedContentTypes: function() {
+      return this.content_type.items.map(function(item) {
         return {
           ...item,
           text: item.text.slice(0, -1),
@@ -325,7 +399,7 @@ export default {
   },
   watch: {
     contents: {
-      handler: function () {
+      handler: function() {
         this.fetchData();
       },
       deep: true,
