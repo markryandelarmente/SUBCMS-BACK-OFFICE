@@ -30,6 +30,9 @@
         </v-btn>
       </v-toolbar>
     </v-col>
+    <v-col cols="12" v-if="loading">
+      <v-progress-linear indeterminate color="primary"></v-progress-linear>
+    </v-col>
     <v-col cols="12">
       <v-row v-if="contents.data && contents.data.length">
         <v-col
@@ -114,7 +117,7 @@
         </v-col>
       </v-row>
       <v-row v-else>
-        <h2 class="font-weight-regular">No content</h2>
+        <h2 class="font-weight-regular" v-if="!loading">No content</h2>
       </v-row>
     </v-col>
 
@@ -212,6 +215,7 @@
 import { CONTENTS_QUERY } from "@/graphql/content.js";
 export default {
   data: () => ({
+    loading: true,
     categories: [
       {
         label: "Leg",
@@ -395,6 +399,7 @@ export default {
           this.contents.filter.page = data.contents.current_page;
           this.contents.total = data.contents.total;
           this.contents.loading = false;
+          this.loading = false;
           this.contents.data = data.contents.data;
         });
     },
