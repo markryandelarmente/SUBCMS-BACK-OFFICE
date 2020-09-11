@@ -1,0 +1,70 @@
+# Drone config file for a basic node application
+#
+# VERSION: 1.0.1
+
+kind: pipeline
+type: docker
+name: deploy-master
+
+trigger:
+  branch:
+    - master
+    - feature/drone-ci
+
+steps:
+  - name: restore cache
+    image: registry.qonvextechnology.com:5000/drillster/drone-volume-cache:latest
+    settings:
+      restore: true
+      cache_key:
+        - DRONE_STAGE_NAME
+        - DRONE_REPO_OWNER
+        - DRONE_REPO_NAME
+        - DRONE_REPO_BRANCH
+      mount:
+        - "node_modules"
+    volumes:
+      - name: cache
+        path: /cache
+
+  - name: build
+    image: node:lts-alpine
+    volumes:
+      - name: npm
+        path: /root/.npm
+
+    commands:
+      - yarn install
+      - yarn build
+
+  - name: rebuild cache
+    image: registry.qonvextechnology.com:5000/drillster/drone-volume-cache:latest
+    settings:
+      rebuild: true
+      cache_key:
+        - DRONE_STAGE_NAME
+        - DRONE_REPO_OWNER
+        - DRONE_REPO_NAME
+        - DRONE_REPO_BRANCH
+      mount:
+        - "node_modules"
+    volumes:
+      - name: cache
+        path: /cache
+
+  - name: build image
+    image: registry.qonvextechnology.com:5000/plugins/docker
+    privileged: true
+    settings:
+      repo: registry.qonvextechnology.com:5000/${DRONE_REPO_OWNER,,}/${DRONE_REPO_NAME,,}
+      tags: master
+      cache_from:
+        - "registry.qonvextechnology.com:5000/${DRONE_REPO_OWNER,,}/${DRONE_REPO_NAME,,}:master"
+
+volumes:
+  - name: npm
+    host:
+      path: /tmp/npm
+  - name: cache
+    host:
+      path: /tmp/drone-cache
