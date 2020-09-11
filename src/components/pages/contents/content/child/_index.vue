@@ -165,15 +165,41 @@
               </vue-plyr>
             </v-col>
             <v-col md="12">
-              <h2 class="font-weight-medium">
-                The upper body workout
-              </h2>
+              <v-row>
+                <v-col md="12" sm="12">
+                  <span v-for="tag in tags" :key="tag.label" class="mx-1">
+                    {{ "#" + tag.label }}
+                  </span>
+                </v-col>
+                <v-col md="10" sm="10" class="py-0">
+                  <h1 class="font-weight-regular" style="color: black">
+                    The upper body workout
+                  </h1>
+                </v-col>
+                <v-col md="2" sm="2" class="text-right py-0">
+                  <v-spacer></v-spacer>
+                  <v-icon @click="alarm" medium>mdi-dots-vertical</v-icon>
+                </v-col>
+
+                <v-col md="12" sm="12" class="py-0">
+                  <v-list-item class="list-item">
+                    <v-card-subtitle class="pl-0">
+                      <v-icon medium>mdi-heart-outline</v-icon>&nbsp; 200
+                      <span class="mx-2"></span>
+                      <v-icon medium>mdi-message-outline</v-icon>&nbsp; 16
+                      <span class="mx-2"></span>
+                      <v-icon medium>mdi-eye-outline</v-icon>&nbsp; 16K
+                    </v-card-subtitle>
+                  </v-list-item>
+                </v-col>
+              </v-row>
+              <v-divider></v-divider>
             </v-col>
           </v-row>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="green darken-1" text @click="content.dialog = false"
+          <v-btn color="secondary darken-1" text @click="content.dialog = false"
             >Close</v-btn
           >
         </v-card-actions>
@@ -274,6 +300,23 @@ export default {
       {
         label: "Back",
       },
+      {
+        label: "Leg",
+      },
+      {
+        label: "Arm",
+      },
+      {
+        label: "Chest",
+      },
+      {
+        label: "Shoulder",
+      },
+      {
+        label: "Back",
+      },
+    ],
+    tags: [
       {
         label: "Leg",
       },
