@@ -34,8 +34,8 @@ steps:
         path: /root/.npm
 
     commands:
-      - yarn install
-      - yarn build
+      - npm i
+      - npm run build
 
   - name: rebuild cache
     image: registry.qonvextechnology.com:5000/drillster/drone-volume-cache:latest
@@ -51,6 +51,11 @@ steps:
     volumes:
       - name: cache
         path: /cache
+
+  - name: clean up dev dependencies
+    image: node:lts-alpine
+    commands:
+      - npm prune --production
 
   - name: build image
     image: registry.qonvextechnology.com:5000/plugins/docker
