@@ -4,4 +4,4 @@ COPY . /app
 
 WORKDIR /app
 
-ENTRYPOINT [ "/usr/local/bin/npm", "yarn", "serve", "--" ]
+ENTRYPOINT [ "/usr/local/bin/npm", "run", "serve", "--" ]
