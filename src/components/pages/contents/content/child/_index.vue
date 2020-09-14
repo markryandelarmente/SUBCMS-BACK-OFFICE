@@ -46,7 +46,7 @@
             elevation="1"
             max-width="380"
             min-height="400"
-            @click="viewContent(content.content_type.name)"
+            @click="viewContent(content.content_type.name, content.id)"
           >
             <v-img
               class="grey lighten-2"
@@ -165,8 +165,7 @@
               <vue-plyr>
                 <video
                   controls
-                  poster="http://192.168.1.70:8181/images/contents/articles/3.jpeg"
-                  src="http://localhost:8181/videos/content_video.mp4"
+                  :src="`${server_url}/videos/content_video.mp4`"
                 ></video>
               </vue-plyr>
             </v-col>
@@ -179,7 +178,7 @@
                 </v-col>
                 <v-col md="10" sm="10" class="py-0">
                   <h1 class="font-weight-regular" style="color: black">
-                    The upper body workout
+                    {{ content.data.title }}
                   </h1>
                 </v-col>
                 <v-col md="2" sm="2" class="text-right py-0">
@@ -256,9 +255,10 @@
 </template>
 
 <script>
-import { CONTENTS_QUERY } from "@/graphql/content.js";
+import { CONTENTS_QUERY, CONTENT_QUERY } from "@/graphql/content.js";
 export default {
   data: () => ({
+    server_url: process.env.VUE_APP_SERVER_URL,
     loading: true,
     categories: [
       {
@@ -416,11 +416,19 @@ export default {
       video_dialog: false,
       article_dialog: false,
       program_dialog: false,
-      data: {},
+      data: {
+        title: "",
+        description: "",
+        is_free: "",
+        image: {
+          id: null,
+          url: "",
+        },
+      },
     },
   }),
   created() {
-    this.fetchData();
+    this.fetchContents();
   },
   methods: {
     alarm() {},
@@ -436,7 +444,7 @@ export default {
         return "mdi-post-outline";
       }
     },
-    fetchData() {
+    fetchContents() {
       this.$apollo
         .query({
           query: CONTENTS_QUERY,
@@ -450,6 +458,18 @@ export default {
           this.contents.data = data.contents.data;
         });
     },
+    async fetchContent(id) {
+      await this.$apollo
+        .query({
+          query: CONTENT_QUERY,
+          variables: { id: id },
+        })
+        .then(({ data }) => {
+          this.content.data = data.content;
+
+          this.$forceUpdate();
+        });
+    },
     cutDescription(str) {
       return str
         ? str
@@ -458,11 +478,12 @@ export default {
             .join(" ")
         : "";
     },
-    viewContent(type) {
+    async viewContent(type, content_id) {
       const VIDEO = "VIDEO";
       const ARTICLE = "ARTICLE";
       const PROGRAM = "PROGRAM";
       if (type == VIDEO) {
+        await this.fetchContent(content_id);
         this.content.video_dialog = true;
       } else if (type == ARTICLE) {
         this.content.article_dialog = true;
@@ -504,7 +525,7 @@ export default {
   watch: {
     contents: {
       handler: function() {
-        this.fetchData();
+        this.fetchContents();
       },
       deep: true,
     },
