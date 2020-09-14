@@ -2,18 +2,36 @@
   <div id="app">
     <v-app id="inspire">
       <v-app id="inspire">
-        <v-app-bar dark color="secondary" height="80" elevation="0" app clipped-right>
-          <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+        <v-app-bar
+          dark
+          color="secondary"
+          height="80"
+          elevation="0"
+          app
+          clipped-right
+        >
+          <v-app-bar-nav-icon
+            @click.stop="drawer = !drawer"
+          ></v-app-bar-nav-icon>
           <v-toolbar-title>SUBCMS</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-toolbar dark color="secondary" height="80" elevation="0">
             <v-spacer></v-spacer>
-            <v-btn icon large class="mr-3" @click="tool_bar.search_expanded = true">
+            <v-btn
+              icon
+              large
+              class="mr-3"
+              @click="tool_bar.search_expanded = true"
+            >
               <v-icon>mdi-magnify</v-icon>
             </v-btn>
             <v-expand-x-transition>
               <div v-show="tool_bar.search_expanded" style="width:400px">
-                <v-text-field label="Start typing to search" single-line hide-details></v-text-field>
+                <v-text-field
+                  label="Start typing to search"
+                  single-line
+                  hide-details
+                ></v-text-field>
               </div>
             </v-expand-x-transition>
             <v-badge color="primary" content="6" overlap class="mr-3">
@@ -30,14 +48,30 @@
               <v-icon>mdi-apps</v-icon>
             </v-btn>
 
-            <v-btn icon large class="mr-3">
-              <v-avatar size="32px" item>
-                <v-img
-                  src="https://jgi.doe.gov/wp-content/uploads/2014/04/Steven_Hallam-slide.jpg"
-                  alt="Vuetify"
-                ></v-img>
-              </v-avatar>
-            </v-btn>
+            <v-menu offset-y min-width="150">
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn icon large class="mr-3" v-bind="attrs" v-on="on">
+                  <v-avatar size="32px" item>
+                    <v-img
+                      src="https://jgi.doe.gov/wp-content/uploads/2014/04/Steven_Hallam-slide.jpg"
+                      alt="Vuetify"
+                    ></v-img>
+                  </v-avatar>
+                </v-btn>
+              </template>
+              <v-list>
+                <v-list-item>
+                  <v-icon color="default">mdi-account-outline</v-icon>
+                  &nbsp; &nbsp;
+                  <v-list-item-title>Profile</v-list-item-title>
+                </v-list-item>
+                <v-list-item @click="logout">
+                  <v-icon color="error">mdi-power</v-icon>
+                  &nbsp; &nbsp;
+                  <v-list-item-title>Logout</v-list-item-title>
+                </v-list-item>
+              </v-list>
+            </v-menu>
           </v-toolbar>
         </v-app-bar>
 
@@ -156,6 +190,7 @@
 </template>
 
 <script>
+import { LOGOUT } from "@/graphql/auth.js";
 export default {
   name: "HomeLayout",
 
@@ -167,7 +202,6 @@ export default {
     tool_bar: {
       search_expanded: false,
     },
-
     drawer: null,
     drawerRight: null,
     right: false,
@@ -188,8 +222,19 @@ export default {
     removeElementInDom() {
       document
         .querySelectorAll(".v-navigation-drawer__border")
-        .forEach(function (a) {
+        .forEach(function(a) {
           a.remove();
+        });
+    },
+    logout() {
+      this.$apollo
+        .mutate({
+          mutation: LOGOUT,
+        })
+        .then(({ data }) => {
+          if (data._logout.success) {
+            this.$router.push({ name: "login" });
+          }
         });
     },
   },
