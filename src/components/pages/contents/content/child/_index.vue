@@ -46,7 +46,7 @@
             elevation="1"
             max-width="380"
             min-height="400"
-            @click="viewContent"
+            @click="viewContent(content.content_type.name, content.id)"
           >
             <v-img
               class="grey lighten-2"
@@ -121,6 +121,7 @@
       </v-row>
     </v-col>
 
+    <!-- SELECT CONTENT MODAL -->
     <v-dialog v-model="content_type.dialog" scrollable max-width="400px">
       <v-card>
         <v-card-title>Select type of content</v-card-title>
@@ -153,7 +154,9 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <v-dialog v-model="content.dialog" persistent width="1200">
+
+    <!-- VIEW VIDEO MODAL -->
+    <v-dialog v-model="content.video_dialog" persistent width="1200">
       <v-card elevation="0">
         <v-card-title class="headline"></v-card-title>
         <v-card-text>
@@ -162,8 +165,7 @@
               <vue-plyr>
                 <video
                   controls
-                  poster="http://192.168.1.70:8181/images/contents/articles/3.jpeg"
-                  src="http://localhost:8181/videos/content_video.mp4"
+                  :src="`${server_url}/videos/content_video.mp4`"
                 ></video>
               </vue-plyr>
             </v-col>
@@ -176,7 +178,7 @@
                 </v-col>
                 <v-col md="10" sm="10" class="py-0">
                   <h1 class="font-weight-regular" style="color: black">
-                    The upper body workout
+                    {{ content.data.title }}
                   </h1>
                 </v-col>
                 <v-col md="2" sm="2" class="text-right py-0">
@@ -202,7 +204,48 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="secondary darken-1" text @click="content.dialog = false"
+          <v-btn
+            color="secondary darken-1"
+            text
+            @click="content.video_dialog = false"
+            >Close</v-btn
+          >
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <!-- VIEW ARTICLE MODAL -->
+    <v-dialog v-model="content.article_dialog" persistent width="1200">
+      <v-card elevation="0">
+        <v-card-title class="headline"></v-card-title>
+        <v-card-text>
+          <h1>ARTICLE VIEW HERE</h1>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="secondary darken-1"
+            text
+            @click="content.article_dialog = false"
+            >Close</v-btn
+          >
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <!-- VIEW PROGRAM MODAL -->
+    <v-dialog v-model="content.program_dialog" persistent width="1200">
+      <v-card elevation="0">
+        <v-card-title class="headline"></v-card-title>
+        <v-card-text>
+          <h1>PROGRAM VIEW HERE</h1>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="secondary darken-1"
+            text
+            @click="content.program_dialog = false"
             >Close</v-btn
           >
         </v-card-actions>
@@ -212,9 +255,10 @@
 </template>
 
 <script>
-import { CONTENTS_QUERY } from "@/graphql/content.js";
+import { CONTENTS_QUERY, CONTENT_QUERY } from "@/graphql/content.js";
 export default {
   data: () => ({
+    server_url: process.env.VUE_APP_SERVER_URL,
     loading: true,
     categories: [
       {
@@ -369,11 +413,22 @@ export default {
       data: [],
     },
     content: {
-      dialog: false,
+      video_dialog: false,
+      article_dialog: false,
+      program_dialog: false,
+      data: {
+        title: "",
+        description: "",
+        is_free: "",
+        image: {
+          id: null,
+          url: "",
+        },
+      },
     },
   }),
   created() {
-    this.fetchData();
+    this.fetchContents();
   },
   methods: {
     alarm() {},
@@ -389,7 +444,7 @@ export default {
         return "mdi-post-outline";
       }
     },
-    fetchData() {
+    fetchContents() {
       this.$apollo
         .query({
           query: CONTENTS_QUERY,
@@ -403,6 +458,18 @@ export default {
           this.contents.data = data.contents.data;
         });
     },
+    async fetchContent(id) {
+      await this.$apollo
+        .query({
+          query: CONTENT_QUERY,
+          variables: { id: id },
+        })
+        .then(({ data }) => {
+          this.content.data = data.content;
+
+          this.$forceUpdate();
+        });
+    },
     cutDescription(str) {
       return str
         ? str
@@ -411,8 +478,18 @@ export default {
             .join(" ")
         : "";
     },
-    viewContent() {
-      this.content.dialog = true;
+    async viewContent(type, content_id) {
+      const VIDEO = "VIDEO";
+      const ARTICLE = "ARTICLE";
+      const PROGRAM = "PROGRAM";
+      if (type == VIDEO) {
+        await this.fetchContent(content_id);
+        this.content.video_dialog = true;
+      } else if (type == ARTICLE) {
+        this.content.article_dialog = true;
+      } else if (type == PROGRAM) {
+        this.content.program_dialog = true;
+      }
     },
   },
   computed: {
@@ -448,7 +525,7 @@ export default {
   watch: {
     contents: {
       handler: function() {
-        this.fetchData();
+        this.fetchContents();
       },
       deep: true,
     },
