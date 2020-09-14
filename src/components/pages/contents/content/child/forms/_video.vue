@@ -28,7 +28,7 @@
             </v-progress-circular>
 
             <div class="mt-5" v-if="!is_uploading">
-              Drag and drop video files to upload
+              Drag and drop video file to upload
             </div>
             <div class="mt-5" v-else>
               Uploading video . . .
@@ -44,6 +44,16 @@
                 elevation="0"
                 @click="triggerInputFile"
                 >Select video</v-btn
+              >
+            </div>
+            <h3 class="font-weight-medium">OR</h3>
+            <div class="my-5">
+              <v-btn
+                elevation="1"
+                large
+                color="default"
+                @click="selectFromResources"
+                >Select from resources</v-btn
               >
             </div>
             <input
@@ -244,14 +254,7 @@ export default {
   },
   mounted() {},
   methods: {
-    cutDescription(str) {
-      return str
-        ? str
-            .split(" ")
-            .splice(0, 4)
-            .join(" ")
-        : "Description";
-    },
+    // first page
     triggerLoading() {
       this.is_uploading = true;
       this.interval = setInterval(() => {
@@ -269,6 +272,19 @@ export default {
       this.triggerLoading();
       let video = e.target.files[0] || e.dataTransfer.files[0];
       video;
+    },
+    selectFromResources() {
+      alert("Under construction");
+    },
+
+    // second page
+    cutDescription(str) {
+      return str
+        ? str
+            .split(" ")
+            .splice(0, 4)
+            .join(" ")
+        : "Description";
     },
     triggerFileInputThumbnail() {
       this.$refs.FileInputThumbnail.click();
