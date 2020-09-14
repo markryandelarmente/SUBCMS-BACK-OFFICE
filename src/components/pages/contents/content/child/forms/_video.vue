@@ -27,7 +27,12 @@
               </v-avatar>
             </v-progress-circular>
 
-            <div class="mt-5">Drag and drop video files to upload</div>
+            <div class="mt-5" v-if="!is_uploading">
+              Drag and drop video files to upload
+            </div>
+            <div class="mt-5" v-else>
+              Uploading video . . .
+            </div>
             <small class="mt-3 mb-5 font-weight-light"
               >Lorem ipsum dolor sit, amet consectetur adipisicing elit.
               Doloribus, id.</small
@@ -219,6 +224,7 @@
 export default {
   data: () => ({
     is_video: false,
+    is_uploading: false,
     value: 0,
     interval: {},
     items: ["Arms", "Shoulder", "Back", "Leg"],
@@ -247,6 +253,7 @@ export default {
         : "Description";
     },
     triggerLoading() {
+      this.is_uploading = true;
       this.interval = setInterval(() => {
         if (this.value === 90) {
           this.is_video = true;
