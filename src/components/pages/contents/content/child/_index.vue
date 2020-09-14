@@ -46,7 +46,7 @@
             elevation="1"
             max-width="380"
             min-height="400"
-            @click="viewContent"
+            @click="viewContent(content.content_type.name)"
           >
             <v-img
               class="grey lighten-2"
@@ -121,6 +121,7 @@
       </v-row>
     </v-col>
 
+    <!-- SELECT CONTENT MODAL -->
     <v-dialog v-model="content_type.dialog" scrollable max-width="400px">
       <v-card>
         <v-card-title>Select type of content</v-card-title>
@@ -153,7 +154,9 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <v-dialog v-model="content.dialog" persistent width="1200">
+
+    <!-- VIEW VIDEO MODAL -->
+    <v-dialog v-model="content.video_dialog" persistent width="1200">
       <v-card elevation="0">
         <v-card-title class="headline"></v-card-title>
         <v-card-text>
@@ -202,7 +205,48 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="secondary darken-1" text @click="content.dialog = false"
+          <v-btn
+            color="secondary darken-1"
+            text
+            @click="content.video_dialog = false"
+            >Close</v-btn
+          >
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <!-- VIEW ARTICLE MODAL -->
+    <v-dialog v-model="content.article_dialog" persistent width="1200">
+      <v-card elevation="0">
+        <v-card-title class="headline"></v-card-title>
+        <v-card-text>
+          <h1>ARTICLE VIEW HERE</h1>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="secondary darken-1"
+            text
+            @click="content.article_dialog = false"
+            >Close</v-btn
+          >
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <!-- VIEW PROGRAM MODAL -->
+    <v-dialog v-model="content.program_dialog" persistent width="1200">
+      <v-card elevation="0">
+        <v-card-title class="headline"></v-card-title>
+        <v-card-text>
+          <h1>PROGRAM VIEW HERE</h1>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="secondary darken-1"
+            text
+            @click="content.program_dialog = false"
             >Close</v-btn
           >
         </v-card-actions>
@@ -369,7 +413,10 @@ export default {
       data: [],
     },
     content: {
-      dialog: false,
+      video_dialog: false,
+      article_dialog: false,
+      program_dialog: false,
+      data: {},
     },
   }),
   created() {
@@ -411,8 +458,17 @@ export default {
             .join(" ")
         : "";
     },
-    viewContent() {
-      this.content.dialog = true;
+    viewContent(type) {
+      const VIDEO = "VIDEO";
+      const ARTICLE = "ARTICLE";
+      const PROGRAM = "PROGRAM";
+      if (type == VIDEO) {
+        this.content.video_dialog = true;
+      } else if (type == ARTICLE) {
+        this.content.article_dialog = true;
+      } else if (type == PROGRAM) {
+        this.content.program_dialog = true;
+      }
     },
   },
   computed: {
