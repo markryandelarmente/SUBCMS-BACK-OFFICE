@@ -1,7 +1,5 @@
-FROM node:lts-alpine
+FROM nginx
 
-COPY . /app
+COPY ./dist /var/www/app
 
-WORKDIR /app
-
-ENTRYPOINT [ "/usr/local/bin/npm", "yarn", "serve", "--" ]
+COPY .docker/nginx/default.conf /etc/nginx/conf.d/default.conf

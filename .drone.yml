@@ -1,7 +1,60 @@
-# Drone config file for a basic node application
+# Drone config file for a basic npm application
 #
-# VERSION: 1.0.1
+# VERSION: 1.0.0
 
+kind: pipeline
+type: docker
+name: test
+
+steps:
+  - name: restore cache
+    image: registry.qonvextechnology.com:5000/drillster/drone-volume-cache:latest
+    settings:
+      restore: true
+      cache_key:
+        - DRONE_STAGE_NAME
+        - DRONE_REPO_OWNER
+        - DRONE_REPO_NAME
+        - DRONE_REPO_BRANCH
+      mount:
+        - "node_modules"
+    volumes:
+      - name: cache
+        path: /cache
+
+  - name: build
+    image: registry.qonvextechnology.com:5000/node-yarn:latest
+    volumes:
+      - name: yarn
+        path: /usr/local/share/.cache/yarn
+
+    commands:
+      - yarn --mutex file:/usr/local/share/.cache/yarn/.yarn-mutex
+
+  - name: rebuild cache
+    image: registry.qonvextechnology.com:5000/drillster/drone-volume-cache:latest
+    settings:
+      rebuild: true
+      cache_key:
+        - DRONE_STAGE_NAME
+        - DRONE_REPO_OWNER
+        - DRONE_REPO_NAME
+        - DRONE_REPO_BRANCH
+      mount:
+        - "node_modules"
+    volumes:
+      - name: cache
+        path: /cache
+
+volumes:
+  - name: yarn
+    host:
+      path: /tmp/yarn
+  - name: cache
+    host:
+      path: /tmp/drone-cache
+
+---
 kind: pipeline
 type: docker
 name: deploy-master
@@ -23,19 +76,20 @@ steps:
         - DRONE_REPO_BRANCH
       mount:
         - "node_modules"
+        - "dist"
     volumes:
       - name: cache
         path: /cache
 
   - name: build
-    image: node:lts-alpine
+    image: registry.qonvextechnology.com:5000/node-yarn:latest
     volumes:
-      - name: npm
-        path: /root/.npm
+      - name: yarn
+        path: /usr/local/share/.cache/yarn
 
     commands:
-      - npm i
-      - npm run build
+      - yarn --mutex file:/usr/local/share/.cache/yarn/.yarn-mutex
+      - yarn build
 
   - name: rebuild cache
     image: registry.qonvextechnology.com:5000/drillster/drone-volume-cache:latest
@@ -48,14 +102,10 @@ steps:
         - DRONE_REPO_BRANCH
       mount:
         - "node_modules"
+        - "dist"
     volumes:
       - name: cache
         path: /cache
-
-  - name: clean up dev dependencies
-    image: node:lts-alpine
-    commands:
-      - npm prune --production
 
   - name: build image
     image: registry.qonvextechnology.com:5000/plugins/docker
@@ -67,9 +117,12 @@ steps:
         - "registry.qonvextechnology.com:5000/${DRONE_REPO_OWNER,,}/${DRONE_REPO_NAME,,}:master"
 
 volumes:
-  - name: npm
+  - name: yarn
     host:
-      path: /tmp/npm
+      path: /tmp/yarn
   - name: cache
     host:
       path: /tmp/drone-cache
+
+depends_on:
+  - test
