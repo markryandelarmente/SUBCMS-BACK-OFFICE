@@ -18,6 +18,17 @@ const LOGIN_MUTATION = gql`
   }
 `;
 
+const LOGOUT = gql`
+  mutation _logout {
+    _logout {
+      success
+      user {
+        id
+      }
+    }
+  }
+`;
+
 const SELF_QUERY = gql`
   query {
     self {
@@ -32,4 +43,4 @@ const SELF_QUERY = gql`
   }
 `;
 
-export { LOGIN_MUTATION, SELF_QUERY };
+export { LOGIN_MUTATION, SELF_QUERY, LOGOUT };
