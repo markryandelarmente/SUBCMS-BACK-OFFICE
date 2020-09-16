@@ -1,6 +1,6 @@
 <template>
   <v-row>
-    <v-col md="1" sm="12">
+    <v-col md="2" sm="12">
       <v-select
         prepend-icon="mdi-filter-outline"
         v-model="contents.filter.type"
@@ -8,6 +8,9 @@
         label="Types"
       ></v-select>
     </v-col>
+    <!-- <v-col md="1" sm="12">
+      <v-select :items="categories" label="CATEGORIES"></v-select>
+    </v-col>-->
     <v-col md="9" sm="10">
       <v-sheet>
         <v-chip-group active-class="primary--text">
@@ -15,7 +18,7 @@
         </v-chip-group>
       </v-sheet>
     </v-col>
-    <v-col md="2" sm="2">
+    <v-col md="1" sm="2">
       <v-toolbar elevation="0">
         <v-spacer></v-spacer>
         <v-btn icon @click="content_type.dialog = true">
@@ -216,11 +219,13 @@
 <script>
 import { CONTENTS_QUERY, CONTENT_QUERY } from "@/graphql/content.js";
 import { TAGS_QUERY } from "@/graphql/tag.js";
+import { CATEGORIES_QUERY } from "@/graphql/category.js";
 export default {
   data: () => ({
     server_url: process.env.VUE_APP_SERVER_URL,
     loading: true,
     tags: [],
+    categories: [],
     content_type: {
       dialog: false,
       selected: "",
@@ -269,6 +274,7 @@ export default {
   }),
   mounted() {
     this.fetchTags();
+    this.fetchCategories();
   },
   created() {
     this.fetchContents();
@@ -284,6 +290,20 @@ export default {
             return {
               label: tag.name,
               value: tag.id,
+            };
+          });
+        });
+    },
+    fetchCategories() {
+      this.$apollo
+        .query({
+          query: CATEGORIES_QUERY,
+        })
+        .then(({ data }) => {
+          this.categories = data.categories_all.map((cat) => {
+            return {
+              text: cat.name,
+              value: cat.id,
             };
           });
         });
