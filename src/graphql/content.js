@@ -77,4 +77,38 @@ const CONTENT_QUERY = gql`
   }
 `;
 
-export { CONTENTS_QUERY, CONTENT_QUERY };
+const CONTENT_VIDEO_STORE = gql`
+  mutation content_store($input: ContentInput) {
+    content_store(input: $input) {
+      id
+      title
+      content_type {
+        name
+      }
+      image {
+        id
+        url
+      }
+      content_resource_types {
+        id
+        name
+        content_resources {
+          id
+          title
+          order
+          resource {
+            id
+            content
+            updated_at
+            resource_type {
+              id
+              name
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+export { CONTENTS_QUERY, CONTENT_QUERY, CONTENT_VIDEO_STORE };

@@ -104,14 +104,14 @@
               </div>
             </div>
             <v-select
-              :items="items"
+              :items="categories"
               label="Categories"
               outlined
               class="mt-5"
               multiple
               v-model="video.categories"
             ></v-select>
-            <v-select :items="items" label="Tags" outlined multiple v-model="video.tags"></v-select>
+            <v-select :items="tags" label="Tags" outlined multiple v-model="video.tags"></v-select>
 
             <v-select :items="visibility" label="Visibility" outlined v-model="video.is_free"></v-select>
           </v-col>
@@ -122,7 +122,7 @@
                   <v-img
                     class="grey lighten-2"
                     height="250px"
-                    :src="video.thumbnail"
+                    :src="video.thumbnail_preview"
                     aspect-ratio="1"
                   ></v-img>
 
@@ -171,12 +171,7 @@
         </v-row>
         <v-row class="text-right">
           <v-col md="12">
-            <v-btn
-              large
-              elevation="0"
-              color="primary"
-              @click="$router.push({ name: 'content_index' })"
-            >
+            <v-btn large elevation="0" color="primary" @click="storeContentVideo">
               <v-icon>mdi-content-save-cog</v-icon>Save
             </v-btn>
           </v-col>
@@ -188,35 +183,74 @@
 
 <script>
 import { VIDEO_UPLOAD_MUTATION } from "@/graphql/resource.js";
+import { CONTENT_VIDEO_STORE } from "@/graphql/content.js";
+import { TAGS_QUERY } from "@/graphql/tag.js";
+import { CATEGORIES_QUERY } from "@/graphql/category.js";
 export default {
   data: () => ({
     is_video: false,
     is_uploading: false,
     value: 0,
     interval: {},
-    items: ["Arms", "Shoulder", "Back", "Leg"],
+    tags: [],
+    categories: [],
     visibility: ["FREE", "PAID"],
     video: {
       video_file: "",
       title: "",
       description: "",
+      is_free: "",
       thumbnail: "",
+      thumbnail_preview: "",
+      image: "",
       categories: [],
       tags: [],
-      is_free: "",
     },
     video_upload: {},
   }),
   beforeDestroy() {
     clearInterval(this.interval);
   },
-  mounted() {},
+  mounted() {
+    this.fetchTags();
+    this.fetchCategories();
+  },
   beforeMount() {
     this.$route.query.resource_id
       ? (this.is_video = true)
       : (this.is_video = false);
   },
   methods: {
+    // get tag and categories
+    fetchTags() {
+      this.$apollo
+        .query({
+          query: TAGS_QUERY,
+        })
+        .then(({ data }) => {
+          this.tags = data.tags_all.map((tag) => {
+            return {
+              text: tag.name,
+              value: tag.id,
+            };
+          });
+        });
+    },
+    fetchCategories() {
+      this.$apollo
+        .query({
+          query: CATEGORIES_QUERY,
+        })
+        .then(({ data }) => {
+          this.categories = data.categories_all.map((cat) => {
+            return {
+              text: cat.name,
+              value: cat.id,
+            };
+          });
+        });
+    },
+
     // first page
 
     triggerLoading() {
@@ -270,7 +304,34 @@ export default {
     },
     uploadThumbnail(e) {
       let photo = e.target.files[0] || e.dataTransfer.files[0];
-      this.video.thumbnail = URL.createObjectURL(photo);
+      this.video.thumbnail_preview = URL.createObjectURL(photo);
+      this.video.image = photo;
+    },
+    storeContentVideo() {
+      this.$apollo
+        .mutate({
+          mutation: CONTENT_VIDEO_STORE,
+          variables: {
+            input: {
+              title: this.video.title,
+              description: this.video.description,
+              visibility: this.video.is_free == "FREE" ? 1 : 0,
+              thumbnail: this.video.thumbnail,
+              image: this.video.image,
+              tags: this.video.tags,
+              categories: this.video.categories,
+              resource_id: this.$route.query.resource_id,
+            },
+          },
+        })
+        .then(({ data }) => {
+          if (data.content_store.id) {
+            this.$router.push({ name: "content_index" });
+          }
+        })
+        .catch(() => {
+          // error logs here
+        });
     },
   },
 };
