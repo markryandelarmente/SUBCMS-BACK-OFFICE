@@ -153,7 +153,11 @@
             <v-col md="12">
               <v-row>
                 <v-col md="12" sm="12">
-                  <span v-for="tag in tags" :key="tag.label" class="mx-1">{{ "#" + tag.label }}</span>
+                  <span
+                    v-for="tag in content.data.tags"
+                    :key="tag.id"
+                    class="mx-1"
+                  >{{ "#" + tag.tag.name}}</span>
                 </v-col>
                 <v-col md="10" sm="10" class="py-0">
                   <h1 class="font-weight-regular" style="color: black">{{ content.data.title }}</h1>

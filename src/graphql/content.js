@@ -36,6 +36,13 @@ const CONTENTS_QUERY = gql`
             }
           }
         }
+        tags {
+          id
+          tag {
+            id
+            name
+          }
+        }
       }
     }
   }
@@ -71,6 +78,13 @@ const CONTENT_QUERY = gql`
               name
             }
           }
+        }
+      }
+      tags {
+        id
+        tag {
+          id
+          name
         }
       }
     }
