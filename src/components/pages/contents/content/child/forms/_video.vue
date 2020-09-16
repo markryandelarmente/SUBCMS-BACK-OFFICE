@@ -243,20 +243,19 @@ export default {
         })
         .then(({ data }) => {
           this.video_upload = data.video_upload;
+          this.$router.push({
+            name: "content_create",
+            query: {
+              id: this.$route.query.id,
+              resource_id: this.video_upload.id,
+            },
+          });
         })
         .catch(() => {
           // error logs here
         });
       this.is_video = true;
       this.is_uploading = false;
-
-      this.$router.push({
-        name: "content_create",
-        query: {
-          id: this.$route.query.id,
-          resource_id: this.video_upload.id,
-        },
-      });
     },
     selectFromResources() {
       alert("Under construction");
