@@ -142,7 +142,7 @@
     </v-dialog>
 
     <!-- VIEW VIDEO MODAL -->
-    <v-dialog v-model="content.video_dialog" persistent width="1200">
+    <v-dialog v-model="content.video_dialog" width="1200">
       <v-card elevation="0">
         <v-card-title class="headline"></v-card-title>
         <v-card-text>
@@ -182,6 +182,11 @@
                 </v-col>
               </v-row>
               <v-divider></v-divider>
+              <v-row>
+                <v-col md="12" sm="12" class="mt-3">
+                  <span class="font-weight-regular">{{ content.data.description }}</span>
+                </v-col>
+              </v-row>
             </v-col>
           </v-row>
         </v-card-text>
