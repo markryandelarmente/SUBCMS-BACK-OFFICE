@@ -149,7 +149,7 @@
           <v-row>
             <v-col md="12" sm="12" class="text-center">
               <vue-plyr>
-                <video controls :src="`${server_url}/videos/content_video.mp4`"></video>
+                <video controls :src="content && content.video_url"></video>
               </vue-plyr>
             </v-col>
             <v-col md="12">
@@ -346,7 +346,20 @@ export default {
         })
         .then(({ data }) => {
           this.content.data = data.content;
-
+          this.content.resources = data.content.content_resource_types.map(
+            (content_resource_type) => {
+              return {
+                resources: content_resource_type.content_resources.map(
+                  (content_resource) => {
+                    return {
+                      ...content_resource.resource,
+                    };
+                  }
+                ),
+              };
+            }
+          );
+          this.content.video_url = this.content.resources[0].resources[0].content;
           this.$forceUpdate();
         });
     },
