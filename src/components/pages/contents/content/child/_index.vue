@@ -187,6 +187,9 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
+          <v-btn color="secondary darken-1" text @click="editContent(content.data.id)">
+            <v-icon small class="mr-1">mdi-pencil-outline</v-icon>Edit
+          </v-btn>
           <v-btn color="secondary darken-1" text @click="content.video_dialog = false">Close</v-btn>
         </v-card-actions>
       </v-card>
@@ -360,6 +363,7 @@ export default {
             }
           );
           this.content.video_url = this.content.resources[0].resources[0].content;
+          this.content.resource_id = this.content.resources[0].resources[0].id;
           this.$forceUpdate();
         });
     },
@@ -378,6 +382,17 @@ export default {
       } else if (type == PROGRAM) {
         this.content.program_dialog = true;
       }
+    },
+    editContent(content_id) {
+      this.$router.push({
+        name: "content_create",
+        query: {
+          id: 2,
+          text: "VIDEOS",
+          content_id: content_id,
+          resource_id: this.content.resource_id,
+        },
+      });
     },
   },
   computed: {
