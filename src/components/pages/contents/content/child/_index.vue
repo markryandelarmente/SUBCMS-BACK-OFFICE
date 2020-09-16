@@ -1,16 +1,16 @@
 <template>
   <v-row>
-    <v-col md="2" sm="12">
+    <!-- <v-col md="2" sm="12">
       <v-select
         prepend-icon="mdi-filter-outline"
         v-model="contents.filter.type"
         :items="computedTypes"
         label="Types"
       ></v-select>
-    </v-col>
-    <!-- <v-col md="1" sm="12">
-      <v-select :items="categories" label="CATEGORIES"></v-select>
     </v-col>-->
+    <v-col md="2" sm="12">
+      <v-select prepend-icon="mdi-filter-outline" :items="categories" label="CATEGORIES"></v-select>
+    </v-col>
     <v-col md="9" sm="10">
       <v-sheet>
         <v-chip-group active-class="primary--text">
@@ -21,7 +21,18 @@
     <v-col md="1" sm="2">
       <v-toolbar elevation="0">
         <v-spacer></v-spacer>
-        <v-btn icon @click="content_type.dialog = true">
+        <v-btn
+          icon
+          @click="
+              $router.push({
+                name: 'content_create',
+                query: {
+                  id: 2,
+                  text: 'VIDEOS',
+                },
+              })
+            "
+        >
           <v-icon large>mdi-plus</v-icon>
         </v-btn>
       </v-toolbar>
@@ -125,16 +136,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn text @click="content_type.dialog = false">Close</v-btn>
-          <v-btn
-            color="primary"
-            text
-            @click="
-              $router.push({
-                name: 'content_create',
-                query: content_type.selected,
-              })
-            "
-          >Ok</v-btn>
+          <v-btn color="primary" text>Ok</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
