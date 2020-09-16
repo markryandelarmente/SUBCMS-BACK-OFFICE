@@ -4,9 +4,9 @@
       <v-tab :to="{ name: 'contents' }">
         <strong>CONTENTS</strong>
       </v-tab>
-      <v-tab :to="{ name: 'resources' }">
+      <!-- <v-tab :to="{ name: 'resources' }">
         <strong>RESOURCES</strong>
-      </v-tab>
+      </v-tab>-->
       <v-tab>
         <strong>CATEGORIES</strong>
       </v-tab>
