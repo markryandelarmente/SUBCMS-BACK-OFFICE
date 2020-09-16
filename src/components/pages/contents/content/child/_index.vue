@@ -11,14 +11,7 @@
     <v-col md="9" sm="10">
       <v-sheet>
         <v-chip-group active-class="primary--text">
-          <v-chip
-            @click="alarm"
-            outlined
-            v-for="(category, index) in categories"
-            :key="index"
-            class="ma-2"
-            >{{ category.label }}</v-chip
-          >
+          <v-chip outlined v-for="(tag, index) in tags" :key="index" class="ma-2">{{ tag.label }}</v-chip>
         </v-chip-group>
       </v-sheet>
     </v-col>
@@ -35,13 +28,7 @@
     </v-col>
     <v-col cols="12">
       <v-row v-if="contents.data && contents.data.length">
-        <v-col
-          v-for="(content, index) in contents.data"
-          :key="index"
-          md="2"
-          sm="6"
-          xs="12"
-        >
+        <v-col v-for="(content, index) in contents.data" :key="index" md="2" sm="6" xs="12">
           <v-card
             elevation="1"
             max-width="380"
@@ -57,10 +44,7 @@
             >
               <template v-slot:placeholder>
                 <v-row class="fill-height ma-0" align="center" justify="center">
-                  <v-progress-circular
-                    indeterminate
-                    color="grey lighten-5"
-                  ></v-progress-circular>
+                  <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
                 </v-row>
               </template>
             </v-img>
@@ -77,9 +61,7 @@
 
                 <v-row justify="end">
                   <span class="mr-1">·</span>
-                  <v-icon @click="alarm" small class="mr-1"
-                    >mdi-dots-vertical</v-icon
-                  >
+                  <v-icon small class="mr-1">mdi-dots-vertical</v-icon>
                 </v-row>
               </v-list-item>
             </v-card-actions>
@@ -87,31 +69,31 @@
             <v-card-text class="text--secondary pt-0">
               <div class="font-weight-medium">{{ content.title }}</div>
 
-              <div class="font-weight-light">
-                {{ cutDescription(content.description) }}...
-              </div>
+              <div class="font-weight-light">{{ cutDescription(content.description) }}...</div>
               <div class="font-weight-thin">2months ago</div>
             </v-card-text>
 
             <v-card-actions>
               <v-chip outlined>
-                <v-icon small>{{
+                <v-icon small>
+                  {{
                   renderCardIcon(content.content_type.id)
-                }}</v-icon>
-                <span class="subtitle-2 font-weight-light ml-1">{{
+                  }}
+                </v-icon>
+                <span class="subtitle-2 font-weight-light ml-1">
+                  {{
                   content.content_type.name
-                }}</span>
+                  }}
+                </span>
               </v-chip>
               <v-spacer></v-spacer>
-              <v-icon
-                small
-                :color="content.is_free == 'FREE' ? 'success' : 'default'"
-                >{{
-                  content.is_free == "FREE"
-                    ? "mdi-check-circle-outline"
-                    : "mdi-lock-open-outline"
-                }}</v-icon
-              >
+              <v-icon small :color="content.is_free == 'FREE' ? 'success' : 'default'">
+                {{
+                content.is_free == "FREE"
+                ? "mdi-check-circle-outline"
+                : "mdi-lock-open-outline"
+                }}
+              </v-icon>
             </v-card-actions>
           </v-card>
         </v-col>
@@ -149,8 +131,7 @@
                 query: content_type.selected,
               })
             "
-            >Ok</v-btn
-          >
+          >Ok</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -163,27 +144,20 @@
           <v-row>
             <v-col md="12" sm="12" class="text-center">
               <vue-plyr>
-                <video
-                  controls
-                  :src="`${server_url}/videos/content_video.mp4`"
-                ></video>
+                <video controls :src="`${server_url}/videos/content_video.mp4`"></video>
               </vue-plyr>
             </v-col>
             <v-col md="12">
               <v-row>
                 <v-col md="12" sm="12">
-                  <span v-for="tag in tags" :key="tag.label" class="mx-1">
-                    {{ "#" + tag.label }}
-                  </span>
+                  <span v-for="tag in tags" :key="tag.label" class="mx-1">{{ "#" + tag.label }}</span>
                 </v-col>
                 <v-col md="10" sm="10" class="py-0">
-                  <h1 class="font-weight-regular" style="color: black">
-                    {{ content.data.title }}
-                  </h1>
+                  <h1 class="font-weight-regular" style="color: black">{{ content.data.title }}</h1>
                 </v-col>
                 <v-col md="2" sm="2" class="text-right py-0">
                   <v-spacer></v-spacer>
-                  <v-icon @click="alarm" medium>mdi-dots-vertical</v-icon>
+                  <v-icon medium>mdi-dots-vertical</v-icon>
                 </v-col>
 
                 <v-col md="12" sm="12" class="py-0">
@@ -204,12 +178,7 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn
-            color="secondary darken-1"
-            text
-            @click="content.video_dialog = false"
-            >Close</v-btn
-          >
+          <v-btn color="secondary darken-1" text @click="content.video_dialog = false">Close</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -223,12 +192,7 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn
-            color="secondary darken-1"
-            text
-            @click="content.article_dialog = false"
-            >Close</v-btn
-          >
+          <v-btn color="secondary darken-1" text @click="content.article_dialog = false">Close</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -242,12 +206,7 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn
-            color="secondary darken-1"
-            text
-            @click="content.program_dialog = false"
-            >Close</v-btn
-          >
+          <v-btn color="secondary darken-1" text @click="content.program_dialog = false">Close</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -256,131 +215,12 @@
 
 <script>
 import { CONTENTS_QUERY, CONTENT_QUERY } from "@/graphql/content.js";
+import { TAGS_QUERY } from "@/graphql/tag.js";
 export default {
   data: () => ({
     server_url: process.env.VUE_APP_SERVER_URL,
     loading: true,
-    categories: [
-      {
-        label: "Leg",
-      },
-      {
-        label: "Arm",
-      },
-      {
-        label: "Chest",
-      },
-      {
-        label: "Shoulder",
-      },
-      {
-        label: "Back",
-      },
-      {
-        label: "Leg",
-      },
-      {
-        label: "Arm",
-      },
-      {
-        label: "Chest",
-      },
-      {
-        label: "Shoulder",
-      },
-      {
-        label: "Back",
-      },
-      {
-        label: "Leg",
-      },
-      {
-        label: "Arm",
-      },
-      {
-        label: "Chest",
-      },
-      {
-        label: "Shoulder",
-      },
-      {
-        label: "Back",
-      },
-      {
-        label: "Leg",
-      },
-      {
-        label: "Arm",
-      },
-      {
-        label: "Chest",
-      },
-      {
-        label: "Shoulder",
-      },
-      {
-        label: "Back",
-      },
-      {
-        label: "Leg",
-      },
-      {
-        label: "Arm",
-      },
-      {
-        label: "Chest",
-      },
-      {
-        label: "Shoulder",
-      },
-      {
-        label: "Back",
-      },
-      {
-        label: "Arm",
-      },
-      {
-        label: "Chest",
-      },
-      {
-        label: "Shoulder",
-      },
-      {
-        label: "Back",
-      },
-      {
-        label: "Leg",
-      },
-      {
-        label: "Arm",
-      },
-      {
-        label: "Chest",
-      },
-      {
-        label: "Shoulder",
-      },
-      {
-        label: "Back",
-      },
-    ],
-    tags: [
-      {
-        label: "Leg",
-      },
-      {
-        label: "Arm",
-      },
-      {
-        label: "Chest",
-      },
-      {
-        label: "Shoulder",
-      },
-      {
-        label: "Back",
-      },
-    ],
+    tags: [],
     content_type: {
       dialog: false,
       selected: "",
@@ -427,15 +267,29 @@ export default {
       },
     },
   }),
+  mounted() {
+    this.fetchTags();
+  },
   created() {
     this.fetchContents();
   },
   methods: {
-    alarm() {},
-    selectType() {
-      console.log("hey");
+    fetchTags() {
+      this.$apollo
+        .query({
+          query: TAGS_QUERY,
+        })
+        .then(({ data }) => {
+          this.tags = data.tags_all.map((tag) => {
+            return {
+              label: tag.name,
+              value: tag.id,
+            };
+          });
+        });
     },
-    renderCardIcon: function(id) {
+
+    renderCardIcon: function (id) {
       if (id == 1) {
         return "mdi-video-plus-outline";
       } else if (id == 2) {
@@ -471,12 +325,7 @@ export default {
         });
     },
     cutDescription(str) {
-      return str
-        ? str
-            .split(" ")
-            .splice(0, 4)
-            .join(" ")
-        : "";
+      return str ? str.split(" ").splice(0, 4).join(" ") : "";
     },
     async viewContent(type, content_id) {
       const VIDEO = "VIDEO";
@@ -493,10 +342,10 @@ export default {
     },
   },
   computed: {
-    computedFilter: function() {
+    computedFilter: function () {
       return Object.assign({}, this.contents.filter);
     },
-    computedTypes: function() {
+    computedTypes: function () {
       let items = this.content_type.items.map((type) => {
         return {
           text: type.text,
@@ -513,8 +362,8 @@ export default {
         return textA < textB ? -1 : textA > textB ? 1 : 0;
       });
     },
-    computedContentTypes: function() {
-      return this.content_type.items.map(function(item) {
+    computedContentTypes: function () {
+      return this.content_type.items.map(function (item) {
         return {
           ...item,
           text: item.text.slice(0, -1),
@@ -524,7 +373,7 @@ export default {
   },
   watch: {
     contents: {
-      handler: function() {
+      handler: function () {
         this.fetchContents();
       },
       deep: true,
