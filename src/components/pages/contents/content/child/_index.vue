@@ -90,8 +90,9 @@
             <v-card-text class="text--secondary pt-0">
               <div class="font-weight-medium">{{ content.title }}</div>
 
-              <div class="font-weight-light">{{ cutDescription(content.description) }}...</div>
-              <div class="font-weight-thin">2months ago</div>
+              <small class="font-weight-light">{{ cutDescription(content.description) }}...</small>
+              <br />
+              <small class="font-weight-thin">2months ago</small>
             </v-card-text>
 
             <v-card-actions>
