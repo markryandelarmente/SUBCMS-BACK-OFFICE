@@ -9,7 +9,14 @@
       ></v-select>
     </v-col>-->
     <v-col md="2" sm="12">
-      <v-select prepend-icon="mdi-filter-outline" :items="categories" label="CATEGORIES"></v-select>
+      <v-select
+        prepend-icon="mdi-filter-outline"
+        :append-outer-icon="contents.filter.category ? 'mdi-close' : ''"
+        @click:append-outer="contents.filter.category = ''"
+        :items="categories"
+        v-model="contents.filter.category"
+        label="CATEGORIES"
+      ></v-select>
     </v-col>
     <v-col md="9" sm="10">
       <v-sheet>
@@ -260,6 +267,7 @@ export default {
     },
     contents: {
       filter: {
+        category: "",
         type: 0,
         page: 1,
         order: "desc",
@@ -317,7 +325,7 @@ export default {
           this.categories = data.categories_all.map((cat) => {
             return {
               text: cat.name,
-              value: cat.id,
+              value: cat.name,
             };
           });
         });
