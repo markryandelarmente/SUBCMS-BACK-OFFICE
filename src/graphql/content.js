@@ -43,6 +43,10 @@ const CONTENTS_QUERY = gql`
             name
           }
         }
+        categories {
+          id
+          name
+        }
       }
     }
   }
@@ -87,6 +91,10 @@ const CONTENT_QUERY = gql`
           name
         }
       }
+      categories {
+        id
+        name
+      }
     }
   }
 `;
@@ -121,8 +129,68 @@ const CONTENT_VIDEO_STORE = gql`
           }
         }
       }
+      tags {
+        id
+        tag {
+          id
+          name
+        }
+      }
+      categories {
+        id
+        name
+      }
+    }
+  }
+`;
+const CONTENT_VIDEO_UPDATE = gql`
+  mutation content_update($input: ContentUpdateInput) {
+    content_update(input: $input) {
+      id
+      title
+      content_type {
+        name
+      }
+      image {
+        id
+        url
+      }
+      content_resource_types {
+        id
+        name
+        content_resources {
+          id
+          title
+          order
+          resource {
+            id
+            content
+            updated_at
+            resource_type {
+              id
+              name
+            }
+          }
+        }
+      }
+      tags {
+        id
+        tag {
+          id
+          name
+        }
+      }
+      categories {
+        id
+        name
+      }
     }
   }
 `;
 
-export { CONTENTS_QUERY, CONTENT_QUERY, CONTENT_VIDEO_STORE };
+export {
+  CONTENTS_QUERY,
+  CONTENT_QUERY,
+  CONTENT_VIDEO_STORE,
+  CONTENT_VIDEO_UPDATE,
+};

@@ -142,14 +142,14 @@
     </v-dialog>
 
     <!-- VIEW VIDEO MODAL -->
-    <v-dialog v-model="content.video_dialog" persistent width="1200">
+    <v-dialog v-model="content.video_dialog" width="1200">
       <v-card elevation="0">
         <v-card-title class="headline"></v-card-title>
         <v-card-text>
           <v-row>
             <v-col md="12" sm="12" class="text-center">
               <vue-plyr>
-                <video controls :src="`${server_url}/videos/content_video.mp4`"></video>
+                <video controls :src="content && content.video_url"></video>
               </vue-plyr>
             </v-col>
             <v-col md="12">
@@ -182,11 +182,19 @@
                 </v-col>
               </v-row>
               <v-divider></v-divider>
+              <v-row>
+                <v-col md="12" sm="12" class="mt-3">
+                  <span class="font-weight-regular">{{ content.data.description }}</span>
+                </v-col>
+              </v-row>
             </v-col>
           </v-row>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
+          <v-btn color="secondary darken-1" text @click="editContent(content.data.id)">
+            <v-icon small class="mr-1">mdi-pencil-outline</v-icon>Edit
+          </v-btn>
           <v-btn color="secondary darken-1" text @click="content.video_dialog = false">Close</v-btn>
         </v-card-actions>
       </v-card>
@@ -346,7 +354,21 @@ export default {
         })
         .then(({ data }) => {
           this.content.data = data.content;
-
+          this.content.resources = data.content.content_resource_types.map(
+            (content_resource_type) => {
+              return {
+                resources: content_resource_type.content_resources.map(
+                  (content_resource) => {
+                    return {
+                      ...content_resource.resource,
+                    };
+                  }
+                ),
+              };
+            }
+          );
+          this.content.video_url = this.content.resources[0].resources[0].content;
+          this.content.resource_id = this.content.resources[0].resources[0].id;
           this.$forceUpdate();
         });
     },
@@ -365,6 +387,17 @@ export default {
       } else if (type == PROGRAM) {
         this.content.program_dialog = true;
       }
+    },
+    editContent(content_id) {
+      this.$router.push({
+        name: "content_create",
+        query: {
+          id: 2,
+          text: "VIDEOS",
+          content_id: content_id,
+          resource_id: this.content.resource_id,
+        },
+      });
     },
   },
   computed: {

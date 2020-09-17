@@ -36,7 +36,7 @@
             <div class="my-5">
               <v-btn large color="secondary" elevation="0" @click="triggerInputFile">Select video</v-btn>
             </div>
-            <h3 class="font-weight-medium">OR</h3>
+            <!-- <h3 class="font-weight-medium">OR</h3>
             <div class="my-5">
               <v-btn
                 elevation="1"
@@ -44,7 +44,7 @@
                 color="default"
                 @click="selectFromResources"
               >Select from resources</v-btn>
-            </div>
+            </div>-->
             <input
               type="file"
               accept="video/*"
@@ -79,7 +79,7 @@
               outlined
               name="input-7-4"
               label="Description"
-              height="140"
+              height="200"
               v-model="video.description"
             ></v-textarea>
             <h4 class="font-weight-regular">Thumbnail</h4>
@@ -99,9 +99,9 @@
               <div class="text-center mx-2 file-input__dotted" @click="triggerFileInputThumbnail">
                 <v-icon size="50" class="my-5">mdi-image-plus</v-icon>Upload
               </div>
-              <div class="text-center mx-2 mb-3 file-input__dotted">
+              <!-- <div class="text-center mx-2 mb-3 file-input__dotted">
                 <v-icon size="50" class="my-5">mdi-plus</v-icon>gallery
-              </div>
+              </div>-->
             </div>
             <v-select
               :items="categories"
@@ -171,8 +171,11 @@
         </v-row>
         <v-row class="text-right">
           <v-col md="12">
-            <v-btn large elevation="0" color="primary" @click="storeContentVideo">
-              <v-icon>mdi-content-save-cog</v-icon>Save
+            <v-btn v-if="is_edit" large elevation="0" color="primary" @click="updateContentVideo">
+              <v-icon>mdi-content-save-outline</v-icon>Update
+            </v-btn>
+            <v-btn v-else large elevation="0" color="primary" @click="storeContentVideo">
+              <v-icon>mdi-content-save-outline</v-icon>Save
             </v-btn>
           </v-col>
         </v-row>
@@ -183,13 +186,18 @@
 
 <script>
 import { VIDEO_UPLOAD_MUTATION } from "@/graphql/resource.js";
-import { CONTENT_VIDEO_STORE } from "@/graphql/content.js";
+import {
+  CONTENT_VIDEO_STORE,
+  CONTENT_VIDEO_UPDATE,
+  CONTENT_QUERY,
+} from "@/graphql/content.js";
 import { TAGS_QUERY } from "@/graphql/tag.js";
 import { CATEGORIES_QUERY } from "@/graphql/category.js";
 export default {
   data: () => ({
     is_video: false,
     is_uploading: false,
+    is_edit: false,
     value: 0,
     interval: {},
     tags: [],
@@ -219,6 +227,8 @@ export default {
     this.$route.query.resource_id
       ? (this.is_video = true)
       : (this.is_video = false);
+
+    this.fetchContent();
   },
   methods: {
     // get tag and categories
@@ -306,6 +316,7 @@ export default {
       let photo = e.target.files[0] || e.dataTransfer.files[0];
       this.video.thumbnail_preview = URL.createObjectURL(photo);
       this.video.image = photo;
+      this.video.thumbnail = "";
     },
     storeContentVideo() {
       this.$apollo
@@ -326,6 +337,61 @@ export default {
         })
         .then(({ data }) => {
           if (data.content_store.id) {
+            this.$router.push({ name: "content_index" });
+          }
+        })
+        .catch(() => {
+          // error logs here
+        });
+    },
+
+    // edit content
+    fetchContent() {
+      if (this.$route.query.content_id) {
+        this.$apollo
+          .query({
+            query: CONTENT_QUERY,
+            variables: {
+              id: this.$route.query.content_id,
+            },
+          })
+          .then(({ data }) => {
+            console.log(data);
+            this.is_edit = true;
+            this.video.id = data.content.id;
+            this.video.title = data.content.title;
+            this.video.description = data.content.description;
+            this.video.is_free = data.content.is_free;
+            this.video.tags = data.content.tags.map((tag) => {
+              return tag.id;
+            });
+            this.video.categories = data.content.categories.map((cat) => {
+              return cat.id;
+            });
+            this.video.thumbnail_preview = data.content.image.url;
+            this.video.thumbnail = data.content.image.url;
+          });
+      }
+    },
+    updateContentVideo() {
+      this.$apollo
+        .mutate({
+          mutation: CONTENT_VIDEO_UPDATE,
+          variables: {
+            input: {
+              id: this.video.id,
+              title: this.video.title,
+              description: this.video.description,
+              visibility: this.video.is_free == "FREE" ? 1 : 0,
+              thumbnail: this.video.thumbnail,
+              image: this.video.image ? this.video.image : null,
+              tags: this.video.tags,
+              categories: this.video.categories,
+            },
+          },
+        })
+        .then(({ data }) => {
+          if (data.content_update.id) {
             this.$router.push({ name: "content_index" });
           }
         })
