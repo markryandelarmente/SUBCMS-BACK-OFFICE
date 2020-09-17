@@ -17,6 +17,9 @@ import content_create from "../components/pages/contents/content/child/_create";
 // RESOURCES
 import ResourceIndex from "../components/pages/contents/resource/index";
 import resource_index from "../components/pages/contents/resource/child/_index";
+// CATEGORIES
+import CategoryIndex from "../components/pages/contents/category/index";
+import category_index from "../components/pages/contents/category/child/_index";
 
 // ===================================
 // SUBSCRIPTION GROUP
@@ -79,6 +82,15 @@ export default [
             redirect: { name: "resource_index" },
             children: [
               { path: "", name: "resource_index", component: resource_index },
+            ],
+          },
+          {
+            path: "categories",
+            name: "categories",
+            component: CategoryIndex,
+            redirect: { name: "category_index" },
+            children: [
+              { path: "", name: "category_index", component: category_index },
             ],
           },
         ],
