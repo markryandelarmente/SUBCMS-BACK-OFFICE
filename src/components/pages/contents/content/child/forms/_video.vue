@@ -36,7 +36,7 @@
             <div class="my-5">
               <v-btn large color="secondary" elevation="0" @click="triggerInputFile">Select video</v-btn>
             </div>
-            <h3 class="font-weight-medium">OR</h3>
+            <!-- <h3 class="font-weight-medium">OR</h3>
             <div class="my-5">
               <v-btn
                 elevation="1"
@@ -44,7 +44,7 @@
                 color="default"
                 @click="selectFromResources"
               >Select from resources</v-btn>
-            </div>
+            </div>-->
             <input
               type="file"
               accept="video/*"
@@ -99,9 +99,9 @@
               <div class="text-center mx-2 file-input__dotted" @click="triggerFileInputThumbnail">
                 <v-icon size="50" class="my-5">mdi-image-plus</v-icon>Upload
               </div>
-              <div class="text-center mx-2 mb-3 file-input__dotted">
+              <!-- <div class="text-center mx-2 mb-3 file-input__dotted">
                 <v-icon size="50" class="my-5">mdi-plus</v-icon>gallery
-              </div>
+              </div>-->
             </div>
             <v-select
               :items="categories"
