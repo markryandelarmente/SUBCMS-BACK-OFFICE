@@ -20,7 +20,7 @@
     </v-col>
     <v-col md="9" sm="10">
       <v-sheet>
-        <v-chip-group multiple active-class="primary--text">
+        <v-chip-group v-model="selected_tags" @change="test" multiple active-class="primary--text">
           <v-chip outlined v-for="(tag, index) in tags" :key="index" class="ma-2">{{ tag.label }}</v-chip>
         </v-chip-group>
       </v-sheet>
@@ -246,6 +246,7 @@ export default {
     server_url: process.env.VUE_APP_SERVER_URL,
     loading: true,
     tags: [],
+    selected_tags: [],
     categories: [],
     content_type: {
       dialog: false,
@@ -267,6 +268,7 @@ export default {
     },
     contents: {
       filter: {
+        tags: [],
         category: "",
         type: 0,
         page: 1,
@@ -302,6 +304,17 @@ export default {
     this.fetchContents();
   },
   methods: {
+    test() {
+      let selected_tags = this.selected_tags;
+      let tags = [];
+      selected_tags.forEach((tag) => {
+        tags.push(this.tags[tag]);
+      });
+      let ids = tags.map((tag) => {
+        return tag.value;
+      });
+      this.contents.filter.tags = ids;
+    },
     fetchTags() {
       this.$apollo
         .query({
@@ -311,7 +324,7 @@ export default {
           this.tags = data.tags_all.map((tag) => {
             return {
               label: tag.name,
-              value: tag.name,
+              value: tag.id,
             };
           });
         });
