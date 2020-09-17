@@ -9,4 +9,17 @@ const TAGS_QUERY = gql`
   }
 `;
 
-export { TAGS_QUERY };
+const TAGS_PAGINATED_QUERY = gql`
+  query tags($query: DefaultFilter) {
+    tags(query: $query) {
+      total
+      current_page
+      data {
+        id
+        name
+      }
+    }
+  }
+`;
+
+export { TAGS_QUERY, TAGS_PAGINATED_QUERY };
