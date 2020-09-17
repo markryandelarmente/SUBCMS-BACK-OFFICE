@@ -165,7 +165,14 @@ export default {
     // fetch data from server
     fetchData() {},
     // sort data
-    sortData() {},
+    sortData(val) {
+      let column = val.sortBy[0];
+      let order = val.sortDesc[0] == true ? "desc" : "asc";
+      if (column && order) {
+        this.table.filter.column = column;
+        this.table.filter.order = order;
+      }
+    },
     // create new data
     createData() {},
     // edit data
