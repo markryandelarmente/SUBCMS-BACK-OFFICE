@@ -20,7 +20,7 @@
     </v-col>
     <v-col md="9" sm="10">
       <v-sheet>
-        <v-chip-group active-class="primary--text">
+        <v-chip-group multiple active-class="primary--text">
           <v-chip outlined v-for="(tag, index) in tags" :key="index" class="ma-2">{{ tag.label }}</v-chip>
         </v-chip-group>
       </v-sheet>
@@ -311,7 +311,7 @@ export default {
           this.tags = data.tags_all.map((tag) => {
             return {
               label: tag.name,
-              value: tag.id,
+              value: tag.name,
             };
           });
         });
