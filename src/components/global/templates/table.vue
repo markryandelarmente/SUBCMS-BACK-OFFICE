@@ -146,46 +146,6 @@ export default {
             value: 1,
           },
         },
-        {
-          image: "Frozen Yogurt",
-          name: 159,
-          action: {
-            text: "ACTION",
-            value: 1,
-          },
-        },
-        {
-          image: "Frozen Yogurt",
-          name: 159,
-          action: {
-            text: "ACTION",
-            value: 1,
-          },
-        },
-        {
-          image: "Frozen Yogurt",
-          name: 159,
-          action: {
-            text: "ACTION",
-            value: 1,
-          },
-        },
-        {
-          image: "Frozen Yogurt",
-          name: 159,
-          action: {
-            text: "ACTION",
-            value: 1,
-          },
-        },
-        {
-          image: "Frozen Yogurt",
-          name: 159,
-          action: {
-            text: "ACTION",
-            value: 1,
-          },
-        },
       ],
     },
     deleteDialog: {
@@ -198,11 +158,19 @@ export default {
       text: "",
     },
   }),
-  created() {},
+  created() {
+    this.fetchData();
+  },
   methods: {
+    // fetch data from server
+    fetchData() {},
+    // sort data
     sortData() {},
+    // create new data
     createData() {},
+    // edit data
     editData() {},
+    // delete data
     openDeleteModal() {},
     deleteSingleData() {},
     deleteMultipleData() {},
