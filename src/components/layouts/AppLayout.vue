@@ -2,49 +2,31 @@
   <div id="app">
     <v-app id="inspire">
       <v-app id="inspire">
-        <v-app-bar
-          dark
-          color="secondary"
-          height="80"
-          elevation="0"
-          app
-          clipped-right
-        >
-          <v-app-bar-nav-icon
-            @click.stop="drawer = !drawer"
-          ></v-app-bar-nav-icon>
+        <v-app-bar dark color="secondary" height="70" elevation="0" app clipped-right>
+          <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
           <v-toolbar-title>SUBCMS</v-toolbar-title>
           <v-spacer></v-spacer>
-          <v-toolbar dark color="secondary" height="80" elevation="0">
+          <v-toolbar dark color="secondary" elevation="0" class="my-auto">
             <v-spacer></v-spacer>
-            <v-btn
-              icon
-              large
-              class="mr-3"
-              @click="tool_bar.search_expanded = true"
-            >
+            <v-btn icon class="mr-1" @click="tool_bar.search_expanded = true">
               <v-icon>mdi-magnify</v-icon>
             </v-btn>
             <v-expand-x-transition>
               <div v-show="tool_bar.search_expanded" style="width:400px">
-                <v-text-field
-                  label="Start typing to search"
-                  single-line
-                  hide-details
-                ></v-text-field>
+                <v-text-field label="Start typing to search" single-line hide-details></v-text-field>
               </div>
             </v-expand-x-transition>
-            <v-badge color="primary" content="6" overlap class="mr-3">
-              <v-btn icon large>
+            <v-badge color="primary" content="6" overlap class="mr-1">
+              <v-btn icon>
                 <v-icon>mdi-message-outline</v-icon>
               </v-btn>
             </v-badge>
-            <v-badge color="primary" content="10" overlap class="mr-3">
-              <v-btn icon large>
+            <v-badge color="primary" content="10" overlap class="mr-1">
+              <v-btn icon>
                 <v-icon>mdi-bell-outline</v-icon>
               </v-btn>
             </v-badge>
-            <v-btn icon large class="mr-3">
+            <v-btn icon class="mr-1">
               <v-icon>mdi-apps</v-icon>
             </v-btn>
 
@@ -61,13 +43,11 @@
               </template>
               <v-list>
                 <v-list-item>
-                  <v-icon color="default">mdi-account-outline</v-icon>
-                  &nbsp; &nbsp;
+                  <v-icon color="default">mdi-account-outline</v-icon>&nbsp; &nbsp;
                   <v-list-item-title>Profile</v-list-item-title>
                 </v-list-item>
                 <v-list-item @click="logout">
-                  <v-icon color="error">mdi-power</v-icon>
-                  &nbsp; &nbsp;
+                  <v-icon color="error">mdi-power</v-icon>&nbsp; &nbsp;
                   <v-list-item-title>Logout</v-list-item-title>
                 </v-list-item>
               </v-list>
@@ -222,7 +202,7 @@ export default {
     removeElementInDom() {
       document
         .querySelectorAll(".v-navigation-drawer__border")
-        .forEach(function(a) {
+        .forEach(function (a) {
           a.remove();
         });
     },

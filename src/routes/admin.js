@@ -17,6 +17,12 @@ import content_create from "../components/pages/contents/content/child/_create";
 // RESOURCES
 import ResourceIndex from "../components/pages/contents/resource/index";
 import resource_index from "../components/pages/contents/resource/child/_index";
+// CATEGORIES
+import CategoryIndex from "../components/pages/contents/category/index";
+import category_index from "../components/pages/contents/category/child/_index";
+// TAGS
+import TagIndex from "../components/pages/contents/tag/index";
+import tag_index from "../components/pages/contents/tag/child/_index";
 
 // ===================================
 // SUBSCRIPTION GROUP
@@ -80,6 +86,22 @@ export default [
             children: [
               { path: "", name: "resource_index", component: resource_index },
             ],
+          },
+          {
+            path: "categories",
+            name: "categories",
+            component: CategoryIndex,
+            redirect: { name: "category_index" },
+            children: [
+              { path: "", name: "category_index", component: category_index },
+            ],
+          },
+          {
+            path: "tags",
+            name: "tags",
+            component: TagIndex,
+            redirect: { name: "tag_index" },
+            children: [{ path: "", name: "tag_index", component: tag_index }],
           },
         ],
       },

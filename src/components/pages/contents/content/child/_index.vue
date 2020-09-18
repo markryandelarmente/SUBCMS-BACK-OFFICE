@@ -9,11 +9,18 @@
       ></v-select>
     </v-col>-->
     <v-col md="2" sm="12">
-      <v-select prepend-icon="mdi-filter-outline" :items="categories" label="CATEGORIES"></v-select>
+      <v-select
+        prepend-icon="mdi-filter-outline"
+        :append-outer-icon="contents.filter.category ? 'mdi-close' : ''"
+        @click:append-outer="contents.filter.category = ''"
+        :items="categories"
+        v-model="contents.filter.category"
+        label="CATEGORIES"
+      ></v-select>
     </v-col>
     <v-col md="9" sm="10">
       <v-sheet>
-        <v-chip-group active-class="primary--text">
+        <v-chip-group v-model="selected_tags" @change="test" multiple active-class="primary--text">
           <v-chip outlined v-for="(tag, index) in tags" :key="index" class="ma-2">{{ tag.label }}</v-chip>
         </v-chip-group>
       </v-sheet>
@@ -83,8 +90,9 @@
             <v-card-text class="text--secondary pt-0">
               <div class="font-weight-medium">{{ content.title }}</div>
 
-              <div class="font-weight-light">{{ cutDescription(content.description) }}...</div>
-              <div class="font-weight-thin">2months ago</div>
+              <small class="font-weight-light">{{ cutDescription(content.description) }}...</small>
+              <br />
+              <small class="font-weight-thin">2months ago</small>
             </v-card-text>
 
             <v-card-actions>
@@ -239,6 +247,7 @@ export default {
     server_url: process.env.VUE_APP_SERVER_URL,
     loading: true,
     tags: [],
+    selected_tags: [],
     categories: [],
     content_type: {
       dialog: false,
@@ -260,6 +269,8 @@ export default {
     },
     contents: {
       filter: {
+        tags: [],
+        category: "",
         type: 0,
         page: 1,
         order: "desc",
@@ -294,6 +305,17 @@ export default {
     this.fetchContents();
   },
   methods: {
+    test() {
+      let selected_tags = this.selected_tags;
+      let tags = [];
+      selected_tags.forEach((tag) => {
+        tags.push(this.tags[tag]);
+      });
+      let ids = tags.map((tag) => {
+        return tag.value;
+      });
+      this.contents.filter.tags = ids;
+    },
     fetchTags() {
       this.$apollo
         .query({
@@ -317,7 +339,7 @@ export default {
           this.categories = data.categories_all.map((cat) => {
             return {
               text: cat.name,
-              value: cat.id,
+              value: cat.name,
             };
           });
         });

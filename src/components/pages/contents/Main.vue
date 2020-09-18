@@ -7,10 +7,10 @@
       <!-- <v-tab :to="{ name: 'resources' }">
         <strong>RESOURCES</strong>
       </v-tab>-->
-      <v-tab>
+      <v-tab :to="{ name: 'categories' }">
         <strong>CATEGORIES</strong>
       </v-tab>
-      <v-tab>
+      <v-tab :to="{ name: 'tags' }">
         <strong>TAGS</strong>
       </v-tab>
     </v-tabs>
