@@ -299,6 +299,7 @@ export default {
           this.editDialog.data.id = data.category.id;
           this.editDialog.data.name = data.category.name;
           this.editDialog.data.image_preview = data.category.image.url;
+          this.editDialog.data.image_url = data.category.image.url;
         });
     },
     updateData() {
@@ -319,6 +320,7 @@ export default {
               id: this.editDialog.data.id,
               name: this.editDialog.data.name,
               image: this.editDialog.data.image,
+              image_url: this.editDialog.data.image_url,
             },
           },
         })
@@ -337,6 +339,7 @@ export default {
       let photo = e.target.files[0] || e.dataTransfer.files[0];
       this.editDialog.data.image = photo;
       this.editDialog.data.image_preview = URL.createObjectURL(photo);
+      this.editDialog.data.image_url = "";
     },
     // delete data
     openDeleteModal() {},
