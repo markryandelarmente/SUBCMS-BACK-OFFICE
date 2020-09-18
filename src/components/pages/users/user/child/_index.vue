@@ -1,9 +1,9 @@
 <template>
-  <v-card outlined class="rounded-lg">
+  <v-card class="rounded-lg" elevation="0">
     <v-toolbar elevation="0">
       <v-app-bar-nav-icon></v-app-bar-nav-icon>
 
-      <v-toolbar-title>{{ computedTable.tool_bar.title }} </v-toolbar-title>
+      <v-toolbar-title>{{ computedTable.tool_bar.title }}</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn icon @click="table.tool_bar.search_expanded = true">
         <v-icon>mdi-magnify</v-icon>
@@ -31,7 +31,7 @@
       </v-btn>
     </v-toolbar>
     <v-row>
-      <v-col md="2" sm="6" class="ml-5">
+      <v-col md="2" sm="6" class="ml-5 py-1">
         <v-select
           dense
           v-model="table.filter.role"
@@ -77,27 +77,23 @@
       </template>
       <template v-slot:item.roles="{ item }">
         <v-chip outlined>
-          {{ item.roles[0].name.toUpperCase() }}
+          <small>{{ item.roles[0].name.toUpperCase() }}</small>
         </v-chip>
       </template>
     </v-data-table>
-    <div class="text-center mt-5 mb-5">
-      <v-pagination
-        v-model="table.filter.page"
-        :length="table.pageCount"
-        :total-visible="10"
-      ></v-pagination>
+    <div class="text-center mt-5 mb-3">
+      <v-pagination v-model="table.filter.page" :length="table.pageCount" :total-visible="10"></v-pagination>
     </div>
     <v-dialog v-model="deleteDialog.activate" persistent max-width="400">
       <v-card>
-        <v-card-title class="headline"
-          >Are you sure you want to delete
-          {{ deleteDialog.text }}?</v-card-title
-        >
-        <v-card-text
-          >Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ut,
-          laborum.</v-card-text
-        >
+        <v-card-title class="headline">
+          Are you sure you want to delete
+          {{ deleteDialog.text }}?
+        </v-card-title>
+        <v-card-text>
+          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ut,
+          laborum.
+        </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn text @click="deleteDialog.activate = false">Cancel</v-btn>
@@ -109,8 +105,7 @@
                 ? deleteMultipleUser()
                 : deleteSingleUser()
             "
-            >Yes</v-btn
-          >
+          >Yes</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -121,8 +116,7 @@
       :bottom="true"
       :left="true"
       width="auto"
-      >{{ toaster.text }}</v-snackbar
-    >
+    >{{ toaster.text }}</v-snackbar>
   </v-card>
 </template>
 
@@ -136,7 +130,7 @@ export default {
         search_expanded: false,
         title: "Users",
       },
-      height: 800,
+      height: 600,
       time: 0,
       loading: true,
       total: 0,
@@ -256,10 +250,10 @@ export default {
     },
   },
   computed: {
-    computedFilter: function() {
+    computedFilter: function () {
       return Object.assign({}, this.table.filter);
     },
-    computedTable: function() {
+    computedTable: function () {
       return {
         ...this.table,
         tool_bar: {
@@ -311,7 +305,7 @@ export default {
         },
       };
     },
-    computedRoles: function() {
+    computedRoles: function () {
       return this.table.roles.map((role) => {
         return {
           ...role,
@@ -322,7 +316,7 @@ export default {
   },
   watch: {
     computedFilter: {
-      handler: function(newVal, oldVal) {
+      handler: function (newVal, oldVal) {
         clearTimeout(this.table.time);
         this.table.time = setTimeout(() => {
           if (newVal.keyword != oldVal.keyword) {
