@@ -1,6 +1,6 @@
 <template>
-  <v-card outlined class="rounded-lg">
-    <v-toolbar elevation="0" class="mt-3">
+  <v-card elevation="0" class="rounded-lg">
+    <v-toolbar elevation="0">
       <v-app-bar-nav-icon></v-app-bar-nav-icon>
 
       <v-toolbar-title>{{ computedTable.tool_bar.title }}</v-toolbar-title>
@@ -20,9 +20,9 @@
           ></v-text-field>
         </div>
       </v-expand-x-transition>
-      <v-btn icon @click="$router.push({ name: 'user_create' })">
+      <!-- <v-btn icon @click="$router.push({ name: 'user_create' })">
         <v-icon>mdi-plus</v-icon>
-      </v-btn>
+      </v-btn>-->
       <v-btn
         icon
         :disabled="table.selected && table.selected.length ? false : true"
