@@ -21,7 +21,7 @@
               ></v-text-field>
             </div>
           </v-expand-x-transition>
-          <v-btn icon @click="createData()">
+          <v-btn icon @click="openCreateModal()">
             <v-icon>mdi-plus</v-icon>
           </v-btn>
           <v-btn
@@ -144,7 +144,7 @@
                 text
                 @click="updateData"
               >Update</v-btn>
-              <v-btn v-else color="primary darken-1" text @click="createData">Save</v-btn>
+              <v-btn v-else color="primary darken-1" text @click="createData()">Save</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -246,11 +246,45 @@ export default {
         this.table.filter.order = order;
       }
     },
+    // create data
+    openCreateModal() {
+      this.editDialog.activate = true;
+      this.editDialog.is_edit = false;
+      if (this.editDialog.data.id) {
+        this.editDialog.data = {
+          id: "",
+          name: "",
+          image: "",
+          image_preview: "",
+        };
+      }
+    },
     createData() {
       this.editDialog.activate = true;
       this.editDialog.is_edit = false;
-      this.editDialog.data = {};
-      CATEGORY_STORE_MUTATION;
+      this.$apollo
+        .mutate({
+          mutation: CATEGORY_STORE_MUTATION,
+          variables: {
+            input: {
+              name: this.editDialog.data.name,
+              image: this.editDialog.data.image,
+            },
+          },
+        })
+        .then(() => {
+          this.editDialog.activate = false;
+          this.fetchData();
+          this.editDialog.data = {
+            id: "",
+            name: "",
+            image: "",
+            image_preview: "",
+          };
+        })
+        .catch(() => {
+          // error logs here
+        });
     },
     // edit data
     editData(id) {
