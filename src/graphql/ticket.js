@@ -18,6 +18,24 @@ const TICKETS_QUERY = gql`
     }
   }
 `;
+const TICKET_QUERY = gql`
+  query ticket($id: ID) {
+    ticket(id: $id) {
+      id
+      content
+      status
+      created_at
+      ticket_category {
+        name
+      }
+      issuer_user {
+        firstname
+        lastname
+        email
+      }
+    }
+  }
+`;
 
 const TICKET_DELETE_MUTATION = gql`
   mutation ticket_delete($ids: [ID]) {
@@ -49,4 +67,9 @@ const TICKET_UPDATE_MUTATION = gql`
   }
 `;
 
-export { TICKETS_QUERY, TICKET_DELETE_MUTATION, TICKET_UPDATE_MUTATION };
+export {
+  TICKETS_QUERY,
+  TICKET_DELETE_MUTATION,
+  TICKET_QUERY,
+  TICKET_UPDATE_MUTATION,
+};
