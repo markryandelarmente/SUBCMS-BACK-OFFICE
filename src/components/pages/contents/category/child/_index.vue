@@ -104,7 +104,7 @@
         <v-dialog v-model="editDialog.activate" persistent max-width="600px">
           <v-card>
             <v-card-title>
-              <span class="headline">Create Category</span>
+              <span class="headline">{{ editDialog.is_edit ? 'Edit Category' : 'Create Category' }}</span>
             </v-card-title>
             <v-card-text>
               <v-container>
