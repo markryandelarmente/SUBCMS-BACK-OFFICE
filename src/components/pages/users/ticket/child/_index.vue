@@ -57,7 +57,7 @@
           <v-icon right>{{ item.status == 'SOLVED' ? 'mdi-check': 'mdi-progress-clock' }}</v-icon>
         </v-chip>
       </template>
-      <template v-slot:item.action="{  }">
+      <template v-slot:item.action="{ item }">
         <v-btn icon color="success">
           <v-icon small>mdi-pencil-outline</v-icon>
         </v-btn>
@@ -65,6 +65,7 @@
           icon
           color="error"
           :disabled="table.selected && table.selected.length ? true : false"
+          @click="openDeleteModal(item.id)"
         >
           <v-icon small>mdi-trash-can-outline</v-icon>
         </v-btn>
@@ -100,7 +101,7 @@
 </template>
 
 <script>
-import { TICKETS_QUERY } from "@/graphql/ticket.js";
+import { TICKETS_QUERY, TICKET_DELETE_MUTATION } from "@/graphql/ticket.js";
 export default {
   data: () => ({
     table: {
@@ -171,6 +172,44 @@ export default {
         this.table.filter.order = order;
       }
     },
+    // delete data
+    openDeleteModal(ids) {
+      this.deleteDialog = {
+        activate: true,
+        id: ids,
+        text: ids.length > 1 ? "Tickets" : "Tickets",
+      };
+    },
+    deleteSingleData() {
+      this.deleteData([this.deleteDialog.id]);
+      this.deleteDialog.activate = false;
+    },
+    deleteMultipleData() {
+      this.deleteData(
+        this.table.selected.map((data) => {
+          return data.id;
+        })
+      );
+      this.deleteDialog.activate = false;
+    },
+    deleteData(ids) {
+      this.$apollo
+        .mutate({
+          mutation: TICKET_DELETE_MUTATION,
+          variables: {
+            ids: ids,
+          },
+        })
+        .then(() => {
+          this.fetchData();
+          this.toaster = {
+            activate: true,
+            text: ids.length > 1 ? "Tickets deleted!" : "Ticket deleted!",
+          };
+          this.table.selected = [];
+        })
+        .catch(() => {});
+    },
   },
   computed: {
     computedFilter: function () {
@@ -191,10 +230,12 @@ export default {
           {
             text: "STATUS",
             value: "status",
+            sortable: false,
           },
           {
             text: "CATEGORY",
             value: "ticket_category.name",
+            sortable: false,
           },
           {
             text: "ISSUED DATE",
