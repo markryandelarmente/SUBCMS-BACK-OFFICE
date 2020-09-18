@@ -347,7 +347,7 @@ export default {
       this.deleteDialog = {
         activate: true,
         id: ids,
-        text: ids.length > 1 ? "categories" : "category",
+        text: ids.length > 1 ? "Categories" : "Category",
       };
     },
     deleteSingleData() {
