@@ -62,10 +62,21 @@ const CATEGORY_UPDATE_MUTATION = gql`
     }
   }
 `;
+
+const CATEGORY_DELETE_MUTATION = gql`
+  mutation category_delete($ids: [ID]) {
+    category_delete(ids: $ids) {
+      id
+      name
+    }
+  }
+`;
+
 export {
   CATEGORIES_QUERY,
   CATEGORIES_PAGINATED_QUERY,
   CATEGORY_QUERY,
   CATEGORY_STORE_MUTATION,
   CATEGORY_UPDATE_MUTATION,
+  CATEGORY_DELETE_MUTATION,
 };

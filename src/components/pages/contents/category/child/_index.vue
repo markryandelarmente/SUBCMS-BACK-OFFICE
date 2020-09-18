@@ -94,8 +94,8 @@
                 text
                 @click="
               table.selected && table.selected.length
-                ? deleteMultipleUser()
-                : deleteSingleUser()
+                ? deleteMultipleData()
+                : deleteSingleData()
             "
               >Yes</v-btn>
             </v-card-actions>
@@ -167,6 +167,7 @@ import {
   CATEGORY_QUERY,
   CATEGORY_STORE_MUTATION,
   CATEGORY_UPDATE_MUTATION,
+  CATEGORY_DELETE_MUTATION,
 } from "@/graphql/category.js";
 export default {
   data: () => ({
@@ -191,7 +192,7 @@ export default {
     },
     deleteDialog: {
       activate: false,
-      user_id: null,
+      id: null,
       text: "",
     },
     editDialog: {
@@ -342,9 +343,43 @@ export default {
       this.editDialog.data.image_url = "";
     },
     // delete data
-    openDeleteModal() {},
-    deleteSingleData() {},
-    deleteMultipleData() {},
+    openDeleteModal(ids) {
+      this.deleteDialog = {
+        activate: true,
+        id: ids,
+        text: ids.length > 1 ? "categories" : "category",
+      };
+    },
+    deleteSingleData() {
+      this.deleteData([this.deleteDialog.id]);
+      this.deleteDialog.activate = false;
+    },
+    deleteMultipleData() {
+      this.deleteData(
+        this.table.selected.map((data) => {
+          return data.id;
+        })
+      );
+      this.deleteDialog.activate = false;
+    },
+    deleteData(ids) {
+      this.$apollo
+        .mutate({
+          mutation: CATEGORY_DELETE_MUTATION,
+          variables: {
+            ids: ids,
+          },
+        })
+        .then(() => {
+          this.fetchData();
+          this.toaster = {
+            activate: true,
+            text: ids.length > 1 ? "Categories deleted!" : "Category deleted!",
+          };
+          this.table.selected = [];
+        })
+        .catch(() => {});
+    },
   },
   computed: {
     computedFilter: function () {
