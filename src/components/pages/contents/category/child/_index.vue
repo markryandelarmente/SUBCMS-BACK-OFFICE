@@ -101,6 +101,53 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
+        <v-dialog v-model="editDialog.activate" persistent max-width="600px">
+          <v-card>
+            <v-card-title>
+              <span class="headline">Create Category</span>
+            </v-card-title>
+            <v-card-text>
+              <v-container>
+                <v-row>
+                  <v-col cols="12">
+                    <v-text-field v-model="editDialog.data.name" label="Name *" required></v-text-field>
+                  </v-col>
+                  <v-col cols="12" class="d-flex">
+                    <input
+                      type="file"
+                      style="display:none;"
+                      ref="FileInputThumbnail"
+                      accept="image/*"
+                      @change="uploadThumbnail"
+                    />
+                    <div class="text-center file-input__dotted" @click="triggerFileInputThumbnail">
+                      <v-icon size="50" class="my-5">mdi-image-plus</v-icon>Upload
+                    </div>
+                    <div class="text-center mx-2 mb-3 file-input__border">
+                      <img
+                        v-if="editDialog.data.image_preview"
+                        :src="editDialog.data.image_preview"
+                        class="image_preview"
+                      />
+                    </div>
+                  </v-col>
+                </v-row>
+              </v-container>
+              <small>*indicates required field</small>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn text @click="editDialog.activate = false">Close</v-btn>
+              <v-btn
+                v-if="editDialog.is_edit"
+                color="primary darken-1"
+                text
+                @click="updateData"
+              >Update</v-btn>
+              <v-btn v-else color="primary darken-1" text @click="createData">Save</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
         <v-snackbar
           color="success"
           v-model="toaster.activate"
@@ -115,7 +162,12 @@
 </template>
 
 <script>
-import { CATEGORIES_PAGINATED_QUERY } from "@/graphql/category.js";
+import {
+  CATEGORIES_PAGINATED_QUERY,
+  CATEGORY_QUERY,
+  CATEGORY_STORE_MUTATION,
+  CATEGORY_UPDATE_MUTATION,
+} from "@/graphql/category.js";
 export default {
   data: () => ({
     table: {
@@ -141,6 +193,16 @@ export default {
       activate: false,
       user_id: null,
       text: "",
+    },
+    editDialog: {
+      is_edit: false,
+      activate: false,
+      data: {
+        id: "",
+        name: "",
+        image: "",
+        image_preview: "",
+      },
     },
     toaster: {
       activate: false,
@@ -184,8 +246,65 @@ export default {
         this.table.filter.order = order;
       }
     },
-    createData() {},
-    editData() {},
+    createData() {
+      this.editDialog.activate = true;
+      this.editDialog.is_edit = false;
+      this.editDialog.data = {};
+      CATEGORY_STORE_MUTATION;
+    },
+    // edit data
+    editData(id) {
+      this.$apollo
+        .query({
+          query: CATEGORY_QUERY,
+          variables: { id: id },
+        })
+        .then(({ data }) => {
+          this.editDialog.is_edit = true;
+          this.editDialog.activate = true;
+          this.editDialog.data.id = data.category.id;
+          this.editDialog.data.name = data.category.name;
+          this.editDialog.data.image_preview = data.category.image.url;
+        });
+    },
+    updateData() {
+      // create image from link
+      async () => {
+        const response = await fetch(this.editDialog.data.image_preview);
+        // here image is url/location of image
+        const blob = await response.blob();
+        this.editDialog.data.image = new File([blob], "image.jpg", {
+          type: blob.type,
+        });
+      };
+      this.$apollo
+        .mutate({
+          mutation: CATEGORY_UPDATE_MUTATION,
+          variables: {
+            input: {
+              id: this.editDialog.data.id,
+              name: this.editDialog.data.name,
+              image: this.editDialog.data.image,
+            },
+          },
+        })
+        .then(() => {
+          this.editDialog.activate = false;
+          this.fetchData();
+        })
+        .catch(() => {
+          // error logs here
+        });
+    },
+    triggerFileInputThumbnail() {
+      this.$refs.FileInputThumbnail.click();
+    },
+    uploadThumbnail(e) {
+      let photo = e.target.files[0] || e.dataTransfer.files[0];
+      this.editDialog.data.image = photo;
+      this.editDialog.data.image_preview = URL.createObjectURL(photo);
+    },
+    // delete data
     openDeleteModal() {},
     deleteSingleData() {},
     deleteMultipleData() {},
@@ -247,5 +366,17 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+.file-input__border {
+  height: 100px;
+  width: 200px;
+  border: 1px solid gray;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.image_preview {
+  height: 100px;
+  width: 200px;
+  object-fit: cover;
+}
 </style>
