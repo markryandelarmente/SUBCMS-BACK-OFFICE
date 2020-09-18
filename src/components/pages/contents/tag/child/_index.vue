@@ -21,7 +21,7 @@
               ></v-text-field>
             </div>
           </v-expand-x-transition>
-          <v-btn icon @click="createData()">
+          <v-btn icon @click="openCreateModal()">
             <v-icon>mdi-plus</v-icon>
           </v-btn>
           <v-btn
@@ -92,10 +92,38 @@
                 text
                 @click="
               table.selected && table.selected.length
-                ? deleteMultipleUser()
-                : deleteSingleUser()
+                ? deleteMultipleData()
+                : deleteSingleData()
             "
               >Yes</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+        <v-dialog v-model="editDialog.activate" persistent max-width="600px">
+          <v-card>
+            <v-card-title>
+              <span class="headline">{{ editDialog.is_edit ? 'Edit Tag' : 'Create Tag' }}</span>
+            </v-card-title>
+            <v-card-text>
+              <v-container>
+                <v-row>
+                  <v-col cols="12">
+                    <v-text-field v-model="editDialog.data.name" label="Name *" required></v-text-field>
+                  </v-col>
+                </v-row>
+              </v-container>
+              <small>*indicates required field</small>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn text @click="editDialog.activate = false">Close</v-btn>
+              <v-btn
+                v-if="editDialog.is_edit"
+                color="primary darken-1"
+                text
+                @click="updateData"
+              >Update</v-btn>
+              <v-btn v-else color="primary darken-1" text @click="createData()">Save</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -113,7 +141,13 @@
 </template>
 
 <script>
-import { TAGS_PAGINATED_QUERY } from "@/graphql/tag.js";
+import {
+  TAGS_PAGINATED_QUERY,
+  TAG_QUERY,
+  TAG_STORE_MUTATION,
+  TAG_UPDATE_MUTATION,
+  TAG_DELETE_MUTATION,
+} from "@/graphql/tag.js";
 export default {
   data: () => ({
     table: {
@@ -135,9 +169,17 @@ export default {
       selected: [],
       data: [],
     },
+    editDialog: {
+      is_edit: false,
+      activate: false,
+      data: {
+        id: "",
+        name: "",
+      },
+    },
     deleteDialog: {
       activate: false,
-      user_id: null,
+      id: null,
       text: "",
     },
     toaster: {
@@ -181,11 +223,115 @@ export default {
         this.table.filter.order = order;
       }
     },
-    createData() {},
-    editData() {},
-    openDeleteModal() {},
-    deleteSingleData() {},
-    deleteMultipleData() {},
+    // create data
+    openCreateModal() {
+      this.editDialog.activate = true;
+      this.editDialog.is_edit = false;
+      if (this.editDialog.data.id) {
+        this.editDialog.data = {
+          id: "",
+          name: "",
+          image: "",
+          image_preview: "",
+        };
+      }
+    },
+    createData() {
+      this.editDialog.activate = true;
+      this.editDialog.is_edit = false;
+      this.$apollo
+        .mutate({
+          mutation: TAG_STORE_MUTATION,
+          variables: {
+            input: {
+              name: this.editDialog.data.name,
+            },
+          },
+        })
+        .then(() => {
+          this.editDialog.activate = false;
+          this.fetchData();
+          this.editDialog.data = {
+            id: "",
+            name: "",
+          };
+        })
+        .catch(() => {
+          // error logs here
+        });
+    },
+
+    // edit data
+    editData(id) {
+      this.$apollo
+        .query({
+          query: TAG_QUERY,
+          variables: { id: id },
+        })
+        .then(({ data }) => {
+          this.editDialog.is_edit = true;
+          this.editDialog.activate = true;
+          this.editDialog.data.id = data.tag.id;
+          this.editDialog.data.name = data.tag.name;
+        });
+    },
+    updateData() {
+      this.$apollo
+        .mutate({
+          mutation: TAG_UPDATE_MUTATION,
+          variables: {
+            input: {
+              id: this.editDialog.data.id,
+              name: this.editDialog.data.name,
+            },
+          },
+        })
+        .then(() => {
+          this.editDialog.activate = false;
+          this.fetchData();
+        })
+        .catch(() => {
+          // error logs here
+        });
+    },
+    // delete data
+    openDeleteModal(ids) {
+      this.deleteDialog = {
+        activate: true,
+        id: ids,
+        text: ids.length > 1 ? "Tags" : "Tag",
+      };
+    },
+    deleteSingleData() {
+      this.deleteData([this.deleteDialog.id]);
+      this.deleteDialog.activate = false;
+    },
+    deleteMultipleData() {
+      this.deleteData(
+        this.table.selected.map((data) => {
+          return data.id;
+        })
+      );
+      this.deleteDialog.activate = false;
+    },
+    deleteData(ids) {
+      this.$apollo
+        .mutate({
+          mutation: TAG_DELETE_MUTATION,
+          variables: {
+            ids: ids,
+          },
+        })
+        .then(() => {
+          this.fetchData();
+          this.toaster = {
+            activate: true,
+            text: ids.length > 1 ? "Tags deleted!" : "Tag deleted!",
+          };
+          this.table.selected = [];
+        })
+        .catch(() => {});
+    },
   },
   computed: {
     computedFilter: function () {
