@@ -51,6 +51,7 @@
                       v-model="role_permissions"
                       :value="permission_item.id"
                       color="primary"
+                      @click="pushToPermissions(permission_item.id)"
                     ></v-checkbox>
                   </v-list-item-action>
                   <v-list-item-content>
@@ -64,18 +65,30 @@
         </v-row>
         <v-row justify="end">
           <v-col md="12" class="text-right mr-3 pt-0 mt-0">
-            <v-btn color="primary">
+            <v-btn color="primary" @click="updateRole">
               <v-icon class="mr-1">mdi-content-save-outline</v-icon>Save changes
             </v-btn>
           </v-col>
         </v-row>
       </v-card>
     </v-col>
+    <v-snackbar
+      color="success"
+      v-model="toaster.activate"
+      :timeout="2000"
+      :bottom="true"
+      :left="true"
+      width="auto"
+    >{{ toaster.text }}</v-snackbar>
   </v-row>
 </template>
 
 <script>
-import { ROLES_QUERY, ROLE_QUERY } from "@/graphql/role.js";
+import {
+  ROLES_QUERY,
+  ROLE_QUERY,
+  ROLE_UPDATE_PERMISSIONS_MUTATION,
+} from "@/graphql/role.js";
 import { PERMISSIONS_QUERY } from "@/graphql/permission.js";
 export default {
   data: () => ({
@@ -84,6 +97,10 @@ export default {
     selected_role: "",
     permissions: [],
     role_permissions: [],
+    toaster: {
+      activate: false,
+      text: "",
+    },
   }),
   beforeMount() {
     this.fetchData();
@@ -159,6 +176,25 @@ export default {
         return rv;
       }, {});
       return list;
+    },
+
+    // update role
+    updateRole() {
+      this.$apollo
+        .mutate({
+          mutation: ROLE_UPDATE_PERMISSIONS_MUTATION,
+          variables: {
+            id: this.selected_role + 1,
+            permission_ids: this.role_permissions,
+          },
+        })
+        .then(({ data }) => {
+          data;
+          this.toaster = {
+            activate: true,
+            text: "Permissions updated !",
+          };
+        });
     },
   },
   computed: {
