@@ -36,5 +36,19 @@ const ROLE_UPDATE_PERMISSIONS_MUTATION = gql`
     }
   }
 `;
+const ROLE_STORE = gql`
+  mutation role_store($input: RoleInput) {
+    role_store(input: $input) {
+      id
+      name
+      users_count
+    }
+  }
+`;
 
-export { ROLES_QUERY, ROLE_QUERY, ROLE_UPDATE_PERMISSIONS_MUTATION };
+export {
+  ROLES_QUERY,
+  ROLE_QUERY,
+  ROLE_UPDATE_PERMISSIONS_MUTATION,
+  ROLE_STORE,
+};

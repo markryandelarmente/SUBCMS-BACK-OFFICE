@@ -6,7 +6,7 @@
           <div class="d-flex">
             <v-subheader>ROLES</v-subheader>
             <v-spacer></v-spacer>
-            <v-btn icon color="secondary">
+            <v-btn icon color="secondary" @click="createDialog.activate = true">
               <v-icon medium>mdi-plus</v-icon>
             </v-btn>
           </div>
@@ -72,6 +72,29 @@
         </v-row>
       </v-card>
     </v-col>
+    <v-dialog v-model="createDialog.activate" persistent max-width="600px">
+      <v-card>
+        <v-card-title>
+          <span class="headline">Create Role</span>
+        </v-card-title>
+        <v-card-text>
+          <v-container>
+            <v-row>
+              <v-col cols="12">
+                <v-text-field v-model="createDialog.data.name" label="Name *" required></v-text-field>
+              </v-col>
+            </v-row>
+          </v-container>
+          <small>*indicates required field</small>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn text @click="createDialog.activate = false">Close</v-btn>
+
+          <v-btn color="primary darken-1" text @click="createData()">Save</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <v-snackbar
       color="success"
       v-model="toaster.activate"
@@ -88,6 +111,7 @@ import {
   ROLES_QUERY,
   ROLE_QUERY,
   ROLE_UPDATE_PERMISSIONS_MUTATION,
+  ROLE_STORE,
 } from "@/graphql/role.js";
 import { PERMISSIONS_QUERY } from "@/graphql/permission.js";
 export default {
@@ -100,6 +124,12 @@ export default {
     toaster: {
       activate: false,
       text: "",
+    },
+    createDialog: {
+      activate: false,
+      data: {
+        name: "",
+      },
     },
   }),
   beforeMount() {
@@ -139,7 +169,6 @@ export default {
           },
         })
         .then(({ data }) => {
-          console.log(data);
           this.role_permissions = data.role.permissions.map((permission) => {
             return permission.id;
           });
@@ -194,6 +223,26 @@ export default {
             activate: true,
             text: "Permissions updated !",
           };
+        });
+    },
+    // create role
+    createData() {
+      this.$apollo
+        .mutate({
+          mutation: ROLE_STORE,
+          variables: {
+            input: this.createDialog.data,
+          },
+        })
+        .then(({ data }) => {
+          data;
+          this.createDialog.activate = false;
+          this.toaster = {
+            activate: true,
+            text: "Role added !",
+          };
+          this.fetchData();
+          this.createDialog.data = {};
         });
     },
   },
