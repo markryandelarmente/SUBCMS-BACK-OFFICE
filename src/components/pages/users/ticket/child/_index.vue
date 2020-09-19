@@ -1,6 +1,6 @@
 <template>
-  <v-card outlined class="rounded-lg">
-    <v-toolbar elevation="0" class="mt-3">
+  <v-card elevation="0" class="rounded-lg">
+    <v-toolbar elevation="0">
       <v-app-bar-nav-icon></v-app-bar-nav-icon>
 
       <v-toolbar-title>{{ computedTable.tool_bar.title }}</v-toolbar-title>
@@ -20,9 +20,9 @@
           ></v-text-field>
         </div>
       </v-expand-x-transition>
-      <v-btn icon @click="$router.push({ name: 'user_create' })">
+      <!-- <v-btn icon @click="$router.push({ name: 'user_create' })">
         <v-icon>mdi-plus</v-icon>
-      </v-btn>
+      </v-btn>-->
       <v-btn
         icon
         :disabled="table.selected && table.selected.length ? false : true"
@@ -57,17 +57,20 @@
           <v-icon right>{{ item.status == 'SOLVED' ? 'mdi-check': 'mdi-progress-clock' }}</v-icon>
         </v-chip>
       </template>
-      <template v-slot:item.action="{  }">
-        <v-btn icon color="success">
-          <v-icon small>mdi-pencil-outline</v-icon>
-        </v-btn>
-        <v-btn
-          icon
-          color="error"
-          :disabled="table.selected && table.selected.length ? true : false"
-        >
-          <v-icon small>mdi-trash-can-outline</v-icon>
-        </v-btn>
+      <template v-slot:item.action="{ item }">
+        <div style="width: 90px;">
+          <v-btn icon color="success" @click="editData(item.id)">
+            <v-icon small>mdi-pencil-outline</v-icon>
+          </v-btn>
+          <v-btn
+            icon
+            color="error"
+            :disabled="table.selected && table.selected.length ? true : false"
+            @click="openDeleteModal(item.id)"
+          >
+            <v-icon small>mdi-trash-can-outline</v-icon>
+          </v-btn>
+        </div>
       </template>
     </v-data-table>
     <div class="text-center mt-5 mb-5" v-if="table.pageCount > 1">
@@ -88,6 +91,55 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-dialog v-model="editDialog.activate" persistent max-width="900">
+      <v-card>
+        <v-card-title>
+          <span class="headline">Ticket</span>
+        </v-card-title>
+        <v-card-text>
+          <v-container>
+            <v-row>
+              <v-col cols="12">
+                <h3 class="font-weight-regular">
+                  Issuer user:
+                  <span
+                    class="font-weight-medium ml-5"
+                  >{{ editDialog.data.issuer_user.firstname + ' ' + editDialog.data.issuer_user.lastname }}</span>
+                </h3>
+                <h3 class="font-weight-regular mt-5">
+                  Category:
+                  <span class="font-weight-medium ml-5">{{ editDialog.data.category}}</span>
+                </h3>
+                <h3 class="font-weight-regular mt-5">
+                  Issued on:
+                  <span class="font-weight-medium ml-5">{{ editDialog.data.issued_on}}</span>
+                </h3>
+                <h3 class="font-weight-regular mt-5">
+                  Status:
+                  <span class="font-weight-medium ml-5">{{ editDialog.data.status}}</span>
+                </h3>
+              </v-col>
+              <v-col cols="12">
+                <h3 class="font-weight-regular mt-5">
+                  Content:
+                  <span class="font-weight-medium ml-5">{{ editDialog.data.content}}</span>
+                </h3>
+              </v-col>
+
+              <v-col cols="12">
+                <v-select :items="items" label="Assign to"></v-select>
+              </v-col>
+              <small class="mt-5 pt-5">* indicates required field</small>
+            </v-row>
+          </v-container>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn text @click="editDialog.activate = false">Close</v-btn>
+          <v-btn color="primary darken-1" text @click="updateData">Save</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <v-snackbar
       color="success"
       v-model="toaster.activate"
@@ -100,7 +152,12 @@
 </template>
 
 <script>
-import { TICKETS_QUERY } from "@/graphql/ticket.js";
+import {
+  TICKETS_QUERY,
+  TICKET_QUERY,
+  TICKET_UPDATE_MUTATION,
+  TICKET_DELETE_MUTATION,
+} from "@/graphql/ticket.js";
 export default {
   data: () => ({
     table: {
@@ -108,7 +165,7 @@ export default {
         search_expanded: false,
         title: "Tickets",
       },
-      height: 800,
+      height: 650,
       time: 0,
       loading: true,
       total: 0,
@@ -116,12 +173,24 @@ export default {
       filter: {
         count: 20,
         page: 1,
-        order: "desc",
-        column: "created_at",
+        order: "asc",
+        column: "status",
         keyword: "",
       },
       selected: [],
       data: [],
+    },
+    items: ["Foo", "Bar", "Fizz", "Buzz"],
+    editDialog: {
+      is_edit: false,
+      activate: false,
+      data: {
+        id: "",
+        content: "",
+        issuer_user: "",
+        category: "",
+        staus: "",
+      },
     },
     deleteDialog: {
       activate: false,
@@ -171,6 +240,87 @@ export default {
         this.table.filter.order = order;
       }
     },
+    // edit data
+    editData(id) {
+      this.$apollo
+        .query({
+          query: TICKET_QUERY,
+          variables: { id: id },
+        })
+        .then(({ data }) => {
+          this.editDialog.is_edit = true;
+          this.editDialog.activate = true;
+          this.editDialog.data = {
+            id: data.ticket.id,
+            content: data.ticket.content,
+            issued_on: data.ticket.created_at,
+            issuer_user: {
+              firstname: data.ticket.issuer_user.firstname,
+              lastname: data.ticket.issuer_user.lastname,
+            },
+            category: data.ticket.ticket_category.name,
+            status: data.ticket.status,
+          };
+        });
+    },
+
+    updateData() {
+      this.$apollo
+        .mutate({
+          mutation: TICKET_UPDATE_MUTATION,
+          variables: {
+            input: {
+              id: this.editDialog.data.id,
+              content: this.editDialog.data.content,
+            },
+          },
+        })
+        .then(() => {
+          this.editDialog.activate = false;
+          this.fetchData();
+        })
+        .catch(() => {
+          // error logs here
+        });
+    },
+    // delete data
+    openDeleteModal(ids) {
+      this.deleteDialog = {
+        activate: true,
+        id: ids,
+        text: ids.length > 1 ? "Tickets" : "Tickets",
+      };
+    },
+    deleteSingleData() {
+      this.deleteData([this.deleteDialog.id]);
+      this.deleteDialog.activate = false;
+    },
+    deleteMultipleData() {
+      this.deleteData(
+        this.table.selected.map((data) => {
+          return data.id;
+        })
+      );
+      this.deleteDialog.activate = false;
+    },
+    deleteData(ids) {
+      this.$apollo
+        .mutate({
+          mutation: TICKET_DELETE_MUTATION,
+          variables: {
+            ids: ids,
+          },
+        })
+        .then(() => {
+          this.fetchData();
+          this.toaster = {
+            activate: true,
+            text: ids.length > 1 ? "Tickets deleted!" : "Ticket deleted!",
+          };
+          this.table.selected = [];
+        })
+        .catch(() => {});
+    },
   },
   computed: {
     computedFilter: function () {
@@ -191,10 +341,12 @@ export default {
           {
             text: "STATUS",
             value: "status",
+            sortable: false,
           },
           {
             text: "CATEGORY",
             value: "ticket_category.name",
+            sortable: false,
           },
           {
             text: "ISSUED DATE",
@@ -231,4 +383,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.action-container {
+  width: 200px;
+}
+</style>
