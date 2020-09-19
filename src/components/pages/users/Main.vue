@@ -7,7 +7,7 @@
       <v-tab :to="{ name: 'tickets' }">
         <strong>{{ $t("user_group.main.tickets") }}</strong>
       </v-tab>
-      <v-tab :to="{ name: 'roles_permissions', query: {id: roles[0].id} }">
+      <v-tab :to="{ name: 'roles_permissions', query: {id: roles[0]} }">
         <strong>{{ $t("user_group.main.roles_permissions") }}</strong>
       </v-tab>
     </v-tabs>
@@ -38,7 +38,9 @@ export default {
           query: ROLES_QUERY,
         })
         .then(({ data }) => {
-          this.roles = data.roles;
+          this.roles = data.roles.map((role) => {
+            return role.id;
+          });
         });
     },
   },

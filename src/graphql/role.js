@@ -5,6 +5,7 @@ const ROLES_QUERY = gql`
     roles {
       id
       name
+      users_count
     }
   }
 `;
@@ -14,6 +15,7 @@ const ROLE_QUERY = gql`
     role(id: $id) {
       id
       name
+      users_count
       permissions {
         id
         name
