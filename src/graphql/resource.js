@@ -10,4 +10,22 @@ const VIDEO_UPLOAD_MUTATION = gql`
   }
 `;
 
-export { VIDEO_UPLOAD_MUTATION };
+const RESOURCES_QUERY = gql`
+  query resources($query: ResourceFilter) {
+    resources(query: $query) {
+      total
+      current_page
+      data {
+        id
+        name
+        content
+        resource_type {
+          id
+          name
+        }
+      }
+    }
+  }
+`;
+
+export { VIDEO_UPLOAD_MUTATION, RESOURCES_QUERY };
