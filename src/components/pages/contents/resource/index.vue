@@ -18,34 +18,7 @@ export default {
   },
   created() {},
   methods: {},
-  computed: {
-    stats: function() {
-      return [
-        {
-          icon: "mdi-video-outline",
-          text: "Videos",
-          value: `32`,
-          description:
-            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui, cumque?",
-        },
-        {
-          icon: "mdi-image-outline",
-          text: "Images",
-          value: "102",
-          description:
-            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui, cumque?",
-        },
-        {
-          icon: "mdi-cloud-outline",
-          text: "Storage",
-          value: "34",
-          subtitle: "GB",
-          description:
-            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui, cumque?",
-        },
-      ];
-    },
-  },
+  computed: {},
   watch: {},
 };
 </script>

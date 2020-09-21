@@ -27,5 +27,14 @@ const RESOURCES_QUERY = gql`
     }
   }
 `;
+const RESOURCES_STAT_QUERY = gql`
+  query {
+    resources_stats {
+      total_images
+      total_videos
+      total_storage
+    }
+  }
+`;
 
-export { VIDEO_UPLOAD_MUTATION, RESOURCES_QUERY };
+export { VIDEO_UPLOAD_MUTATION, RESOURCES_QUERY, RESOURCES_STAT_QUERY };
