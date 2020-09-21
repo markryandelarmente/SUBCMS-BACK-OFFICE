@@ -5,8 +5,50 @@ const ROLES_QUERY = gql`
     roles {
       id
       name
+      users_count
     }
   }
 `;
 
-export { ROLES_QUERY };
+const ROLE_QUERY = gql`
+  query role($id: ID) {
+    role(id: $id) {
+      id
+      name
+      users_count
+      permissions {
+        id
+        name
+      }
+    }
+  }
+`;
+const ROLE_UPDATE_PERMISSIONS_MUTATION = gql`
+  mutation role_update_permissions($id: ID, $permission_ids: [ID]) {
+    role_update_permissions(id: $id, permission_ids: $permission_ids) {
+      id
+      name
+      users_count
+      permissions {
+        id
+        name
+      }
+    }
+  }
+`;
+const ROLE_STORE = gql`
+  mutation role_store($input: RoleInput) {
+    role_store(input: $input) {
+      id
+      name
+      users_count
+    }
+  }
+`;
+
+export {
+  ROLES_QUERY,
+  ROLE_QUERY,
+  ROLE_UPDATE_PERMISSIONS_MUTATION,
+  ROLE_STORE,
+};

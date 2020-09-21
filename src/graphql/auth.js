@@ -39,6 +39,15 @@ const SELF_QUERY = gql`
       lastname
       created_at
       updated_at
+      roles {
+        id
+        name
+        permissions {
+          id
+          name
+          group
+        }
+      }
     }
   }
 `;

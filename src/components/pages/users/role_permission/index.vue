@@ -6,17 +6,17 @@
           <div class="d-flex">
             <v-subheader>ROLES</v-subheader>
             <v-spacer></v-spacer>
-            <v-btn icon color="secondary">
+            <v-btn icon color="secondary" @click="createDialog.activate = true">
               <v-icon medium>mdi-plus</v-icon>
             </v-btn>
           </div>
 
-          <v-list-item-group v-model="item" color="primary">
-            <v-list-item v-for="(item, i) in items" :key="i">
+          <v-list-item-group v-model="selected_role" color="primary">
+            <v-list-item v-for="(role, i) in roles" :key="i">
               <v-list-item-content>
-                <v-list-item-title v-text="item.text"></v-list-item-title>
+                <span class="capitalize">{{role.name}}</span>
               </v-list-item-content>
-              <v-list-item-avatar>{{ item.count }}</v-list-item-avatar>
+              <v-list-item-avatar>{{ role.users_count }}</v-list-item-avatar>
             </v-list-item>
           </v-list-item-group>
         </v-list>
@@ -32,118 +32,239 @@
         </v-list>
         <v-row>
           <v-col
-            v-for="(permission, index) in permissions"
+            v-for="(permission, index) in computedPermissions"
             :key="index"
             md="3"
             sm="12"
             class="text-left"
           >
             <v-list subheader two-line flat>
-              <v-subheader class="font-weight-medium">{{permission}}</v-subheader>
+              <v-subheader class="font-weight-medium uppercase">{{permission}}</v-subheader>
 
-              <v-list-item-group v-model="settings" multiple>
-                <v-list-item>
-                  <template v-slot:default="{ active }">
-                    <v-list-item-action>
-                      <v-checkbox :input-value="active" color="primary"></v-checkbox>
-                    </v-list-item-action>
-
-                    <v-list-item-content>
-                      <v-list-item-title>View user</v-list-item-title>
-                      <v-list-item-subtitle>can view users list</v-list-item-subtitle>
-                    </v-list-item-content>
-                  </template>
-                </v-list-item>
-
-                <v-list-item>
-                  <template v-slot:default="{ active }">
-                    <v-list-item-action>
-                      <v-checkbox :input-value="active" color="primary"></v-checkbox>
-                    </v-list-item-action>
-
-                    <v-list-item-content>
-                      <v-list-item-title>Create user</v-list-item-title>
-                      <v-list-item-subtitle>can create/add user</v-list-item-subtitle>
-                    </v-list-item-content>
-                  </template>
-                </v-list-item>
-
-                <v-list-item>
-                  <template v-slot:default="{ active }">
-                    <v-list-item-action>
-                      <v-checkbox :input-value="active" color="primary"></v-checkbox>
-                    </v-list-item-action>
-
-                    <v-list-item-content>
-                      <v-list-item-title>Edit user</v-list-item-title>
-                      <v-list-item-subtitle>can edit/update user</v-list-item-subtitle>
-                    </v-list-item-content>
-                  </template>
-                </v-list-item>
-
-                <v-list-item>
-                  <template v-slot:default="{ active }">
-                    <v-list-item-action>
-                      <v-checkbox :input-value="active" color="primary"></v-checkbox>
-                    </v-list-item-action>
-
-                    <v-list-item-content>
-                      <v-list-item-title>Delete user</v-list-item-title>
-                      <v-list-item-subtitle>can delete user</v-list-item-subtitle>
-                    </v-list-item-content>
-                  </template>
+              <v-list-item-group
+                v-for="permission_item in permissions[permission]"
+                :key="permission_item.id"
+              >
+                <v-list-item @click="pushToPermissions(permission_item.id)">
+                  <v-list-item-action>
+                    <v-checkbox
+                      v-model="role_permissions"
+                      :value="permission_item.id"
+                      color="primary"
+                      @click="pushToPermissions(permission_item.id)"
+                    ></v-checkbox>
+                  </v-list-item-action>
+                  <v-list-item-content>
+                    <v-list-item-title class="font-weight-regular">{{ permission_item.name}}</v-list-item-title>
+                    <small class="font-weight-light">Can {{ permission_item.name }}</small>
+                  </v-list-item-content>
                 </v-list-item>
               </v-list-item-group>
             </v-list>
           </v-col>
         </v-row>
+        <v-row justify="end">
+          <v-col md="12" class="text-right mr-3 pt-0 mt-0">
+            <v-btn color="primary" @click="updateRole">
+              <v-icon class="mr-1">mdi-content-save-outline</v-icon>Save changes
+            </v-btn>
+          </v-col>
+        </v-row>
       </v-card>
     </v-col>
+    <v-dialog v-model="createDialog.activate" persistent max-width="600px">
+      <v-card>
+        <v-card-title>
+          <span class="headline">Create Role</span>
+        </v-card-title>
+        <v-card-text>
+          <v-container>
+            <v-row>
+              <v-col cols="12">
+                <v-text-field v-model="createDialog.data.name" label="Name *" required></v-text-field>
+              </v-col>
+            </v-row>
+          </v-container>
+          <small>*indicates required field</small>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn text @click="createDialog.activate = false">Close</v-btn>
+
+          <v-btn color="primary darken-1" text @click="createData()">Save</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-snackbar
+      color="success"
+      v-model="toaster.activate"
+      :timeout="2000"
+      :bottom="true"
+      :left="true"
+      width="auto"
+    >{{ toaster.text }}</v-snackbar>
   </v-row>
 </template>
 
 <script>
+import {
+  ROLES_QUERY,
+  ROLE_QUERY,
+  ROLE_UPDATE_PERMISSIONS_MUTATION,
+  ROLE_STORE,
+} from "@/graphql/role.js";
+import { PERMISSIONS_QUERY } from "@/graphql/permission.js";
 export default {
   data: () => ({
-    item: 1,
-    items: [
-      {
-        text: "Admin",
-        count: 5,
+    setting: "",
+    roles: [],
+    selected_role: "",
+    permissions: [],
+    role_permissions: [],
+    toaster: {
+      activate: false,
+      text: "",
+    },
+    createDialog: {
+      activate: false,
+      data: {
+        name: "",
       },
-      {
-        text: "Manager",
-        count: 2,
-      },
-      {
-        text: "Author",
-        count: 4,
-      },
-      {
-        text: "User",
-        count: 256,
-      },
-      {
-        text: "Guest",
-        count: 3,
-      },
-    ],
-    settings: [],
-    permissions: [
-      "BACK OFFICE",
-      "DASHBOARD",
-      "USERS",
-      "TICKETS",
-      "ROLES AND PERMISSIONS",
-      "SUBSCRIPTIONS",
-      "RESOURCES",
-      "SETTINGS",
-      "SETTINGS",
-    ],
+    },
   }),
-  computed: {},
+  beforeMount() {
+    this.fetchData();
+  },
+  mounted() {
+    this.$route.query.id ? (this.selected_role = this.$route.query.id - 1) : "";
+  },
+  created() {},
+  methods: {
+    // get all roles and permissions
+    fetchData() {
+      this.$apollo
+        .query({
+          query: ROLES_QUERY,
+        })
+        .then(({ data }) => {
+          this.roles = data.roles;
+          this.fetchRole();
+        });
+
+      this.$apollo
+        .query({
+          query: PERMISSIONS_QUERY,
+        })
+        .then(({ data }) => {
+          this.permissions = this.groupBy(data.permissions, "group");
+        });
+    },
+    // get single role with permissions
+    fetchRole() {
+      this.$apollo
+        .query({
+          query: ROLE_QUERY,
+          variables: {
+            id: this.selected_role + 1,
+          },
+        })
+        .then(({ data }) => {
+          this.role_permissions = data.role.permissions.map((permission) => {
+            return permission.id;
+          });
+
+          //check if active
+          this.checkIfActive();
+        });
+    },
+    checkIfActive() {
+      this.computedPermissions.forEach((permission_group) => {
+        this.permissions[permission_group].forEach((permission) => {
+          if (this.role_permissions.includes(permission.id)) {
+            permission.active = true;
+          } else {
+            permission.active = false;
+          }
+        });
+      });
+    },
+    // push selected permission to role_permissions
+    pushToPermissions(permission_id) {
+      if (this.role_permissions.includes(permission_id)) {
+        let index = this.role_permissions.indexOf(permission_id);
+        if (index > -1) {
+          this.role_permissions.splice(index, 1);
+        }
+      } else {
+        this.role_permissions.push(permission_id);
+      }
+    },
+    groupBy(xs, key) {
+      let list = xs.reduce(function (rv, x) {
+        (rv[x[key]] = rv[x[key]] || []).push(x);
+        return rv;
+      }, {});
+      return list;
+    },
+
+    // update role
+    updateRole() {
+      this.$apollo
+        .mutate({
+          mutation: ROLE_UPDATE_PERMISSIONS_MUTATION,
+          variables: {
+            id: this.selected_role + 1,
+            permission_ids: this.role_permissions,
+          },
+        })
+        .then(({ data }) => {
+          data;
+          this.toaster = {
+            activate: true,
+            text: "Permissions updated !",
+          };
+        });
+    },
+    // create role
+    createData() {
+      this.$apollo
+        .mutate({
+          mutation: ROLE_STORE,
+          variables: {
+            input: this.createDialog.data,
+          },
+        })
+        .then(({ data }) => {
+          data;
+          this.createDialog.activate = false;
+          this.toaster = {
+            activate: true,
+            text: "Role added !",
+          };
+          this.fetchData();
+          this.createDialog.data = {};
+        });
+    },
+  },
+  computed: {
+    computedPermissions: function () {
+      return Object.keys(this.permissions);
+    },
+  },
+  watch: {
+    selected_role: function (val) {
+      this.fetchRole();
+      val;
+    },
+  },
 };
 </script>
 
-<style>
+<style scoped>
+.uppercase {
+  text-transform: uppercase;
+}
+.capitalize {
+  text-transform: capitalize;
+}
 </style>

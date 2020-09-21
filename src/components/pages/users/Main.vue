@@ -7,7 +7,7 @@
       <v-tab :to="{ name: 'tickets' }">
         <strong>{{ $t("user_group.main.tickets") }}</strong>
       </v-tab>
-      <v-tab :to="{ name: 'roles_permissions' }">
+      <v-tab :to="{ name: 'roles_permissions', query: {id: roles[0]} }">
         <strong>{{ $t("user_group.main.roles_permissions") }}</strong>
       </v-tab>
     </v-tabs>
@@ -22,8 +22,28 @@
 </template>
 
 <script>
+import { ROLES_QUERY } from "@/graphql/role.js";
 export default {
-  data: () => ({}),
+  data: () => ({
+    roles: [],
+  }),
+  beforeMount() {
+    this.fetchData();
+  },
+  created() {},
+  methods: {
+    fetchData() {
+      this.$apollo
+        .query({
+          query: ROLES_QUERY,
+        })
+        .then(({ data }) => {
+          this.roles = data.roles.map((role) => {
+            return role.id;
+          });
+        });
+    },
+  },
 };
 </script>
 
