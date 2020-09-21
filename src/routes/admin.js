@@ -115,8 +115,8 @@ export default [
         component: SubscriptionIndex,
       },
       {
-        path: "",
-        name: "users",
+        path: "user-management",
+        name: "user-management",
         component: UsersMain,
         redirect: { name: "users" },
         children: [
