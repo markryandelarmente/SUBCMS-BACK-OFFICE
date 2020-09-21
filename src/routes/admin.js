@@ -59,18 +59,22 @@ export default [
         component: DashboardIndex,
       },
       {
-        path: "",
-        name: "contents",
+        path: "content-management",
+        name: "content-management",
         component: ContentsMain,
-        redirect: { name: "contents" },
+        redirect: { name: "content" },
         children: [
           {
-            path: "contents",
-            name: "contents",
+            path: "content",
+            name: "content",
             component: ContentIndex,
             redirect: { name: "content_index" },
             children: [
-              { path: "", name: "content_index", component: content_index },
+              {
+                path: "",
+                name: "content_index",
+                component: content_index
+              },
               {
                 path: "create",
                 name: "content_create",
@@ -111,8 +115,8 @@ export default [
         component: SubscriptionIndex,
       },
       {
-        path: "",
-        name: "users",
+        path: "user-management",
+        name: "user-management",
         component: UsersMain,
         redirect: { name: "users" },
         children: [

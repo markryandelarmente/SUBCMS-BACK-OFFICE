@@ -86,8 +86,8 @@
             <v-tooltip v-model="sidebar.resources" right color="primary">
               <template v-slot:activator="{ on, attrs }">
                 <v-btn
-                  :to="{ name: 'contents' }"
-                  :color="active_route == 'contents' ? 'primary' : ''"
+                  :to="{ name: 'content' }"
+                  :color="active_route == 'content' ? 'primary' : ''"
                   icon
                   medium
                   v-bind="attrs"
@@ -96,7 +96,7 @@
                   <v-icon>mdi-apps</v-icon>
                 </v-btn>
               </template>
-              <span>CONTENTS</span>
+              <span>CONTENT</span>
             </v-tooltip>
 
             <v-tooltip v-model="sidebar.subscriptions" right color="primary">

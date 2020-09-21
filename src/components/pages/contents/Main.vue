@@ -1,12 +1,12 @@
 <template>
   <div>
     <v-tabs>
-      <v-tab :to="{ name: 'contents' }">
-        <strong>CONTENTS</strong>
+      <v-tab :to="{ name: 'content' }">
+        <strong>CONTENT</strong>
       </v-tab>
-      <!-- <v-tab :to="{ name: 'resources' }">
+      <v-tab :to="{ name: 'resources' }">
         <strong>RESOURCES</strong>
-      </v-tab>-->
+      </v-tab>
       <v-tab :to="{ name: 'categories' }">
         <strong>CATEGORIES</strong>
       </v-tab>
@@ -29,5 +29,3 @@ export default {
   data: () => ({}),
 };
 </script>
-
-<style></style>
