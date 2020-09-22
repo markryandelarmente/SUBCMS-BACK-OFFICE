@@ -18,7 +18,7 @@
         <v-container fluid>
           <v-row>
             <v-col class="d-flex child-flex" cols="1">
-              <v-icon large @click="test">mdi-plus</v-icon>
+              <v-icon large @click="$router.push({name: 'resource_create'})">mdi-plus</v-icon>
             </v-col>
             <v-col
               v-for="resource in resources"
