@@ -17,6 +17,7 @@ import content_create from "../components/pages/contents/content/child/_create";
 // RESOURCES
 import ResourceIndex from "../components/pages/contents/resource/index";
 import resource_index from "../components/pages/contents/resource/child/_index";
+import resource_create from "../components/pages/contents/resource/child/_create";
 // CATEGORIES
 import CategoryIndex from "../components/pages/contents/category/index";
 import category_index from "../components/pages/contents/category/child/_index";
@@ -73,7 +74,7 @@ export default [
               {
                 path: "",
                 name: "content_index",
-                component: content_index
+                component: content_index,
               },
               {
                 path: "create",
@@ -89,6 +90,11 @@ export default [
             redirect: { name: "resource_index" },
             children: [
               { path: "", name: "resource_index", component: resource_index },
+              {
+                path: "create",
+                name: "resource_create",
+                component: resource_create,
+              },
             ],
           },
           {
