@@ -17,14 +17,15 @@
       <v-card elevation="0">
         <v-container fluid>
           <v-row>
-            <v-col class="d-flex child-flex" cols="1">
+            <v-col class="d-flex child-flex" md="1" sm="3">
               <v-icon large @click="$router.push({name: 'resource_create'})">mdi-plus</v-icon>
             </v-col>
             <v-col
               v-for="resource in computedResources"
               :key="resource.id"
               class="d-flex child-flex"
-              cols="1"
+              md="1"
+              sm="3"
             >
               <v-card flat tile class="d-flex" v-if="resource.resource_type.name == 'image'">
                 <v-img
