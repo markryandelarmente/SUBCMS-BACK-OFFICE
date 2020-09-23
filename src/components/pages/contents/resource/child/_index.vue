@@ -21,23 +21,23 @@
               <v-icon large @click="$router.push({name: 'resource_create'})">mdi-plus</v-icon>
             </v-col>
             <v-col
-              v-for="resource in resources"
+              v-for="resource in computedResources"
               :key="resource.id"
               class="d-flex child-flex"
               cols="1"
             >
               <v-card flat tile class="d-flex" v-if="resource.resource_type.name == 'image'">
                 <v-img
-                  :src="resource.content"
-                  :lazy-src="resource.content"
+                  :src="resource.thumbnail"
+                  :lazy-src="resource.thumbnail"
                   aspect-ratio="1"
                   class="grey lighten-2"
                 ></v-img>
               </v-card>
               <v-card flat tile class="d-flex" v-else>
                 <v-img
-                  src="http://localhost:8181/images/contents/videos/1.jpeg"
-                  :lazy-src="resource.content"
+                  :src="resource.thumbnail"
+                  :lazy-src="resource.thumbnail"
                   aspect-ratio="1"
                   class="grey lighten-2"
                 ></v-img>
@@ -128,6 +128,19 @@ export default {
   computed: {
     computedFilter: function () {
       return Object.assign({}, this.filter);
+    },
+    computedResources: function () {
+      return this.resources.map((resource) => {
+        return {
+          ...resource,
+          content: JSON.parse(resource.content),
+          thumbnail: JSON.parse(resource.content).meta.thumbnails[0].sm,
+          action: {
+            text: "ACTION",
+            value: resource.id,
+          },
+        };
+      });
     },
   },
   watch: {
