@@ -26,7 +26,7 @@
           </v-progress-circular>
 
           <div class="mt-5" v-if="!is_uploading">Select video and image files to upload</div>
-          <div class="mt-5" v-else>Uploading video . . .</div>
+          <div class="mt-5" v-else>Uploading files . . .</div>
           <small class="mt-3 mb-5 font-weight-light">
             Lorem ipsum dolor sit, amet consectetur adipisicing elit.
             Doloribus.
